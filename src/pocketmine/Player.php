@@ -2084,7 +2084,6 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 		$target->setPositionAndRotation($packet->position, $packet->zRot, $packet->xRot);
 
-		$this->server->broadcastPacket($this->getViewers(), $packet);
 		return true;
 	}
 
@@ -2106,7 +2105,6 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			$packet->onGround = !$this->isGliding() && $this->onGround;
 
 			$packet->yaw = fmod($packet->yaw, 360);
-			$packet->headYaw = fmod($packet->headYaw, 360);
 			$packet->pitch = fmod($packet->pitch, 360);
 
 			if($packet->yaw < 0){

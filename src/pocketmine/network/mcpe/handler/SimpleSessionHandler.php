@@ -364,8 +364,7 @@ class SimpleSessionHandler extends SessionHandler{
 			$horse = $this->player->getRidingEntity();
 			if($horse instanceof Horse){
 				$horse->setRearing(true);
-				$horse->setMotion($horse->getMotion()->add(0, 4 * ($packet->jumpStrength / 100), 0));
-				$horse->getDataPropertyManager()->setInt(Entity::DATA_STRENGTH, 0);
+				$horse->setJumpPower($packet->jumpStrength / 100);
 			}
 		}
 		return false;
