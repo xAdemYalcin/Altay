@@ -91,8 +91,6 @@ class Hopper extends Spawnable implements Container, Nameable, InventoryHolder{
 	}
 
 	protected  function addAdditionalSpawnData(CompoundTag $nbt): void{
-		$nbt->setInt(self::TAG_TRANSFER_COOLDOWN, $this->transferCooldown);
-
 		$this->addNameSpawnData($nbt);
 	}
 

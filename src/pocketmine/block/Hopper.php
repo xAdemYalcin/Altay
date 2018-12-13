@@ -109,6 +109,10 @@ class Hopper extends Transparent{
 			$tile = Tile::createFromItem(Tile::HOPPER, $this->getLevel(), $this, $item);
 			$tile->setPowered($this->enabled);
 
+			if($tile !== null){
+				$this->level->addTile($tile);
+			}
+
 			return true;
 		}
 		return true;

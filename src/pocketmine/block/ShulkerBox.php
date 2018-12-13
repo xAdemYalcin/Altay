@@ -48,6 +48,9 @@ class ShulkerBox extends Transparent{
 			/** @var TileShulkerBox $tile */
 			$tile = Tile::createFromItem(Tile::SHULKER_BOX, $this->getLevel(), $this, $item);
 			$tile->setFacing($face);
+			if($tile !== null){
+				$this->level->addTile($tile);
+			}
 
 			return true;
 		}

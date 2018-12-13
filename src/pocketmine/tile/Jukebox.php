@@ -112,9 +112,7 @@ class Jukebox extends Spawnable{
 	}
 
 	protected  function addAdditionalSpawnData(CompoundTag $nbt) : void{
-		if($this->recordItem != null){
-			$nbt->setTag($this->recordItem->nbtSerialize(-1, self::TAG_RECORD_ITEM));
-		}
+
 	}
 	
 	public function onUpdate() : bool{

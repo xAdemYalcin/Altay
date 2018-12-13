@@ -73,6 +73,10 @@ class MonsterSpawner extends Transparent{
 			$ms = Tile::createFromItem(Tile::MOB_SPAWNER, $this->level, $this, $item);
 			$ms->setEntityId($item->getDamage());
 
+			if($ms !== null){
+				$this->level->addTile($ms);
+			}
+
 			if($player instanceof Player){
 				$item->pop();
 				$player->getInventory()->setItemInHand($item);
