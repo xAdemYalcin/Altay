@@ -21,27 +21,41 @@
 
 declare(strict_types=1);
 
-namespace pocketmine\inventory;
+namespace pocketmine\block;
 
-use pocketmine\entity\Entity;
-use pocketmine\event\entity\EntityInventoryChangeEvent;
 use pocketmine\item\Item;
 
-class EntityInventoryEventProcessor implements InventoryEventProcessor{
-	/** @var Entity */
-	private $entity;
+class RedstoneWire extends Flowable{
+	/** @var int */
+	protected $id = Block::REDSTONE_WIRE;
+	/** @var int */
+	protected $itemId = Item::REDSTONE;
 
-	public function __construct(Entity $entity){
-		$this->entity = $entity;
+	/** @var int */
+	protected $power = 0;
+
+	public function __construct(){
+
 	}
 
-	public function onSlotChange(Inventory $inventory, int $slot, Item $oldItem, Item $newItem) : ?Item{
-		$ev = new EntityInventoryChangeEvent($this->entity, $oldItem, $newItem, $slot);
-		$ev->call();
-		if($ev->isCancelled()){
-			return null;
-		}
+	public function readStateFromMeta(int $meta) : void{
+		$this->power = $meta;
+	}
 
-		return $ev->getNewItem();
+	protected function writeStateToMeta() : int{
+		return $this->power;
+	}
+
+	public function getStateBitmask() : int{
+		return 0b1111;
+	}
+
+	public function getName() : string{
+		return "Redstone";
+	}
+
+	public function readStateFromWorld() : void{
+		parent::readStateFromWorld();
+		//TODO: check connections to nearby redstone components
 	}
 }

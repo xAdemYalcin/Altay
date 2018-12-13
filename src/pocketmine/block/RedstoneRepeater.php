@@ -24,39 +24,38 @@ declare(strict_types=1);
 namespace pocketmine\block;
 
 use pocketmine\item\Item;
-use pocketmine\level\sound\DoorSound;
 use pocketmine\math\AxisAlignedBB;
+use pocketmine\math\Bearing;
 use pocketmine\math\Facing;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 
-class Trapdoor extends Transparent{
-	private const MASK_UPPER = 0x04;
-	private const MASK_OPENED = 0x08;
+class RedstoneRepeater extends Flowable{
+	/** @var int */
+	protected $itemId = Item::REPEATER;
 
-	protected $id = self::TRAPDOOR;
-
+	/** @var bool */
+	protected $powered = false;
 	/** @var int */
 	protected $facing = Facing::NORTH;
-	/** @var bool */
-	protected $open = false;
-	/** @var bool */
-	protected $top = false;
+	/** @var int */
+	protected $delay = 1;
 
 	public function __construct(){
 
 	}
 
-	protected function writeStateToMeta() : int{
-		return (5 - $this->facing) | ($this->top ? self::MASK_UPPER : 0) | ($this->open ? self::MASK_OPENED : 0);
+	public function getId() : int{
+		return $this->powered ? Block::POWERED_REPEATER : Block::UNPOWERED_REPEATER;
 	}
 
 	public function readStateFromMeta(int $meta) : void{
-		//TODO: in PC the values are reversed (facing - 2)
+		$this->facing = Bearing::toFacing($meta & 0x03);
+		$this->delay = ($meta >> 2) + 1;
+	}
 
-		$this->facing = 5 - ($meta & 0x03);
-		$this->top = ($meta & self::MASK_UPPER) !== 0;
-		$this->open = ($meta & self::MASK_OPENED) !== 0;
+	public function writeStateToMeta() : int{
+		return Bearing::fromFacing($this->facing) | (($this->delay - 1) << 2);
 	}
 
 	public function getStateBitmask() : int{
@@ -64,40 +63,52 @@ class Trapdoor extends Transparent{
 	}
 
 	public function getName() : string{
-		return "Wooden Trapdoor";
-	}
-
-	public function getHardness() : float{
-		return 3;
+		return "Redstone Repeater";
 	}
 
 	protected function recalculateBoundingBox() : ?AxisAlignedBB{
-		return AxisAlignedBB::one()->trim($this->open ? $this->facing : ($this->top ? Facing::DOWN : Facing::UP), 13 / 16);
+		return AxisAlignedBB::one()->trim(Facing::UP, 7 / 8);
+	}
+
+	public function isPowered() : bool{
+		return $this->powered;
+	}
+
+	/**
+	 * @param bool $powered
+	 *
+	 * @return $this
+	 */
+	public function setPowered(bool $powered = true) : self{
+		$this->powered = $powered;
+		return $this;
 	}
 
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
-		if($player !== null){
-			$this->facing = Facing::opposite($player->getHorizontalFacing());
-		}
-		if(($clickVector->y > 0.5 and $face !== Facing::UP) or $face === Facing::DOWN){
-			$this->top = true;
+		if(!$blockReplace->getSide(Facing::DOWN)->isTransparent()){
+			if($player !== null){
+				$this->facing = Facing::opposite($player->getHorizontalFacing());
+			}
+
+			return parent::place($item, $blockReplace, $blockClicked, $face, $clickVector, $player);
 		}
 
-		return parent::place($item, $blockReplace, $blockClicked, $face, $clickVector, $player);
+		return false;
 	}
 
 	public function onActivate(Item $item, Player $player = null) : bool{
-		$this->open = !$this->open;
+		if(++$this->delay > 4){
+			$this->delay = 1;
+		}
 		$this->level->setBlock($this, $this);
-		$this->level->addSound(new DoorSound($this));
 		return true;
 	}
 
-	public function getToolType() : int{
-		return BlockToolType::TYPE_AXE;
+	public function onNearbyBlockChange() : void{
+		if($this->getSide(Facing::DOWN)->isTransparent()){
+			$this->level->useBreakOn($this);
+		}
 	}
 
-	public function getFuelTime() : int{
-		return 300;
-	}
+	//TODO: redstone functionality
 }

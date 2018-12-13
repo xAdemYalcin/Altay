@@ -22,27 +22,27 @@
 
 declare(strict_types=1);
 
-namespace pocketmine\inventory;
+namespace pocketmine\network\mcpe\protocol;
 
-use pocketmine\entity\Entity;
-use pocketmine\event\entity\EntityArmorChangeEvent;
-use pocketmine\item\Item;
+#include <rules/DataPacket.h>
 
-class ArmorInventoryEventProcessor implements InventoryEventProcessor{
-	/** @var Entity */
-	private $entity;
+use pocketmine\network\mcpe\handler\SessionHandler;
 
-	public function __construct(Entity $entity){
-		$this->entity = $entity;
+class BiomeDefinitionListPacket extends DataPacket{
+	public const NETWORK_ID = ProtocolInfo::BIOME_DEFINITION_LIST_PACKET;
+
+	/** @var string */
+	public $namedtag;
+
+	protected function decodePayload() : void{
+		$this->namedtag = $this->getRemaining();
 	}
 
-	public function onSlotChange(Inventory $inventory, int $slot, Item $oldItem, Item $newItem) : ?Item{
-		$ev = new EntityArmorChangeEvent($this->entity, $oldItem, $newItem, $slot);
-		$ev->call();
-		if($ev->isCancelled()){
-			return null;
-		}
+	protected function encodePayload() : void{
+		$this->put($this->namedtag);
+	}
 
-		return $ev->getNewItem();
+	public function handle(SessionHandler $handler) : bool{
+		return $handler->handleBiomeDefinitionList($this);
 	}
 }

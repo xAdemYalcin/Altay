@@ -1650,6 +1650,10 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 		return Bearing::fromAngle($this->yaw);
 	}
 
+	public function getHorizontalFacing() : int{
+		return Bearing::toFacing($this->getDirection());
+	}
+
 	/**
 	 * @return Vector3
 	 */
