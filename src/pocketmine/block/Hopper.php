@@ -106,7 +106,7 @@ class Hopper extends Transparent{
 
 		if(parent::place($item, $blockReplace, $blockClicked, $face, $clickVector, $player)){
 			/** @var TileHopper $tile */
-			$tile = Tile::createTile(Tile::HOPPER, $this->getLevel(), TileHopper::createNBT($this, $item));
+			$tile = Tile::createFromItem(Tile::HOPPER, $this->getLevel(), $this, $item);
 			$tile->setPowered($this->enabled);
 
 			return true;
