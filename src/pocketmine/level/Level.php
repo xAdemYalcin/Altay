@@ -869,10 +869,22 @@ class Level implements ChunkManager, Metadatable{
 		if($this->server->getAltayProperty("level.generic-auto-mob-spawning", false) and $this->gameRules->getBool(GameRules::RULE_DO_MOB_SPAWNING) and $currentTick % 400 === 0){
 			$eligibleChunks = [];
 			foreach($this->players as $player){
-				$eligibleChunks = array_replace($eligibleChunks, array_keys($player->usedChunks));
+				if($player->chunk !== null){
+					$cX = $player->chunk->getX();
+					$cZ = $player->chunk->getZ();
+					foreach($player->usedChunks as $chunkHash => $v){
+						Level::getXZ($chunkHash, $x, $z);
+
+						if(abs($cX - $x) <= 8 and abs($cZ - $z) <= 8 and $x !== $cX and $z !== $cZ){
+							if(!isset($eligibleChunks[$chunkHash])){
+								$eligibleChunks[$chunkHash] = $chunkHash;
+							}
+						}
+					}
+				}
 			}
 
-			$this->mobSpawner->findChunksForSpawning($this, $this->spawnHostileMobs, $this->spawnPeacefulMobs, array_slice($eligibleChunks, 0, AnimalSpawner::MAX_MOBS, true));
+			$this->mobSpawner->findChunksForSpawning($this, $this->spawnHostileMobs, $this->spawnPeacefulMobs, $eligibleChunks);
 		}
 
 		$this->mobSpawner->despawnMobs($this, $currentTick);
