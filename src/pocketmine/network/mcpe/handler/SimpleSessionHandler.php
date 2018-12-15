@@ -54,6 +54,7 @@ use pocketmine\network\mcpe\protocol\MapInfoRequestPacket;
 use pocketmine\network\mcpe\protocol\MobArmorEquipmentPacket;
 use pocketmine\network\mcpe\protocol\MobEquipmentPacket;
 use pocketmine\network\mcpe\protocol\ModalFormResponsePacket;
+use pocketmine\network\mcpe\protocol\MoveEntityAbsolutePacket;
 use pocketmine\network\mcpe\protocol\MovePlayerPacket;
 use pocketmine\network\mcpe\protocol\PlayerActionPacket;
 use pocketmine\network\mcpe\protocol\PlayerHotbarPacket;
@@ -94,6 +95,10 @@ class SimpleSessionHandler extends SessionHandler{
 		}
 
 		return false;
+	}
+
+	public function handleMoveEntityAbsolute(MoveEntityAbsolutePacket $packet) : bool{
+		return $this->player->handleMoveEntityAbsolute($packet);
 	}
 
 	public function handleMovePlayer(MovePlayerPacket $packet) : bool{
@@ -361,6 +366,7 @@ class SimpleSessionHandler extends SessionHandler{
 		if($this->player->isRiding()){
 			$entity = $this->player->getRidingEntity();
 			if($entity !== null and $entity->isAlive()){
+				// TODO: Remove this, this is not right
 				$entity->onRidingUpdate($this->player, $packet->motionX, $packet->motionY, $packet->jumping, $packet->sneaking);
 			}
 		}
@@ -371,8 +377,8 @@ class SimpleSessionHandler extends SessionHandler{
 		if($this->player->isRiding()){
 			$horse = $this->player->getRidingEntity();
 			if($horse instanceof Horse){
-				$horse->setRearing(true);
-				$horse->setJumpPower($packet->jumpStrength / 100);
+				// This is useless for now, only may usable for plugins
+				$horse->setJumpPower($packet->jumpStrength);
 			}
 		}
 		return false;

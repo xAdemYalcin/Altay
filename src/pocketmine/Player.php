@@ -2091,7 +2091,12 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$target = $this->level->getEntity($packet->entityRuntimeId);
 		if($target === null) return false;
 
-		$target->setPositionAndRotation($packet->position, $packet->zRot, $packet->xRot);
+		// TODO: Remove this, we should move horse self
+		// This movement coming from client and this may be a hack
+		// so we should check this
+		if($this->isRiding() and $this->ridingEntity !== null and $this->ridingEntity->getId() === $target->getId()){
+			$target->setPositionAndRotation($packet->position, $packet->zRot, $packet->xRot);
+		}
 
 		return true;
 	}
@@ -2109,7 +2114,6 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				$this->isTeleporting = false;
 			}
 
-			$packet->ridingEid = $this->ridingEntity !== null ? $this->ridingEntity->getId() : 0;
 			$packet->mode = ($packet->ridingEid == 0 ? MovePlayerPacket::MODE_NORMAL : MovePlayerPacket::MODE_PITCH);
 			$packet->onGround = !$this->isGliding() && $this->onGround;
 

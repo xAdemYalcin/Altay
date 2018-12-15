@@ -52,6 +52,8 @@ use pocketmine\Player;
 
 class Horse extends Tamable{
 
+	//TODO: implement moveWithHeading function for riding, also remove onRidingUpdate function
+
 	public const NETWORK_ID = self::HORSE;
 
 	public const HORSE_VARIANT_WHITE = 0;
@@ -78,8 +80,20 @@ class Horse extends Tamable{
 		return $this->jumpPower;
 	}
 
-	public function setJumpPower(float $jumpPower) : void{
-		$this->jumpPower = $jumpPower;
+	public function setJumpPower(float $jumpPowerIn) : void{
+		if($this->isSaddled()){
+			if($jumpPowerIn < 0){
+				$jumpPowerIn = 0;
+			}else{
+				$this->setRearing(true);
+			}
+
+			if($jumpPowerIn > 90){
+				$this->jumpPower = 1.0;
+			}else{
+				$this->jumpPower = 0.4 + 0.4 * $jumpPowerIn / 90;
+			}
+		}
 	}
 
 	protected function addBehaviors() : void{
@@ -117,8 +131,6 @@ class Horse extends Tamable{
 		$this->propertyManager->setInt(self::DATA_MAX_STRENGTH, 11);
 
 		parent::initEntity($nbt);
-
-		$this->setGenericFlag(self::DATA_FLAG_CAN_POWER_JUMP, $this->isSaddled());
 	}
 
 	/**
@@ -178,7 +190,6 @@ class Horse extends Tamable{
 					}else{
 						$this->rearingCounter = 10;
 						$this->setRearing(true);
-						$this->broadcastEntityEvent(EntityEventPacket::TAME_FAIL);
 					}
 					return true;
 				}
@@ -206,7 +217,7 @@ class Horse extends Tamable{
 
 	public function setSaddled(bool $value = true) : void{
 		$this->setGenericFlag(self::DATA_FLAG_SADDLED, $value);
-		$this->setGenericFlag(self::DATA_FLAG_CAN_POWER_JUMP, true);
+		$this->setGenericFlag(self::DATA_FLAG_CAN_POWER_JUMP, $value);
 	}
 
 	public function saveNBT() : CompoundTag{
