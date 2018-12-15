@@ -25,7 +25,7 @@ declare(strict_types=1);
 namespace pocketmine\tile;
 
 use pocketmine\block\Block;
-use pocketmine\level\sound\NoteblockSound;
+use pocketmine\level\sound\NoteBlockSound;
 use pocketmine\math\Facing;
 use pocketmine\nbt\tag\CompoundTag;
 
@@ -60,7 +60,7 @@ class NoteBlock extends Spawnable{
 		$up = $this->level->getBlock($this->getSide(Facing::UP));
 		if($up->getId() === Block::AIR){
 			$below = $this->level->getBlock($this->getSide(Facing::DOWN));
-			$instrument = NoteblockSound::INSTRUMENT_PIANO;
+			$instrument = NoteBlockSound::INSTRUMENT_PIANO;
 
 			switch($below->getId()){ // TODO: implement block materials
 				case Block::WOOD:
@@ -93,15 +93,15 @@ class NoteBlock extends Spawnable{
 				case Block::ACACIA_DOOR_BLOCK:
 				case Block::DARK_OAK_DOOR_BLOCK:
 				case Block::NOTEBLOCK:
-					$instrument = NoteblockSound::INSTRUMENT_BASS;
+					$instrument = NoteBlockSound::INSTRUMENT_BASS;
 					break;
 				case Block::SAND:
 				case Block::SOUL_SAND:
-					$instrument = NoteblockSound::INSTRUMENT_TABOUR;
+					$instrument = NoteBlockSound::INSTRUMENT_TABOUR;
 					break;
 				case Block::GLASS:
 				case Block::GLASS_PANE:
-					$instrument = NoteblockSound::INSTRUMENT_CLICK;
+					$instrument = NoteBlockSound::INSTRUMENT_CLICK;
 					break;
 				case Block::STONE:
 				case Block::COBBLESTONE:
@@ -138,11 +138,11 @@ class NoteBlock extends Spawnable{
 				case Block::END_STONE:
 				case Block::TERRACOTTA:
 				case Block::COAL_BLOCK:
-					$instrument = NoteblockSound::INSTRUMENT_BASS_DRUM;
+					$instrument = NoteBlockSound::INSTRUMENT_BASS_DRUM;
 					break;
 			}
 
-			$this->level->addSound(new NoteblockSound($this, $instrument, $this->note));
+			$this->level->addSound(new NoteBlockSound($this, $instrument, $this->note));
 
 			return true;
 		}
