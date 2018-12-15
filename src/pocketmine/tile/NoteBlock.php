@@ -54,7 +54,6 @@ class NoteBlock extends Spawnable{
 
 	public function changePitch() : void{
 		$this->note = ($this->note + 1) % 25;
-		$this->onChanged();
 	}
 
 	public function triggerNote() : bool{

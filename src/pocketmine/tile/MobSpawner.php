@@ -192,6 +192,7 @@ class MobSpawner extends Spawnable{
 	 */
 	public function setMovable(bool $isMovable) : void{
 		$this->isMovable = $isMovable;
+		$this->onChanged();
 	}
 
 	protected function readSaveData(CompoundTag $nbt) : void{

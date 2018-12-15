@@ -51,7 +51,8 @@ class Hopper extends Spawnable implements Container, Nameable, InventoryHolder{
 
 	public function __construct(Level $level, Vector3 $pos){
 		parent::__construct($level, $pos);
-
+		
+		$this->inventory = new HopperInventory($this);
 		$this->scheduleUpdate();
 	}
 
@@ -59,8 +60,6 @@ class Hopper extends Spawnable implements Container, Nameable, InventoryHolder{
 		$this->transferCooldown = $nbt->getInt(self::TAG_TRANSFER_COOLDOWN, 8);
 
 		$this->loadName($nbt);
-
-		$this->inventory = new HopperInventory($this);
 		$this->loadItems($nbt);
 	}
 

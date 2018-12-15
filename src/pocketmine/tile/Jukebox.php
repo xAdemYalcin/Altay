@@ -106,8 +106,6 @@ class Jukebox extends Spawnable{
 	protected function writeSaveData(CompoundTag $nbt) : void{
 		if($this->recordItem !== null){
 			$nbt->setTag($this->recordItem->nbtSerialize(-1, self::TAG_RECORD_ITEM));
-		}else{
-			$nbt->removeTag(self::TAG_RECORD_ITEM);
 		}
 	}
 
