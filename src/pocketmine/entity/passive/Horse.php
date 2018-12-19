@@ -178,8 +178,9 @@ class Horse extends Tamable{
 		}
 	}
 
-	public function onInteract(Player $player, Item $item, Vector3 $clickPos, int $slot) : bool{
+	public function onInteract(Player $player, Item $item, Vector3 $clickPos) : bool{
 		if(!$this->isImmobile()){
+			// TODO: refactor
 			if($item instanceof Saddle){
 				if(!$this->isSaddled()){
 					if($this->isTamed()){
@@ -198,7 +199,7 @@ class Horse extends Tamable{
 				return true;
 			}
 		}
-		return parent::onInteract($player, $item, $clickPos, $slot);
+		return parent::onInteract($player, $item, $clickPos);
 	}
 
 	public function getXpDropAmount() : int{

@@ -24,6 +24,11 @@ declare(strict_types=1);
 
 namespace pocketmine\item;
 
+use pocketmine\entity\Entity;
+use pocketmine\entity\passive\Pig;
+use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
+use pocketmine\Player;
+
 class Saddle extends Item{
 	public function __construct(int $meta = 0){
 		parent::__construct(self::SADDLE, $meta, "Saddle");
@@ -31,6 +36,19 @@ class Saddle extends Item{
 
 	public function getMaxStackSize() : int{
 		return 1;
+	}
+
+	public function onInteractWithEntity(Player $player, Entity $entity) : bool{
+		if($entity instanceof Pig){
+			if(!$entity->isSaddled() and !$entity->isBaby()){
+				$entity->setSaddled(true);
+				$entity->level->broadcastLevelSoundEvent($entity, LevelSoundEventPacket::SOUND_ARMOR_EQUIP_LEATHER);
+				$this->pop();
+			}
+
+			return true;
+		}
+		return false;
 	}
 }
 
