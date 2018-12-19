@@ -1888,9 +1888,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 		$this->deviceModel = $packet->clientData["DeviceModel"];
 		$this->deviceOS = $packet->clientData["DeviceOS"];
-		if(isset($packet->clientData["DeviceId"])){ //Workaround for Bots
-			$this->deviceId = $packet->clientData["DeviceId"];
-		}
+		$this->deviceId = $packet->clientData["DeviceId"];
 
 		$this->setSkin($packet->skin);
 
