@@ -61,27 +61,27 @@ class GameRules{
 	public $dirtyRules = [];
 
 	public function __construct(){
-		// bedrock edition game rules
-		$this->setBool("commandBlockOutput", true);
-		$this->setBool("doDaylightCycle", true);
-		$this->setBool("doEntityDrops", true);
-		$this->setBool("doFireTick", true);
-		$this->setBool("doInsomnia", true);
-		$this->setBool("doMobLoot", true);
-		$this->setBool("doMobSpawning", false);
-		$this->setBool("doTileDrops", true);
-		$this->setBool("doWeatherCycle", true);
-		$this->setBool("drowningdamage", true);
-		$this->setBool("falldamage", true);
-		$this->setBool("firedamage", true);
-		$this->setBool("keepInventory", false);
-		$this->setInt("maxCommandChainLength", 65536);
-		$this->setBool("mobGriefing", true);
-		$this->setBool("naturalRegeneration", true);
-		$this->setBool("pvp", true);
-		$this->setBool("sendCommandFeedback", true);
-		$this->setBool("showcoordinates", false);
-		$this->setBool("tntexplodes", true);
+		// default bedrock edition game rules
+		$this->setBool(self::RULE_COMMAND_BLOCK_OUTPUT, true);
+		$this->setBool(self::RULE_DO_DAYLIGHT_CYCLE, true);
+		$this->setBool(self::RULE_DO_ENTITY_DROPS, true);
+		$this->setBool(self::RULE_DO_FIRE_TICK, true);
+		$this->setBool(self::RULE_DO_INSOMNIA, true);
+		$this->setBool(self::RULE_DO_MOB_LOOT, true);
+		$this->setBool(self::RULE_DO_MOB_SPAWNING, false);
+		$this->setBool(self::RULE_DO_TILE_DROPS, true);
+		$this->setBool(self::RULE_DO_WEATHER_CYCLE, true);
+		$this->setBool(self::RULE_DROWNING_DAMAGE, true);
+		$this->setBool(self::RULE_FALL_DAMAGE, true);
+		$this->setBool(self::RULE_FIRE_DAMAGE, true);
+		$this->setBool(self::RULE_KEEP_INVENTORY, false);
+		$this->setInt(self::RULE_MAX_COMMAND_CHAIN_LENGTH, 65536);
+		$this->setBool(self::RULE_MOB_GRIEFING, true);
+		$this->setBool(self::RULE_NATURAL_REGENERATION, true);
+		$this->setBool(self::RULE_PVP, true);
+		$this->setBool(self::RULE_SEND_COMMAND_FEEDBACK, true);
+		$this->setBool(self::RULE_SHOW_COORDINATES, false);
+		$this->setBool(self::RULE_TNT_EXPLODES, true);
 	}
 
 	/**
