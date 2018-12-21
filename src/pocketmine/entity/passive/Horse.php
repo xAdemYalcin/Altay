@@ -220,6 +220,14 @@ class Horse extends Tamable{
 		$this->setGenericFlag(self::DATA_FLAG_CAN_POWER_JUMP, $value);
 	}
 
+	public function isChested() : bool{
+		return $this->getGenericFlag(self::DATA_FLAG_CHESTED);
+	}
+
+	public function setChested(bool $value = true) : void{
+		$this->setGenericFlag(self::DATA_FLAG_CHESTED, $value);
+	}
+
 	public function saveNBT() : CompoundTag{
 		$nbt = parent::saveNBT();
 
@@ -272,6 +280,8 @@ class Horse extends Tamable{
 		if($this->riddenByEntity !== null){
 			$this->riddenByEntity->dismountEntity();
 		}
+		$this->jumpPower = 0;
+		$this->rearingCounter = 0;
 	}
 
 	public function getJumpVelocity() : float{
