@@ -25,7 +25,7 @@ declare(strict_types=1);
 namespace pocketmine\network\mcpe\handler;
 
 use pocketmine\entity\Entity;
-use pocketmine\entity\passive\Horse;
+use pocketmine\entity\passive\AbstractHorse;
 use pocketmine\inventory\transaction\action\InventoryAction;
 use pocketmine\inventory\transaction\AnvilTransaction;
 use pocketmine\inventory\transaction\CraftingTransaction;
@@ -376,7 +376,7 @@ class SimpleSessionHandler extends SessionHandler{
 	public function handleRiderJump(RiderJumpPacket $packet) : bool{
 		if($this->player->isRiding()){
 			$horse = $this->player->getRidingEntity();
-			if($horse instanceof Horse){
+			if($horse instanceof AbstractHorse){
 				// This is useless for now, only may usable for plugins
 				$horse->setJumpPower($packet->jumpStrength);
 			}

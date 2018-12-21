@@ -22,11 +22,11 @@
 
 namespace pocketmine\inventory;
 
-use pocketmine\entity\passive\Horse;
+use pocketmine\entity\passive\AbstractHorse;
 use pocketmine\network\mcpe\protocol\types\WindowTypes;
 
 class HorseInventory extends ContainerInventory{
-	/** @var Horse */
+	/** @var AbstractHorse */
 	protected $holder;
 
 	public function getName() : string{
@@ -42,7 +42,7 @@ class HorseInventory extends ContainerInventory{
 	}
 
 	/**
-	 * @return Horse
+	 * @return AbstractHorse
 	 */
 	public function getHolder(){
 		return $this->holder;
