@@ -34,6 +34,7 @@ use pocketmine\entity\Effect;
 use pocketmine\entity\EffectInstance;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Human;
+use pocketmine\entity\Living;
 use pocketmine\entity\object\ItemEntity;
 use pocketmine\entity\projectile\Arrow;
 use pocketmine\entity\projectile\FishingHook;
@@ -2558,16 +2559,24 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		if(!$entity->isAlive()){
 			return false;
 		}
-		$ev = new PlayerInteractEntityEvent($this, $entity, $this->inventory->getItemInHand(), $clickPos, $this->inventory->getHeldItemIndex());
+		$ev = new PlayerInteractEntityEvent($this, $entity, $item = $this->inventory->getItemInHand(), $clickPos);
 		$ev->call();
 
 		if(!$ev->isCancelled()){
-			$oldItem = clone $ev->getItem();
-			if(!$entity->onInteract($this, $ev->getItem(), $ev->getClickPosition(), $ev->getSlot())){
-				$this->useHeldItem();
-			}
+			$oldItem = clone $item;
+			if(!$entity->onFirstInteract($this, $ev->getItem(), $ev->getClickPosition())){
+				if($entity instanceof Living){
+					if($this->isCreative()){
+						$item = $oldItem;
+					}
 
-			if(!$ev->getItem()->equalsExact($oldItem)){
+					if($item->onInteractWithEntity($this, $entity)){
+						if(!$item->equalsExact($oldItem) and !$this->isCreative()){
+							$this->inventory->setItemInHand($item);
+						}
+					}
+				}
+			}elseif(!$item->equalsExact($oldItem)){
 				$this->inventory->setItemInHand($ev->getItem());
 			}
 		}

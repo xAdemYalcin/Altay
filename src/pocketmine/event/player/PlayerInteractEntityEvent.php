@@ -40,8 +40,6 @@ class PlayerInteractEntityEvent extends PlayerEvent implements Cancellable{
 	protected $item;
 	/** @var Vector3 */
 	protected $clickPos;
-	/** @var int */
-	protected $slot;
 
 	/**
 	 * @param Player       $player
@@ -50,12 +48,11 @@ class PlayerInteractEntityEvent extends PlayerEvent implements Cancellable{
 	 * @param Vector3      $clickPos
 	 * @param int          $slot
 	 */
-	public function __construct(Player $player, Entity $entity, Item $item, Vector3 $clickPos, int $slot){
+	public function __construct(Player $player, Entity $entity, Item $item, Vector3 $clickPos){
 		$this->player = $player;
 		$this->entity = $entity;
 		$this->item = $item;
 		$this->clickPos = $clickPos;
-		$this->slot = $slot;
 	}
 
 	/**
@@ -77,14 +74,5 @@ class PlayerInteractEntityEvent extends PlayerEvent implements Cancellable{
 	 */
 	public function getClickPosition() : Vector3{
 		return $this->clickPos;
-	}
-
-	/**
-	 * Returns the hotbar slot number used to tap/click the entity
-	 *
-	 * @return int
-	 */
-	public function getSlot() : int{
-		return $this->slot;
 	}
 }
