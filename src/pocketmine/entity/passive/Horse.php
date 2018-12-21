@@ -113,10 +113,10 @@ class Horse extends AbstractHorse{
 		$this->setGenericFlag(self::DATA_FLAG_CAN_POWER_JUMP, $value);
 	}
 
-	public function onInteract(Player $player, Item $item, Vector3 $clickPos, int $slot) : bool{
+	public function onInteract(Player $player, Item $item, Vector3 $clickPos) : bool{
 		if(!$this->isImmobile()){
 			// TODO: Feeding
 		}
-        return parent::onInteract($player, $item, $clickPos, $slot);
+        return parent::onInteract($player, $item, $clickPos);
 	}
 }

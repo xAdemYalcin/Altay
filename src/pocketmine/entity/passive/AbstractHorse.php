@@ -119,7 +119,7 @@ abstract class AbstractHorse extends Tamable{
 		}
 	}
 
-	public function onInteract(Player $player, Item $item, Vector3 $clickPos, int $slot) : bool{
+	public function onInteract(Player $player, Item $item, Vector3 $clickPos) : bool{
 		if(!$this->isImmobile()){
 			if($item instanceof Saddle){
 				if(!$this->isSaddled()){
@@ -139,7 +139,7 @@ abstract class AbstractHorse extends Tamable{
 				return true;
 			}
 		}
-		return parent::onInteract($player, $item, $clickPos, $slot);
+		return parent::onInteract($player, $item, $clickPos);
 	}
 
 	public function getXpDropAmount() : int{
