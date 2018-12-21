@@ -77,39 +77,9 @@ abstract class AbstractHorse extends Tamable{
 		}
 	}
 
-	protected function addBehaviors() : void{
-		$this->behaviorPool->setBehavior(0, new HorseRiddenBehavior($this));
-		$this->behaviorPool->setBehavior(1, new FloatBehavior($this));
-		$this->behaviorPool->setBehavior(2, new PanicBehavior($this, 1.25));
-		$this->behaviorPool->setBehavior(3, new MateBehavior($this, 1.0));
-		$this->behaviorPool->setBehavior(4, new TemptedBehavior($this, [Item::WHEAT], 1.2));
-		$this->behaviorPool->setBehavior(5, new FollowParentBehavior($this, 1.1));
-		$this->behaviorPool->setBehavior(6, new WanderBehavior($this, 1.0));
-		$this->behaviorPool->setBehavior(7, new LookAtPlayerBehavior($this, 6.0));
-		$this->behaviorPool->setBehavior(8, new RandomLookAroundBehavior($this));
-	}
-
 	protected function initEntity(CompoundTag $nbt) : void{
-		$this->setMaxHealth($this->getModifiedMaxHealth());
-		$this->setMovementSpeed($this->getModifiedMovementSpeed());
-		$this->setJumpStrength($this->getModifiedJumpStrength());
-		$this->setFollowRange(35);
-
 		$this->setSaddled(boolval($nbt->getByte("Saddle", 0)));
-
-		if($nbt->hasTag("Variant", IntTag::class)){
-			$variant = $nbt->getInt("Variant");
-			$markVariant = $variant >> 8;
-		}else{
-			$variant = $this->random->nextBoundedInt(7);
-			$markVariant = $this->random->nextBoundedInt(5);
-		}
-
-		$this->setVariant($variant - ($markVariant << 8));
-		$this->setMarkVariant($markVariant);
-
-		$this->propertyManager->setInt(self::DATA_STRENGTH, 8);
-		$this->propertyManager->setInt(self::DATA_MAX_STRENGTH, 11);
+		$this->setChested(boolval($nbt->getByte("Chested", 0)));
 
 		parent::initEntity($nbt);
 	}
