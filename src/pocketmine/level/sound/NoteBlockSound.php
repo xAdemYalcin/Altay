@@ -39,30 +39,26 @@ class NoteBlockSound extends GenericSound{
 	/**
 	 * NoteBlockSound constructor.
 	 *
-	 * @param Vector3 $pos
 	 * @param int     $instrument
 	 * @param int     $note
 	 */
-	public function __construct(Vector3 $pos, int $instrument = self::INSTRUMENT_PIANO, int $note = 0){
-		parent::__construct($pos, $instrument, $note);
+	public function __construct(int $instrument = self::INSTRUMENT_PIANO, int $note = 0){
+		parent::__construct($instrument, $note);
 
 		$this->pitch = $note;
 	}
 
-	/**
-	 * @return array
-	 */
-	public function encode(){
+	public function encode(Vector3 $pos){
 		$pk = new BlockEventPacket();
-		$pk->x = $this->x;
-		$pk->y = $this->y;
-		$pk->z = $this->z;
+		$pk->x = $pos->x;
+		$pk->y = $pos->y;
+		$pk->z = $pos->z;
 		$pk->eventType = $this->id;
 		$pk->eventData = $this->pitch;
 
 		$pk2 = new LevelSoundEventPacket();
 		$pk2->sound = LevelSoundEventPacket::SOUND_NOTE;
-		$pk2->position = $this;
+		$pk2->position = $pos;
 		$pk2->extraData = $this->id | $this->pitch;
 
 		return [$pk, $pk2];

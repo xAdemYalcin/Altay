@@ -26,11 +26,10 @@ namespace pocketmine\item;
 
 use pocketmine\block\Block;
 use pocketmine\entity\Entity;
-use pocketmine\level\sound\GenericSound;
+use pocketmine\level\sound\BlazeShootSound;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\ListTag;
-use pocketmine\network\mcpe\protocol\LevelEventPacket;
 use pocketmine\Player;
 
 class Fireworks extends Item{
@@ -126,7 +125,7 @@ class Fireworks extends Item{
 				--$this->count;
 				$entity->spawnToAll();
 				$player->setMotion($motion);
-				$player->getLevel()->addSound(new GenericSound($player, LevelEventPacket::EVENT_SOUND_BLAZE_SHOOT));
+				$player->getLevel()->addSound($player, new BlazeShootSound());
 				return true;
 			}
 

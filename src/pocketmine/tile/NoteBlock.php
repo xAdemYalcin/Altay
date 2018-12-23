@@ -142,7 +142,7 @@ class NoteBlock extends Spawnable{
 					break;
 			}
 
-			$this->level->addSound(new NoteBlockSound($this, $instrument, $this->note));
+			$this->level->addSound($this, new NoteBlockSound($instrument, $this->note));
 
 			return true;
 		}
