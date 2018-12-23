@@ -35,11 +35,11 @@ class BanIpCommand extends VanillaCommand{
 
 	public function __construct(string $name){
 		parent::__construct($name, "%pocketmine.command.ban.ip.description", "%commands.banip.usage", [], [
-				[
-					new CommandParameter("ip", CommandParameter::ARG_TYPE_VALUE, false),
-					new CommandParameter("reason", CommandParameter::ARG_TYPE_RAWTEXT, false)
-				]
-			]);
+			[
+				new CommandParameter("ip", CommandParameter::ARG_TYPE_VALUE, false),
+				new CommandParameter("reason", CommandParameter::ARG_TYPE_RAWTEXT, false)
+			]
+		]);
 		$this->setPermission("pocketmine.command.ban.ip");
 	}
 
@@ -61,10 +61,11 @@ class BanIpCommand extends VanillaCommand{
 			Command::broadcastCommandMessage($sender, new TranslationContainer("commands.banip.success", [$value]));
 		}else{
 			if(($player = $sender->getServer()->getPlayer($value)) instanceof Player){
-				$this->processIPBan($player->getAddress(), $sender, $reason);
+				$ip = $player->getAddress();
+				$this->processIPBan($ip, $sender, $reason);
 
 				Command::broadcastCommandMessage($sender, new TranslationContainer("commands.banip.success.players", [
-					$player->getAddress(),
+					$ip,
 					$player->getName()
 				]));
 			}else{

@@ -1,24 +1,23 @@
 <?php
 
 /*
- *               _ _
- *         /\   | | |
- *        /  \  | | |_ __ _ _   _
- *       / /\ \ | | __/ _` | | | |
- *      / ____ \| | || (_| | |_| |
- *     /_/    \_|_|\__\__,_|\__, |
- *                           __/ |
- *                          |___/
+ *
+ *  ____            _        _   __  __ _                  __  __ ____
+ * |  _ \ ___   ___| | _____| |_|  \/  (_)_ __   ___      |  \/  |  _ \
+ * | |_) / _ \ / __| |/ / _ \ __| |\/| | | '_ \ / _ \_____| |\/| | |_) |
+ * |  __/ (_) | (__|   <  __/ |_| |  | | | | | |  __/_____| |  | |  __/
+ * |_|   \___/ \___|_|\_\___|\__|_|  |_|_|_| |_|\___|     |_|  |_|_|
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * @author TuranicTeam
- * @link https://github.com/TuranicTeam/Altay
+ * @author PocketMine Team
+ * @link http://www.pocketmine.net/
  *
- */
+ *
+*/
 
 declare(strict_types=1);
 
@@ -183,7 +182,7 @@ class LevelSoundEventPacket extends DataPacket{
 	public const SOUND_IMITATE_ELDER_GUARDIAN = 148;
 	public const SOUND_IMITATE_ENDER_DRAGON = 149;
 	public const SOUND_IMITATE_ENDERMAN = 150;
-	public const SOUND_IMITATE_ENDERMITE = 151;
+
 	public const SOUND_IMITATE_EVOCATION_ILLAGER = 152;
 	public const SOUND_IMITATE_GHAST = 153;
 	public const SOUND_IMITATE_HUSK = 154;
@@ -227,10 +226,7 @@ class LevelSoundEventPacket extends DataPacket{
 	public const SOUND_LT_REACTION_BLEACH = 192;
 	public const SOUND_LT_REACTION_EPASTE = 193;
 	public const SOUND_LT_REACTION_EPASTE2 = 194;
-	public const SOUND_LT_REACTION_GLOWSTICK = 195;
-	public const SOUND_LT_REACTION_GLOWSTICK2 = 196;
-	public const SOUND_LT_REACTION_LUMINOL = 197;
-	public const SOUND_LT_REACTION_SALT = 198;
+
 	public const SOUND_LT_REACTION_FERTILIZER = 199;
 	public const SOUND_LT_REACTION_FIREBALL = 200;
 	public const SOUND_LT_REACTION_MGSALT = 201;
@@ -246,31 +242,48 @@ class LevelSoundEventPacket extends DataPacket{
 	public const SOUND_CONVERT_TO_DROWNED = 211;
 	public const SOUND_BUCKET_FILL_FISH = 212;
 	public const SOUND_BUCKET_EMPTY_FISH = 213;
-	public const SOUND_BUBBLE_COLUMN_UPWARDS = 214;
-	public const SOUND_BUBBLE_COLUMN_DOWNWARDS = 215;
+	public const SOUND_BUBBLE_UP = 214;
+	public const SOUND_BUBBLE_DOWN = 215;
 	public const SOUND_BUBBLE_POP = 216;
-	public const SOUND_BUBBLE_UP_INSIDE = 217;
-	public const SOUND_BUBBLE_DOWN_INSIDE = 218;
+	public const SOUND_BUBBLE_UPINSIDE = 217;
+	public const SOUND_BUBBLE_DOWNINSIDE = 218;
 	public const SOUND_HURT_BABY = 219;
 	public const SOUND_DEATH_BABY = 220;
 	public const SOUND_STEP_BABY = 221;
-	public const SOUND_SPAWN_BABY = 222;
+
 	public const SOUND_BORN = 223;
-	public const SOUND_TURTLE_EGG_BREAK = 224;
-	public const SOUND_TURTLE_EGG_CRACK = 225;
-	public const SOUND_TURTLE_EGG_HATCHED = 226;
-	public const SOUND_LAY_EGG = 227;
-	public const SOUND_TURTLE_EGG_ATTACKED = 228;
+	public const SOUND_BLOCK_TURTLE_EGG_BREAK = 224;
+	public const SOUND_BLOCK_TURTLE_EGG_CRACK = 225;
+	public const SOUND_BLOCK_TURTLE_EGG_HATCH = 226;
+
+	public const SOUND_BLOCK_TURTLE_EGG_ATTACK = 228;
 	public const SOUND_BEACON_ACTIVATE = 229;
 	public const SOUND_BEACON_AMBIENT = 230;
 	public const SOUND_BEACON_DEACTIVATE = 231;
 	public const SOUND_BEACON_POWER = 232;
-	public const SOUND_COUDUIT_ACTIVATE = 233;
-	public const SOUND_COUDUIT_AMBIENT = 234;
-	public const SOUND_COUDUIT_ATTACK = 235;
-	public const SOUND_COUDUIT_DEACTIVATE = 236;
-	public const SOUND_COUDUIT_SHORT = 237;
-	public const SOUND_UNDEFINED = 239;
+	public const SOUND_CONDUIT_ACTIVATE = 233;
+	public const SOUND_CONDUIT_AMBIENT = 234;
+	public const SOUND_CONDUIT_ATTACK = 235;
+	public const SOUND_CONDUIT_DEACTIVATE = 236;
+	public const SOUND_CONDUIT_SHORT = 237;
+	public const SOUND_SWOOP = 238;
+	public const SOUND_BLOCK_BAMBOO_SAPLING_PLACE = 239;
+	public const SOUND_PRESNEEZE = 240;
+	public const SOUND_SNEEZE = 241;
+	public const SOUND_AMBIENT_TAME = 242;
+	public const SOUND_SCARED = 243;
+	public const SOUND_BLOCK_SCAFFOLDING_CLIMB = 244;
+	public const SOUND_CROSSBOW_LOADING_START = 245;
+	public const SOUND_CROSSBOW_LOADING_MIDDLE = 246;
+	public const SOUND_CROSSBOW_LOADING_END = 247;
+	public const SOUND_CROSSBOW_SHOOT = 248;
+	public const SOUND_CROSSBOW_QUICK_CHARGE_START = 249;
+	public const SOUND_CROSSBOW_QUICK_CHARGE_MIDDLE = 250;
+	public const SOUND_CROSSBOW_QUICK_CHARGE_END = 251;
+	public const SOUND_AMBIENT_AGGRESSIVE = 252;
+	public const SOUND_AMBIENT_WORRIED = 253;
+	public const SOUND_CANT_BREED = 254;
+	public const SOUND_UNDEFINED = 255;
 
 	/** @var int */
 	public $sound;

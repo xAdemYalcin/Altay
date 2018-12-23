@@ -142,7 +142,7 @@ abstract class Door extends Transparent{
 		}
 
 		$this->level->setBlock($this, $this);
-		$this->level->addSound(new DoorSound($this));
+		$this->level->addSound($this, new DoorSound());
 
 		return true;
 	}

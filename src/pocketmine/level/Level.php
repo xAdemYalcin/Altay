@@ -491,33 +491,35 @@ class Level implements ChunkManager, Metadatable{
 		$this->closed = true;
 	}
 
-	public function addSound(Sound $sound, array $players = null){
-		$pk = $sound->encode();
+	public function addSound(Vector3 $pos, Sound $sound, array $players = null){
+		$pk = $sound->encode($pos);
 		if(!is_array($pk)){
 			$pk = [$pk];
 		}
-
-		if($players === null){
-			foreach($pk as $e){
-				$this->broadcastPacketToViewers($sound, $e);
+		if(!empty($pk)){
+			if($players === null){
+				foreach($pk as $e){
+					$this->broadcastPacketToViewers($pos, $e);
+				}
+			}else{
+				$this->server->broadcastPackets($players, $pk);
 			}
-		}else{
-			$this->server->broadcastPackets($players, $pk);
 		}
 	}
 
-	public function addParticle(Particle $particle, array $players = null){
-		$pk = $particle->encode();
+	public function addParticle(Vector3 $pos, Particle $particle, array $players = null){
+		$pk = $particle->encode($pos);
 		if(!is_array($pk)){
 			$pk = [$pk];
 		}
-
-		if($players === null){
-			foreach($pk as $e){
-				$this->broadcastPacketToViewers($particle, $e);
+		if(!empty($pk)){
+			if($players === null){
+				foreach($pk as $e){
+					$this->broadcastPacketToViewers($pos, $e);
+				}
+			}else{
+				$this->server->broadcastPackets($players, $pk);
 			}
-		}else{
-			$this->server->broadcastPackets($players, $pk);
 		}
 	}
 
@@ -1839,7 +1841,7 @@ class Level implements ChunkManager, Metadatable{
 
 	private function destroyBlockInternal(Block $target, Item $item, ?Player $player = null, bool $createParticles = false) : void{
 		if($createParticles){
-			$this->addParticle(new DestroyBlockParticle($target->add(0.5, 0.5, 0.5), $target));
+			$this->addParticle($target->add(0.5, 0.5, 0.5), new DestroyBlockParticle($target));
 		}
 
 		$target->onBreak($item, $player);
@@ -2436,7 +2438,7 @@ class Level implements ChunkManager, Metadatable{
 
 		$chunkHash = Level::chunkHash($chunkX, $chunkZ);
 		$oldChunk = $this->getChunk($chunkX, $chunkZ, false);
-		if($oldChunk !== null){
+		if($oldChunk !== null and $oldChunk !== $chunk){
 			if($unload){
 				$this->unloadChunk($chunkX, $chunkZ, false, false);
 			}else{
@@ -2458,6 +2460,10 @@ class Level implements ChunkManager, Metadatable{
 		unset($this->blockCache[$chunkHash]);
 		unset($this->chunkCache[$chunkHash]);
 		unset($this->changedBlocks[$chunkHash]);
+		if(isset($this->chunkSendTasks[$chunkHash])){ //invalidate pending caches
+			$this->chunkSendTasks[$chunkHash]->cancelRun();
+			unset($this->chunkSendTasks[$chunkHash]);
+		}
 		$chunk->setChanged();
 
 		if(!$this->isChunkInUse($chunkX, $chunkZ)){

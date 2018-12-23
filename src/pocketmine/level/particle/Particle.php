@@ -1,24 +1,23 @@
 <?php
 
 /*
- *               _ _
- *         /\   | | |
- *        /  \  | | |_ __ _ _   _
- *       / /\ \ | | __/ _` | | | |
- *      / ____ \| | || (_| | |_| |
- *     /_/    \_|_|\__\__,_|\__, |
- *                           __/ |
- *                          |___/
+ *
+ *  ____            _        _   __  __ _                  __  __ ____
+ * |  _ \ ___   ___| | _____| |_|  \/  (_)_ __   ___      |  \/  |  _ \
+ * | |_) / _ \ / __| |/ / _ \ __| |\/| | | '_ \ / _ \_____| |\/| | |_) |
+ * |  __/ (_) | (__|   <  __/ |_| |  | | | | | |  __/_____| |  | |  __/
+ * |_|   \___/ \___|_|\_\___|\__|_|  |_|_|_| |_|\___|     |_|  |_|_|
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * @author TuranicTeam
- * @link https://github.com/TuranicTeam/Altay
+ * @author PocketMine Team
+ * @link http://www.pocketmine.net/
  *
- */
+ *
+*/
 
 declare(strict_types=1);
 
@@ -27,7 +26,7 @@ namespace pocketmine\level\particle;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\DataPacket;
 
-abstract class Particle extends Vector3{
+abstract class Particle{
 
 	public const TYPE_BUBBLE = 1;
 	public const TYPE_CRITICAL = 2;
@@ -73,12 +72,22 @@ abstract class Particle extends Vector3{
 	public const TYPE_SPIT = 42;
 	public const TYPE_TOTEM = 43;
 	public const TYPE_FOOD = 44;
-	public const TYPE_FIREWORK_SPARK = 46;
-	public const TYPE_FLASH = 47;
+	public const TYPE_FIREWORKS_STARTER = 45;
+	public const TYPE_FIREWORKS_SPARK = 46;
+	public const TYPE_FIREWORKS_OVERLAY = 47;
+	public const TYPE_BALLOON_GAS = 48;
+	public const TYPE_COLORED_FLAME = 49;
+	public const TYPE_SPARKLER = 50;
+	public const TYPE_CONDUIT = 51;
+	public const TYPE_BUBBLE_COLUMN_UP = 52;
+	public const TYPE_BUBBLE_COLUMN_DOWN = 53;
+	public const TYPE_SNEEZE = 54;
 
 	/**
+	 * @param Vector3 $pos
+	 *
 	 * @return DataPacket|DataPacket[]
 	 */
-	abstract public function encode();
+	abstract public function encode(Vector3 $pos);
 
 }
