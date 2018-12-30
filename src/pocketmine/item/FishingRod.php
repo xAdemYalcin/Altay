@@ -44,7 +44,7 @@ class FishingRod extends Tool{
 	}
 
 	public function getMaxDurability() : int{
-		return 64;
+		return 65;
 	}
 
 	public function onClickAir(Player $player, Vector3 $directionVector) : bool{
