@@ -3,7 +3,7 @@
 
 A feature-rich server software for Minecraft: Bedrock/W10 Edition. Altay is a fork of [pmmp](https://github.com/pmmp/PocketMine-MP)
 
-#####WARNING: Altay is still in development so may be bugs sometimes 
+##### WARNING: Altay is still in development so may be bugs sometimes 
 
 ------------       
 
