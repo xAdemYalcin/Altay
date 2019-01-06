@@ -44,7 +44,6 @@ class SpawnEgg extends Item{
 			$this->pop();
 			if($entity instanceof Mob){
 				$entity->setImmobile(!$player->getServer()->mobAiEnabled);
-				$entity->playLivingSound();
 			}
 			$entity->spawnToAll();
 			return true;

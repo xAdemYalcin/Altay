@@ -54,8 +54,4 @@ class Husk extends Zombie implements Ageable{
 			$entity->addEffect(new EffectInstance(Effect::getEffect(Effect::HUNGER), 7 * 20, 1));
 		}
 	}
-
-	public function getLivingSound() : ?string{
-		return "mob.husk.idle";
-	}
 }

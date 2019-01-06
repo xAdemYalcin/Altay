@@ -100,10 +100,6 @@ class Horse extends AbstractHorse{
 		$this->attributeMap->addAttribute(Attribute::getAttribute(Attribute::JUMP_STRENGTH));
 	}
 
-	public function getLivingSound() : ?string{
-		return "mob.horse.say";
-	}
-
 	public function getRiderSeatPosition(int $seatNumber = 0) : Vector3{
 		return new Vector3(0, 1.1, -0.2);
 	}

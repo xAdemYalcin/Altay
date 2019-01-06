@@ -135,10 +135,6 @@ class Sheep extends Animal{
 		return $nbt;
 	}
 
-	public function getLivingSound() : ?string{
-		return "mob.sheep.say";
-	}
-
 	/**
 	 * @param Random $random
 	 *

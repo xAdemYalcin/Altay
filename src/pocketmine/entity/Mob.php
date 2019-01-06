@@ -71,15 +71,6 @@ abstract class Mob extends Living{
 	}
 
 	/**
-	 * Get number of ticks, at least during which the living entity will be silent.
-	 *
-	 * @return int
-	 */
-	public function getTalkInterval() : int{
-		return 80;
-	}
-
-	/**
 	 * @param Vector3 $homePosition
 	 */
 	public function setHomePosition(Vector3 $homePosition) : void{
@@ -137,37 +128,9 @@ abstract class Mob extends Living{
 
 		if(!$this->isImmobile()){
 			$this->onBehaviorUpdate();
-
-			if($this->isAlive() and $this->random->nextBoundedInt(1000) < $this->livingSoundTime++){
-				$this->livingSoundTime -= $this->getTalkInterval();
-				$this->playLivingSound();
-			}
 		}
 
 		return $hasUpdate;
-	}
-
-	/**
-	 * @return null|string
-	 */
-	public function getLivingSound() : ?string{
-		return null;
-	}
-
-	public function playLivingSound() : void{
-		$sound = $this->getLivingSound();
-
-		if($sound !== null and $this->chunk !== null){
-			$pk = new PlaySoundPacket();
-			$pk->x = $this->x;
-			$pk->y = $this->y;
-			$pk->z = $this->z;
-			$pk->pitch = $this->isBaby() ? 2 : 1;
-			$pk->volume = 1.0;
-			$pk->soundName = $sound;
-
-			$this->level->addChunkPacket($this->chunk->getX(), $this->chunk->getZ(), $pk);
-		}
 	}
 
 	protected function onBehaviorUpdate() : void{

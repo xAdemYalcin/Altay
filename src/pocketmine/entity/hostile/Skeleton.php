@@ -125,8 +125,4 @@ class Skeleton extends Monster implements RangedAttackerMob{
 
 		$this->equipment->sendContents([$player]);
 	}
-
-	public function getLivingSound() : ?string{
-		return "mob.skeleton.say";
-	}
 }

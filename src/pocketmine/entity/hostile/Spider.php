@@ -83,8 +83,4 @@ class Spider extends Monster implements Ageable{
 		}
 		return $drops;
 	}
-
-	public function getLivingSound() : ?string{
-		return "mob.spider.say";
-	}
 }
