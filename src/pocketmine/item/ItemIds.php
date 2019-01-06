@@ -324,8 +324,6 @@ interface ItemIds{
 	public const HARD_STAINED_GLASS = 254;
 	public const RESERVED6 = 255;
 
-	public const BARRIER = -161;
-
 	public const IRON_SHOVEL = 256;
 	public const IRON_PICKAXE = 257;
 	public const IRON_AXE = 258;

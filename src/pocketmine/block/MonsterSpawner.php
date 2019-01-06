@@ -70,13 +70,10 @@ class MonsterSpawner extends Transparent{
 
 	public function onActivate(Item $item, Player $player = null) : bool{
 		if($item instanceof SpawnEgg){
-			/** @var MobSpawner $ms */
-			$ms = Tile::createFromItem(Tile::MOB_SPAWNER, $this->level, $this, $item);
-			$ms->setEntityId($item->getDamage());
-
-			if($ms !== null){
-				$this->level->addTile($ms);
-			}
+			/** @var MobSpawner $tile */
+			$tile = Tile::createFromItem(MobSpawner::class, $this->level, $this, $item);
+			$tile->setEntityId($item->getDamage());
+			$this->level->addTile($tile);
 
 			if($player instanceof Player){
 				$item->pop();
