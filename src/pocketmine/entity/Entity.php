@@ -108,6 +108,23 @@ use pocketmine\timings\TimingsHandler;
 use pocketmine\utils\Random;
 use pocketmine\utils\Utils;
 use pocketmine\utils\UUID;
+use function abs;
+use function array_unique;
+use function assert;
+use function cos;
+use function count;
+use function current;
+use function deg2rad;
+use function floor;
+use function get_class;
+use function in_array;
+use function is_array;
+use function is_infinite;
+use function is_nan;
+use function lcg_value;
+use function reset;
+use function sin;
+use const M_PI_2;
 
 abstract class Entity extends Location implements Metadatable, EntityIds{
 
@@ -2461,7 +2478,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 		$pk->position = $this->asVector3();
 		$pk->motion = $this->getMotion();
 		$pk->yaw = $this->yaw;
-		$pk->headYaw = $this->headYaw ?? $this->yaw;
+		$pk->headYaw = $this->yaw; //TODO
 		$pk->pitch = $this->pitch;
 		$pk->attributes = $this->attributeMap->getAll();
 		$pk->metadata = $this->propertyManager->getAll();

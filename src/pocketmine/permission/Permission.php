@@ -26,6 +26,10 @@ declare(strict_types=1);
  */
 namespace pocketmine\permission;
 
+use function is_array;
+use function is_bool;
+use function strtolower;
+
 /**
  * Represents a permission
  */

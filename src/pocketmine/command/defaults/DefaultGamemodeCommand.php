@@ -29,6 +29,7 @@ use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\lang\TranslationContainer;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Server;
+use function count;
 
 class DefaultGamemodeCommand extends VanillaCommand{
 

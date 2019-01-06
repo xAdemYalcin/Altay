@@ -33,6 +33,7 @@ use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Player;
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
+use function count;
 
 class GamemodeCommand extends VanillaCommand{
 

@@ -33,6 +33,10 @@ use pocketmine\network\mcpe\protocol\types\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
+use function array_filter;
+use function array_values;
+use function count;
+use function round;
 
 class TeleportCommand extends VanillaCommand{
 

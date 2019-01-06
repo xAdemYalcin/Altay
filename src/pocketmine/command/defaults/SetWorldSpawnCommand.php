@@ -32,6 +32,8 @@ use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
+use function count;
+use function round;
 
 class SetWorldSpawnCommand extends VanillaCommand{
 

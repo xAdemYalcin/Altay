@@ -45,6 +45,14 @@ use pocketmine\nbt\tag\ShortTag;
 use pocketmine\nbt\tag\StringTag;
 use pocketmine\Player;
 use pocketmine\utils\Binary;
+use function array_map;
+use function base64_decode;
+use function base64_encode;
+use function file_get_contents;
+use function get_class;
+use function hex2bin;
+use function json_decode;
+use const DIRECTORY_SEPARATOR;
 
 class Item implements ItemIds, \JsonSerializable{
 	public const TAG_ENCH = "ench";
@@ -95,17 +103,17 @@ class Item implements ItemIds, \JsonSerializable{
 	}
 
 	/**
-	 * Tries to parse the specified string into Item ID/meta identifiers, and returns Item instances it created.
+	 * Tries to parse the specified string into Item types.
 	 *
 	 * This function redirects to {@link ItemFactory#fromString}.
 	 *
 	 * @param string $str
-	 * @param bool   $multiple
 	 *
-	 * @return Item[]|Item
+	 * @return Item
+	 * @throws \InvalidArgumentException
 	 */
-	public static function fromString(string $str, bool $multiple = false){
-		return ItemFactory::fromString($str, $multiple);
+	public static function fromString(string $str) : Item{
+		return ItemFactory::fromString($str);
 	}
 
 
@@ -150,7 +158,7 @@ class Item implements ItemIds, \JsonSerializable{
 	}
 
 	/**
-	 * @param $index
+	 * @param int $index
 	 *
 	 * @return Item|null
 	 */

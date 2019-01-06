@@ -32,6 +32,8 @@ use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\lang\TranslationContainer;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\utils\TextFormat;
+use function count;
+use function is_numeric;
 
 class EnchantCommand extends VanillaCommand{
 

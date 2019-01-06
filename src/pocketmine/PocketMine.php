@@ -190,7 +190,9 @@ namespace pocketmine {
 	$opts = getopt("", [
 		"data:",
 		"plugins:",
-		"no-wizard"
+		"no-wizard",
+		"enable-ansi",
+		"disable-ansi"
 	]);
 
 	define('pocketmine\DATA', isset($opts["data"]) ? $opts["data"] . DIRECTORY_SEPARATOR : realpath(getcwd()) . DIRECTORY_SEPARATOR);
@@ -202,6 +204,14 @@ namespace pocketmine {
 
 	//Logger has a dependency on timezone
 	Timezone::init();
+
+	if(isset($opts["enable-ansi"])){
+		Terminal::init(true);
+	}elseif(isset($opts["disable-ansi"])){
+		Terminal::init(false);
+	}else{
+		Terminal::init();
+	}
 
 	$logger = new MainLogger(\pocketmine\DATA . "server.log");
 	$logger->registerStatic();

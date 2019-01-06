@@ -31,6 +31,7 @@ use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\lang\TranslationContainer;
 use pocketmine\level\Level;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
+use function count;
 
 class DifficultyCommand extends VanillaCommand{
 

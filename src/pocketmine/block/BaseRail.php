@@ -23,10 +23,18 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use pocketmine\block\utils\InvalidBlockStateException;
 use pocketmine\item\Item;
 use pocketmine\math\Facing;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
+use function array_map;
+use function array_reverse;
+use function array_search;
+use function array_shift;
+use function count;
+use function implode;
+use function in_array;
 
 abstract class BaseRail extends Flowable{
 
@@ -84,9 +92,11 @@ abstract class BaseRail extends Flowable{
 	}
 
 	public function readStateFromMeta(int $meta) : void{
-		//on invalid states, this will return an empty array, allowing this rail to transform into any other state
-		//TODO: should this throw instead?
-		$this->connections = $this->getConnectionsFromMeta($meta);
+		$connections = $this->getConnectionsFromMeta($meta);
+		if($connections === null){
+			throw new InvalidBlockStateException("Invalid rail type meta $meta");
+		}
+		$this->connections = $connections;
 	}
 
 	public function getStateBitmask() : int{
@@ -112,7 +122,7 @@ abstract class BaseRail extends Flowable{
 			$meta = array_search(array_reverse($connections), $lookup, true);
 		}
 		if($meta === false){
-			throw new \InvalidArgumentException("No meta value matches connections " . implode(", ", array_map('dechex', $connections)));
+			throw new \InvalidArgumentException("No meta value matches connections " . implode(", ", array_map('\dechex', $connections)));
 		}
 
 		return $meta;
@@ -138,7 +148,7 @@ abstract class BaseRail extends Flowable{
 	 *
 	 * @return int[]
 	 */
-	abstract protected function getConnectionsFromMeta(int $meta) : array;
+	abstract protected function getConnectionsFromMeta(int $meta) : ?array;
 
 	/**
 	 * Returns all the directions this rail is already connected in.

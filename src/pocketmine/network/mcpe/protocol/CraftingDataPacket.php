@@ -32,6 +32,8 @@ use pocketmine\inventory\ShapelessRecipe;
 use pocketmine\item\Item;
 use pocketmine\network\mcpe\handler\SessionHandler;
 use pocketmine\network\mcpe\NetworkBinaryStream;
+use function count;
+use function str_repeat;
 
 class CraftingDataPacket extends DataPacket{
 	public const NETWORK_ID = ProtocolInfo::CRAFTING_DATA_PACKET;
@@ -51,12 +53,6 @@ class CraftingDataPacket extends DataPacket{
 	public $cleanRecipes = false;
 
 	public $decodedEntries = [];
-
-	public function clean(){
-		$this->entries = [];
-		$this->decodedEntries = [];
-		return parent::clean();
-	}
 
 	protected function decodePayload() : void{
 		$this->decodedEntries = [];

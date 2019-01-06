@@ -28,6 +28,11 @@ namespace pocketmine\network\mcpe\protocol;
 use pocketmine\network\mcpe\handler\SessionHandler;
 use pocketmine\network\mcpe\NetworkBinaryStream;
 use pocketmine\utils\Utils;
+use function bin2hex;
+use function get_class;
+use function is_object;
+use function is_string;
+use function method_exists;
 
 abstract class DataPacket extends NetworkBinaryStream{
 
@@ -61,25 +66,36 @@ abstract class DataPacket extends NetworkBinaryStream{
 		return false;
 	}
 
-	public function decode() : void{
-		$this->offset = 0;
+	/**
+	 * @throws \OutOfBoundsException
+	 * @throws \UnexpectedValueException
+	 */
+	final public function decode() : void{
+		$this->rewind();
 		$this->decodeHeader();
 		$this->decodePayload();
 	}
 
+	/**
+	 * @throws \OutOfBoundsException
+	 * @throws \UnexpectedValueException
+	 */
 	protected function decodeHeader() : void{
 		$pid = $this->getUnsignedVarInt();
-		assert($pid === static::NETWORK_ID);
+		if($pid !== static::NETWORK_ID){
+			throw new \UnexpectedValueException("Expected " . static::NETWORK_ID . " for packet ID, got $pid");
+		}
 	}
 
 	/**
-	 * Note for plugin developers: If you're adding your own packets, you should perform decoding in here.
+	 * Decodes the packet body, without the packet ID or other generic header fields.
+	 *
+	 * @throws \OutOfBoundsException
+	 * @throws \UnexpectedValueException
 	 */
-	protected function decodePayload() : void{
+	abstract protected function decodePayload() : void;
 
-	}
-
-	public function encode() : void{
+	final public function encode() : void{
 		$this->reset();
 		$this->encodeHeader();
 		$this->encodePayload();
@@ -91,11 +107,9 @@ abstract class DataPacket extends NetworkBinaryStream{
 	}
 
 	/**
-	 * Note for plugin developers: If you're adding your own packets, you should perform encoding in here.
+	 * Encodes the packet body, without the packet ID or other generic header fields.
 	 */
-	protected function encodePayload() : void{
-
-	}
+	abstract protected function encodePayload() : void;
 
 	/**
 	 * Performs handling for this packet. Usually you'll want an appropriately named method in the session handler for
@@ -112,13 +126,6 @@ abstract class DataPacket extends NetworkBinaryStream{
 	 * @return bool true if the packet was handled successfully, false if not.
 	 */
 	abstract public function handle(SessionHandler $handler) : bool;
-
-	public function clean(){
-		$this->buffer = null;
-		$this->isEncoded = false;
-		$this->offset = 0;
-		return $this;
-	}
 
 	public function __debugInfo(){
 		$data = [];

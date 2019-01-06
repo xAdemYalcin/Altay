@@ -34,6 +34,7 @@ use pocketmine\network\mcpe\protocol\types\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
+use function count;
 
 class TimeCommand extends VanillaCommand{
 

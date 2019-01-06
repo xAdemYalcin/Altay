@@ -4,8 +4,52 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4793017ff4b236529dc5072bd06f8754",
+    "content-hash": "cdf1ae08bd2f3e13b0a766a835ed8cb8",
     "packages": [
+        {
+            "name": "adhocore/json-comment",
+            "version": "v0.0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/adhocore/php-json-comment.git",
+                "reference": "135356c7e7336ef59924f1d921c770045f937a76"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/adhocore/php-json-comment/zipball/135356c7e7336ef59924f1d921c770045f937a76",
+                "reference": "135356c7e7336ef59924f1d921c770045f937a76",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8 || ^5.7 || ^6.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ahc\\Json\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jitendra Adhikari",
+                    "email": "jiten.adhikary@gmail.com"
+                }
+            ],
+            "description": "Lightweight JSON comment stripper library for PHP",
+            "keywords": [
+                "comment",
+                "json",
+                "strip-comment"
+            ],
+            "time": "2018-08-01T12:27:26+00:00"
+        },
         {
             "name": "daverandom/callback-validator",
             "version": "dev-master",
@@ -189,16 +233,16 @@
         },
         {
             "name": "pocketmine/binaryutils",
-            "version": "0.1.2",
+            "version": "0.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pmmp/BinaryUtils.git",
-                "reference": "2c1628f08a9cdeca4d3c682e13f24420944ca845"
+                "reference": "03361b0d78ef2b400a99e96406aa594a5bc1c4ed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pmmp/BinaryUtils/zipball/2c1628f08a9cdeca4d3c682e13f24420944ca845",
-                "reference": "2c1628f08a9cdeca4d3c682e13f24420944ca845",
+                "url": "https://api.github.com/repos/pmmp/BinaryUtils/zipball/03361b0d78ef2b400a99e96406aa594a5bc1c4ed",
+                "reference": "03361b0d78ef2b400a99e96406aa594a5bc1c4ed",
                 "shasum": ""
             },
             "require": {
@@ -216,10 +260,10 @@
             ],
             "description": "Classes and methods for conveniently handling binary data",
             "support": {
-                "source": "https://github.com/pmmp/BinaryUtils/tree/0.1.2",
+                "source": "https://github.com/pmmp/BinaryUtils/tree/0.1.5",
                 "issues": "https://github.com/pmmp/BinaryUtils/issues"
             },
-            "time": "2018-12-22T12:29:30+00:00"
+            "time": "2019-01-04T13:32:11+00:00"
         },
         {
             "name": "pocketmine/math",
@@ -227,12 +271,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pmmp/Math.git",
-                "reference": "a162c02be87fd49abd195a7330e61be9d4b8e766"
+                "reference": "1bf44397897d8e50d747e9e7a3de245c21b464c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pmmp/Math/zipball/a162c02be87fd49abd195a7330e61be9d4b8e766",
-                "reference": "a162c02be87fd49abd195a7330e61be9d4b8e766",
+                "url": "https://api.github.com/repos/pmmp/Math/zipball/1bf44397897d8e50d747e9e7a3de245c21b464c9",
+                "reference": "1bf44397897d8e50d747e9e7a3de245c21b464c9",
                 "shasum": ""
             },
             "require": {
@@ -258,7 +302,7 @@
                 "source": "https://github.com/pmmp/Math/tree/master",
                 "issues": "https://github.com/pmmp/Math/issues"
             },
-            "time": "2018-12-07T10:47:16+00:00"
+            "time": "2019-01-04T15:49:39+00:00"
         },
         {
             "name": "pocketmine/nbt",
@@ -266,12 +310,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pmmp/NBT.git",
-                "reference": "91b6a158d06032e9029b9a87be64a12c3b93aa14"
+                "reference": "863b2e509485baffd4897cd6fa8e98e7e7e5ae14"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pmmp/NBT/zipball/91b6a158d06032e9029b9a87be64a12c3b93aa14",
-                "reference": "91b6a158d06032e9029b9a87be64a12c3b93aa14",
+                "url": "https://api.github.com/repos/pmmp/NBT/zipball/863b2e509485baffd4897cd6fa8e98e7e7e5ae14",
+                "reference": "863b2e509485baffd4897cd6fa8e98e7e7e5ae14",
                 "shasum": ""
             },
             "require": {
@@ -299,7 +343,7 @@
                 "source": "https://github.com/pmmp/NBT/tree/master",
                 "issues": "https://github.com/pmmp/NBT/issues"
             },
-            "time": "2018-12-03T16:12:37+00:00"
+            "time": "2019-01-04T15:32:10+00:00"
         },
         {
             "name": "pocketmine/raklib",
@@ -307,12 +351,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pmmp/RakLib.git",
-                "reference": "a92e0508b13386e938a8092201ddfd3da17b8dd0"
+                "reference": "8f189b687d39489e422bb30be984a33763f29662"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pmmp/RakLib/zipball/a92e0508b13386e938a8092201ddfd3da17b8dd0",
-                "reference": "a92e0508b13386e938a8092201ddfd3da17b8dd0",
+                "url": "https://api.github.com/repos/pmmp/RakLib/zipball/8f189b687d39489e422bb30be984a33763f29662",
+                "reference": "8f189b687d39489e422bb30be984a33763f29662",
                 "shasum": ""
             },
             "require": {
@@ -340,20 +384,20 @@
                 "source": "https://github.com/pmmp/RakLib/tree/master",
                 "issues": "https://github.com/pmmp/RakLib/issues"
             },
-            "time": "2018-11-05T21:18:34+00:00"
+            "time": "2019-01-04T15:05:24+00:00"
         },
         {
             "name": "pocketmine/snooze",
-            "version": "0.1.0",
+            "version": "0.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pmmp/Snooze.git",
-                "reference": "3cc9d0164230889acb08e22cc126133809e9d346"
+                "reference": "b7bd231bdb75e69300cac89ccd515fc731c38c40"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pmmp/Snooze/zipball/3cc9d0164230889acb08e22cc126133809e9d346",
-                "reference": "3cc9d0164230889acb08e22cc126133809e9d346",
+                "url": "https://api.github.com/repos/pmmp/Snooze/zipball/b7bd231bdb75e69300cac89ccd515fc731c38c40",
+                "reference": "b7bd231bdb75e69300cac89ccd515fc731c38c40",
                 "shasum": ""
             },
             "require": {
@@ -371,10 +415,10 @@
             ],
             "description": "Thread notification management library for code using the pthreads extension",
             "support": {
-                "source": "https://github.com/pmmp/Snooze/tree/0.1.0",
+                "source": "https://github.com/pmmp/Snooze/tree/0.1.1",
                 "issues": "https://github.com/pmmp/Snooze/issues"
             },
-            "time": "2018-06-13T09:36:11+00:00"
+            "time": "2019-01-04T15:54:45+00:00"
         },
         {
             "name": "pocketmine/spl",

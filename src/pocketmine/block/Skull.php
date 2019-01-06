@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use pocketmine\block\utils\BlockDataValidator;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\math\AxisAlignedBB;
@@ -31,6 +32,7 @@ use pocketmine\math\Vector3;
 use pocketmine\Player;
 use pocketmine\tile\Skull as TileSkull;
 use pocketmine\tile\Tile;
+use function floor;
 
 class Skull extends Flowable{
 
@@ -52,7 +54,7 @@ class Skull extends Flowable{
 	}
 
 	public function readStateFromMeta(int $meta) : void{
-		$this->facing = $meta;
+		$this->facing = $meta === 1 ? Facing::UP : BlockDataValidator::readHorizontalFacing($meta);
 	}
 
 	public function getStateBitmask() : int{
@@ -70,14 +72,11 @@ class Skull extends Flowable{
 
 	public function writeStateToWorld() : void{
 		parent::writeStateToWorld();
-		$tile = Tile::create(Tile::SKULL, $this->getLevel(), $this->asVector3());
-		if($tile !== null){
-			if($tile instanceof TileSkull){
-				$tile->setRotation($this->rotation);
-				$tile->setType($this->type);
-			}
-			$this->level->addTile($tile);
-		}
+		/** @var TileSkull $tile */
+		$tile = Tile::create(TileSkull::class, $this->getLevel(), $this->asVector3());
+		$tile->setRotation($this->rotation);
+		$tile->setType($this->type);
+		$this->level->addTile($tile);
 	}
 
 	public function getHardness() : float{

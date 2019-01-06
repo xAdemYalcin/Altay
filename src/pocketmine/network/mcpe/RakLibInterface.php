@@ -35,6 +35,14 @@ use raklib\server\RakLibServer;
 use raklib\server\ServerHandler;
 use raklib\server\ServerInstance;
 use raklib\utils\InternetAddress;
+use function addcslashes;
+use function bin2hex;
+use function implode;
+use function rtrim;
+use function spl_object_hash;
+use function substr;
+use function unserialize;
+use const PTHREADS_INHERIT_CONSTANTS;
 
 class RakLibInterface implements ServerInstance, AdvancedNetworkInterface{
 	/**
@@ -71,14 +79,20 @@ class RakLibInterface implements ServerInstance, AdvancedNetworkInterface{
 
 		$this->sleeper = new SleeperNotifier();
 
-		$this->rakLib = new RakLibServer($this->server->getLogger(), \pocketmine\COMPOSER_AUTOLOADER_PATH, new InternetAddress($this->server->getIp(), $this->server->getPort(), 4), (int) $this->server->getProperty("network.max-mtu-size", 1492), self::MCPE_RAKNET_PROTOCOL_VERSION, $this->sleeper);
+		$this->rakLib = new RakLibServer(
+			$this->server->getLogger(),
+			\pocketmine\COMPOSER_AUTOLOADER_PATH,
+			new InternetAddress($this->server->getIp(), $this->server->getPort(), 4),
+			(int) $this->server->getProperty("network.max-mtu-size", 1492),
+			self::MCPE_RAKNET_PROTOCOL_VERSION,
+			$this->sleeper
+		);
 		$this->interface = new ServerHandler($this->rakLib, $this);
 	}
 
 	public function start() : void{
 		$this->server->getTickSleeper()->addNotifier($this->sleeper, function() : void{
-			//this should not throw any exception. If it does, this should crash the server since it's a fault condition.
-			while($this->interface->handlePacket()) ;
+			while($this->interface->handlePacket());
 		});
 		$this->rakLib->start(PTHREADS_INHERIT_CONSTANTS); //HACK: MainLogger needs constants for exception logging
 	}
@@ -113,11 +127,6 @@ class RakLibInterface implements ServerInstance, AdvancedNetworkInterface{
 	public function shutdown() : void{
 		$this->server->getTickSleeper()->removeNotifier($this->sleeper);
 		$this->interface->shutdown();
-	}
-
-	public function emergencyShutdown() : void{
-		$this->server->getTickSleeper()->removeNotifier($this->sleeper);
-		$this->interface->emergencyShutdown();
 	}
 
 	public function openSession(string $identifier, string $address, int $port, int $clientID) : void{
@@ -162,6 +171,10 @@ class RakLibInterface implements ServerInstance, AdvancedNetworkInterface{
 		$this->interface->sendRaw($address, $port, $payload);
 	}
 
+	public function addRawPacketFilter(string $regex) : void{
+		$this->interface->addRawPacketFilter($regex);
+	}
+
 	public function notifyACK(string $identifier, int $identifierACK) : void{
 
 	}
@@ -169,7 +182,8 @@ class RakLibInterface implements ServerInstance, AdvancedNetworkInterface{
 	public function setName(string $name) : void{
 		$info = $this->server->getQueryInformation();
 
-		$this->interface->sendOption("name", implode(";", [
+		$this->interface->sendOption("name", implode(";",
+			[
 				"MCPE",
 				rtrim(addcslashes($name, ";"), '\\'),
 				ProtocolInfo::CURRENT_PROTOCOL,
@@ -179,7 +193,8 @@ class RakLibInterface implements ServerInstance, AdvancedNetworkInterface{
 				$this->rakLib->getServerId(),
 				$this->server->getName(),
 				Server::getGamemodeName($this->server->getGamemode())
-			]) . ";");
+			]) . ";"
+		);
 	}
 
 	public function setPortCheck(bool $name) : void{

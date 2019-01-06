@@ -24,7 +24,6 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe\protocol\types;
 
-use pocketmine\block\Anvil;
 use pocketmine\inventory\AnvilInventory;
 use pocketmine\inventory\BeaconInventory;
 use pocketmine\inventory\ContainerInventory;
@@ -38,7 +37,7 @@ use pocketmine\inventory\transaction\action\SlotChangeAction;
 use pocketmine\inventory\transaction\action\TradeAction;
 use pocketmine\inventory\transaction\action\InventoryAction;
 use pocketmine\item\Item;
-use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
+use pocketmine\network\mcpe\NetworkBinaryStream;
 use pocketmine\Player;
 
 class NetworkInventoryAction{
@@ -102,11 +101,13 @@ class NetworkInventoryAction{
 	public $newItem;
 
 	/**
-	 * @param InventoryTransactionPacket $packet
+	 * @param NetworkBinaryStream $packet
 	 *
 	 * @return $this
+	 * @throws \UnexpectedValueException
+	 * @throws \OutOfBoundsException
 	 */
-	public function read(InventoryTransactionPacket $packet) : NetworkInventoryAction{
+	public function read(NetworkBinaryStream $packet) : NetworkInventoryAction{
 		$this->sourceType = $packet->getUnsignedVarInt();
 
 		switch($this->sourceType){
@@ -121,14 +122,6 @@ class NetworkInventoryAction{
 			case self::SOURCE_CRAFTING_GRID:
 			case self::SOURCE_TODO:
 				$this->windowId = $packet->getVarInt();
-				switch($this->windowId){
-					/** @noinspection PhpMissingBreakStatementInspection */
-					case self::SOURCE_TYPE_CRAFTING_RESULT:
-						$packet->isFinalCraftingPart = true;
-					case self::SOURCE_TYPE_CRAFTING_USE_INGREDIENT:
-						$packet->isCraftingPart = true;
-						break;
-				}
 				break;
 			default:
 				throw new \UnexpectedValueException("Unknown inventory action source type $this->sourceType");
@@ -142,9 +135,11 @@ class NetworkInventoryAction{
 	}
 
 	/**
-	 * @param InventoryTransactionPacket $packet
+	 * @param NetworkBinaryStream $packet
+	 *
+	 * @throws \InvalidArgumentException
 	 */
-	public function write(InventoryTransactionPacket $packet) : void{
+	public function write(NetworkBinaryStream $packet) : void{
 		$packet->putUnsignedVarInt($this->sourceType);
 
 		switch($this->sourceType){
@@ -161,7 +156,7 @@ class NetworkInventoryAction{
 				$packet->putVarInt($this->windowId);
 				break;
 			default:
-				throw new \UnexpectedValueException("Unknown inventory action source type $this->sourceType");
+				throw new \InvalidArgumentException("Unknown inventory action source type $this->sourceType");
 		}
 
 		$packet->putUnsignedVarInt($this->inventorySlot);
@@ -173,6 +168,8 @@ class NetworkInventoryAction{
 	 * @param Player $player
 	 *
 	 * @return InventoryAction|null
+	 *
+	 * @throws \UnexpectedValueException
 	 */
 	public function createInventoryAction(Player $player) : ?InventoryAction{
 		switch($this->sourceType){
@@ -182,7 +179,7 @@ class NetworkInventoryAction{
 					return new SlotChangeAction($window, $this->inventorySlot, $this->oldItem, $this->newItem);
 				}
 
-				throw new \InvalidStateException("Player " . $player->getName() . " has no open container with window ID $this->windowId");
+				throw new \UnexpectedValueException("Player " . $player->getName() . " has no open container with window ID $this->windowId");
 			case self::SOURCE_WORLD:
 				if($this->inventorySlot !== self::ACTION_MAGIC_SLOT_DROP_ITEM){
 					throw new \UnexpectedValueException("Only expecting drop-item world actions from the client!");
@@ -298,4 +295,16 @@ class NetworkInventoryAction{
 		}
 	}
 
+	/**
+	 * Hack to allow identifying crafting transaction parts.
+	 *
+	 * @return bool
+	 */
+	public function isCraftingPart() : bool{
+		return ($this->sourceType === self::SOURCE_TODO or $this->sourceType === self::SOURCE_CRAFTING_GRID) and ($this->windowId === self::SOURCE_TYPE_CRAFTING_RESULT or $this->windowId === self::SOURCE_TYPE_CRAFTING_USE_INGREDIENT);
+	}
+
+	public function isFinalCraftingPart() : bool{
+		return $this->isCraftingPart() and $this->windowId === self::SOURCE_TYPE_CRAFTING_RESULT;
+	}
 }

@@ -116,6 +116,69 @@ use pocketmine\utils\TextFormat;
 use pocketmine\utils\Utils;
 use pocketmine\utils\UUID;
 use pocketmine\utils\Internet;
+use function array_key_exists;
+use function array_keys;
+use function array_shift;
+use function array_sum;
+use function asort;
+use function assert;
+use function base64_encode;
+use function bin2hex;
+use function class_exists;
+use function count;
+use function define;
+use function explode;
+use function extension_loaded;
+use function file_exists;
+use function file_get_contents;
+use function file_put_contents;
+use function filemtime;
+use function floor;
+use function function_exists;
+use function gc_collect_cycles;
+use function get_class;
+use function getmypid;
+use function getopt;
+use function implode;
+use function ini_get;
+use function ini_set;
+use function is_array;
+use function is_bool;
+use function is_string;
+use function is_subclass_of;
+use function json_decode;
+use function max;
+use function microtime;
+use function min;
+use function mkdir;
+use function pcntl_signal;
+use function pcntl_signal_dispatch;
+use function preg_replace;
+use function random_bytes;
+use function realpath;
+use function register_shutdown_function;
+use function rename;
+use function round;
+use function sleep;
+use function spl_object_hash;
+use function sprintf;
+use function str_repeat;
+use function str_replace;
+use function stripos;
+use function strlen;
+use function strrpos;
+use function strtolower;
+use function substr;
+use function time;
+use function touch;
+use function trim;
+use const DIRECTORY_SEPARATOR;
+use const PHP_EOL;
+use const PHP_INT_MAX;
+use const PTHREADS_INHERIT_NONE;
+use const SIGHUP;
+use const SIGINT;
+use const SIGTERM;
 
 /**
  * The class that manages everything
@@ -1133,10 +1196,11 @@ class Server{
 	 * @param int|null    $seed
 	 * @param string|null $generator Class name that extends pocketmine\level\generator\Generator
 	 * @param array       $options
+	 * @param bool        $backgroundGeneration
 	 *
 	 * @return bool
 	 */
-	public function generateLevel(string $name, int $seed = null, $generator = null, array $options = []) : bool{
+	public function generateLevel(string $name, int $seed = null, $generator = null, array $options = [], bool $backgroundGeneration = true) : bool{
 		if(trim($name) === "" or $this->isLevelGenerated($name)){
 			return false;
 		}
@@ -1166,6 +1230,10 @@ class Server{
 		(new LevelInitEvent($level))->call();
 
 		(new LevelLoadEvent($level))->call();
+
+		if(!$backgroundGeneration){
+			return true;
+		}
 
 		$this->getLogger()->notice($this->getLanguage()->translateString("pocketmine.level.backgroundGeneration", [$name]));
 
@@ -1526,8 +1594,6 @@ class Server{
 				"announce-player-achievements" => true,
 				"spawn-protection" => 16,
 				"max-players" => 20,
-				"spawn-animals" => true,
-				"spawn-mobs" => true,
 				"gamemode" => 0,
 				"force-gamemode" => false,
 				"hardcore" => false,
@@ -1597,7 +1663,7 @@ class Server{
 				$this->logger->warning(str_repeat("-", 40));
 			}
 
-			if(((int) ini_get('zend.assertions')) > 0 and ((bool) $this->getProperty("debug.assertions.warn-if-enabled", true)) !== false){
+			if(((int) ini_get('zend.assertions')) !== -1){
 				$this->logger->warning("Debugging assertions are enabled, this may impact on performance. To disable them, set `zend.assertions = -1` in php.ini.");
 			}
 
@@ -2063,7 +2129,7 @@ class Server{
 			$stream->putPacket($packet);
 		}
 
-		if(NetworkCompression::$THRESHOLD < 0 or strlen($stream->buffer) < NetworkCompression::$THRESHOLD){
+		if(NetworkCompression::$THRESHOLD < 0 or strlen($stream->getBuffer()) < NetworkCompression::$THRESHOLD){
 			foreach($targets as $target){
 				foreach($ev->getPackets() as $pk){
 					$target->addToSendBuffer($pk);
@@ -2091,17 +2157,18 @@ class Server{
 			Timings::$playerNetworkSendCompressTimer->startTiming();
 
 			$compressionLevel = NetworkCompression::$LEVEL;
-			if(NetworkCompression::$THRESHOLD < 0 or strlen($stream->buffer) < NetworkCompression::$THRESHOLD){
+			$buffer = $stream->getBuffer();
+			if(NetworkCompression::$THRESHOLD < 0 or strlen($buffer) < NetworkCompression::$THRESHOLD){
 				$compressionLevel = 0; //Do not compress packets under the threshold
 				$forceSync = true;
 			}
 
 			$promise = new CompressBatchPromise();
 			if(!$forceSync and $this->networkCompressionAsync){
-				$task = new CompressBatchTask($stream, $compressionLevel, $promise);
+				$task = new CompressBatchTask($buffer, $compressionLevel, $promise);
 				$this->asyncPool->submitTask($task);
 			}else{
-				$promise->resolve(NetworkCompression::compress($stream->buffer, $compressionLevel));
+				$promise->resolve(NetworkCompression::compress($buffer, $compressionLevel));
 			}
 
 			return $promise;
@@ -2462,6 +2529,7 @@ class Server{
 		//Force minimum uptime to be >= 120 seconds, to reduce the impact of spammy crash loops
 		$spacing = ((int) \pocketmine\START_TIME) - time() + 120;
 		if($spacing > 0){
+			echo "--- Waiting $spacing seconds to throttle automatic restart (you can kill the process safely now) ---" . PHP_EOL;
 			sleep($spacing);
 		}
 		@Utils::kill(getmypid());
@@ -2680,9 +2748,7 @@ class Server{
 				$this->logger->debug("Unhandled raw packet from $address $port: " . bin2hex($payload));
 			}
 		}catch(\Throwable $e){
-			if(\pocketmine\DEBUG > 1){
-				$this->logger->logException($e);
-			}
+			$this->logger->logException($e);
 
 			$this->getNetwork()->blockAddress($address, 600);
 		}
@@ -2763,10 +2829,9 @@ class Server{
 
 		TimingsHandler::tick($this->currentTPS <= $this->profilingTickRate);
 
-		array_shift($this->tickAverage);
-		$this->tickAverage[] = $this->currentTPS;
-		array_shift($this->useAverage);
-		$this->useAverage[] = $this->currentUse;
+		$idx = $this->tickCounter % 20;
+		$this->tickAverage[$idx] = $this->currentTPS;
+		$this->useAverage[$idx] = $this->currentUse;
 
 		if(($this->nextTick - $tickTime) < -1){
 			$this->nextTick = $tickTime;

@@ -29,6 +29,10 @@ use pocketmine\lang\TranslationContainer;
 use pocketmine\network\mcpe\protocol\types\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\permission\BanEntry;
+use function array_map;
+use function count;
+use function implode;
+use function strtolower;
 
 class BanListCommand extends VanillaCommand{
 

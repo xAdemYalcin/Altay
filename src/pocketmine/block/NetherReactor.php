@@ -23,9 +23,10 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
-use pocketmine\item\TieredTool;
+use pocketmine\block\utils\BlockDataValidator;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\TieredTool;
 
 class NetherReactor extends Solid{
 	protected const STATE_INACTIVE = 0;
@@ -46,7 +47,7 @@ class NetherReactor extends Solid{
 	}
 
 	public function readStateFromMeta(int $meta) : void{
-		$this->state = $meta;
+		$this->state = BlockDataValidator::readBoundedInt("state", $meta, 0, 2);
 	}
 
 	public function getStateBitmask() : int{

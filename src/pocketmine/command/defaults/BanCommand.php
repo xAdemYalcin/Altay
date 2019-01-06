@@ -27,19 +27,19 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\lang\TranslationContainer;
-use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Player;
-use pocketmine\event\server\BanEvent;
+use function array_shift;
+use function count;
+use function implode;
 
 class BanCommand extends VanillaCommand{
 
 	public function __construct(string $name){
-		parent::__construct($name, "%pocketmine.command.ban.player.description", "%commands.ban.usage", [], [
-				[
-					new CommandParameter("player", CommandParameter::ARG_TYPE_TARGET, false),
-					new CommandParameter("reason", CommandParameter::ARG_TYPE_RAWTEXT, false)
-				]
-			]);
+		parent::__construct(
+			$name,
+			"%pocketmine.command.ban.player.description",
+			"%commands.ban.usage"
+		);
 		$this->setPermission("pocketmine.command.ban.player");
 	}
 
@@ -56,8 +56,7 @@ class BanCommand extends VanillaCommand{
 		$reason = implode(" ", $args);
 
 		$sender->getServer()->getNameBans()->addBan($name, $reason, null, $sender->getName());
-		$event = new BanEvent($name, $reason);
-		$event->call();
+
 		if(($player = $sender->getServer()->getPlayerExact($name)) instanceof Player){
 			$player->kick($reason !== "" ? "Banned by admin. Reason: " . $reason : "Banned by admin.");
 		}

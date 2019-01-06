@@ -25,6 +25,10 @@ namespace pocketmine\network\mcpe;
 
 use Crypto\Cipher;
 use pocketmine\utils\Binary;
+use function bin2hex;
+use function openssl_digest;
+use function strlen;
+use function substr;
 
 class NetworkCipher{
 	private const ENCRYPTION_SCHEME = "AES-256-CFB8";
@@ -59,7 +63,7 @@ class NetworkCipher{
 		$this->encryptCipher->encryptInit($this->key, $iv);
 	}
 
-	public function decrypt($encrypted){
+	public function decrypt(string $encrypted) : string{
 		if(strlen($encrypted) < 9){
 			throw new \InvalidArgumentException("Payload is too short");
 		}

@@ -34,6 +34,7 @@ use pocketmine\lang\TranslationContainer;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
+use function count;
 
 class KillCommand extends VanillaCommand{
 

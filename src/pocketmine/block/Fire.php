@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use pocketmine\block\utils\BlockDataValidator;
 use pocketmine\entity\Entity;
 use pocketmine\entity\projectile\Arrow;
 use pocketmine\event\block\BlockBurnEvent;
@@ -31,6 +32,8 @@ use pocketmine\event\entity\EntityDamageByBlockEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\Item;
 use pocketmine\math\Facing;
+use function min;
+use function mt_rand;
 
 class Fire extends Flowable{
 
@@ -48,7 +51,7 @@ class Fire extends Flowable{
 	}
 
 	public function readStateFromMeta(int $meta) : void{
-		$this->age = $meta;
+		$this->age = BlockDataValidator::readBoundedInt("age", $meta, 0, 15);
 	}
 
 	public function getStateBitmask() : int{

@@ -27,6 +27,7 @@ declare(strict_types=1);
  */
 namespace pocketmine\block;
 
+use pocketmine\block\utils\InvalidBlockStateException;
 use pocketmine\entity\Entity;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\Item;
@@ -41,6 +42,10 @@ use pocketmine\metadata\Metadatable;
 use pocketmine\metadata\MetadataValue;
 use pocketmine\Player;
 use pocketmine\plugin\Plugin;
+use function array_merge;
+use function assert;
+use function dechex;
+use const PHP_INT_MAX;
 
 class Block extends Position implements BlockIds, Metadatable{
 
@@ -147,6 +152,10 @@ class Block extends Position implements BlockIds, Metadatable{
 		return 0;
 	}
 
+	/**
+	 * @param int $meta
+	 * @throws InvalidBlockStateException
+	 */
 	public function readStateFromMeta(int $meta) : void{
 		//NOOP
 	}

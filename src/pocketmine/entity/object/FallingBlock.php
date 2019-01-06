@@ -33,6 +33,7 @@ use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\IntTag;
+use function get_class;
 
 class FallingBlock extends Entity{
 	public const NETWORK_ID = self::FALLING_BLOCK;

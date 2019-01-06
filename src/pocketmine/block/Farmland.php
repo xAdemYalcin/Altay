@@ -27,6 +27,7 @@ namespace pocketmine\block;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Living;
 use pocketmine\event\block\BlockFormEvent;
+use pocketmine\block\utils\BlockDataValidator;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\level\GameRules;
@@ -50,7 +51,7 @@ class Farmland extends Transparent{
 	}
 
 	public function readStateFromMeta(int $meta) : void{
-		$this->wetness = $meta;
+		$this->wetness = BlockDataValidator::readBoundedInt("wetness", $meta, 0, 7);
 	}
 
 	public function getStateBitmask() : int{

@@ -80,6 +80,16 @@ use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\lang\TranslationContainer;
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
+use function array_map;
+use function array_shift;
+use function count;
+use function explode;
+use function implode;
+use function min;
+use function str_getcsv;
+use function strpos;
+use function strtolower;
+use function trim;
 
 class SimpleCommandMap implements CommandMap{
 
@@ -105,9 +115,11 @@ class SimpleCommandMap implements CommandMap{
 			new DefaultGamemodeCommand("defaultgamemode"),
 			new DeopCommand("deop"),
 			new DifficultyCommand("difficulty"),
+			new DumpMemoryCommand("dumpmemory"),
 			new EffectCommand("effect"),
 			new EnchantCommand("enchant"),
 			new GamemodeCommand("gamemode"),
+			new GarbageCollectorCommand("gc"),
 			new GiveCommand("give"),
 			new HelpCommand("help"),
 			new KickCommand("kick"),
@@ -130,6 +142,7 @@ class SimpleCommandMap implements CommandMap{
 			new SetBlockCommand("setblock"),
 			new SetWorldSpawnCommand("setworldspawn"),
 			new SpawnpointCommand("spawnpoint"),
+			new StatusCommand("status"),
 			new StopCommand("stop"),
 			new TeleportCommand("tp"),
 			new TellCommand("tell"),
@@ -149,14 +162,6 @@ class SimpleCommandMap implements CommandMap{
 				new ExtractPluginCommand("extractplugin"),
 				new MakePluginCommand("makeplugin"),
 				new MakeServerCommand("makeserver")
-			]);
-		}
-
-		if($this->server->getProperty("debug.commands", false)){
-			$this->registerAll("pocketmine", [
-				new StatusCommand("status"),
-				new GarbageCollectorCommand("gc"),
-				new DumpMemoryCommand("dumpmemory")
 			]);
 		}
 	}
@@ -271,7 +276,7 @@ class SimpleCommandMap implements CommandMap{
 	}
 
 	public function dispatch(CommandSender $sender, string $commandLine) : bool{
-		$args = array_map("stripslashes", str_getcsv($commandLine, " "));
+		$args = array_map("\stripslashes", str_getcsv($commandLine, " "));
 		$sentCommandLabel = "";
 		$target = $this->matchCommand($sentCommandLabel, $args);
 

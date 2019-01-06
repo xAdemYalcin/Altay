@@ -51,6 +51,8 @@ use pocketmine\level\biome\SpawnListEntry;
 use pocketmine\level\format\Chunk;
 use pocketmine\level\format\ChunkException;
 use pocketmine\level\format\EmptySubChunk;
+use pocketmine\level\format\io\exception\CorruptedChunkException;
+use pocketmine\level\format\io\exception\UnsupportedChunkFormatException;
 use pocketmine\level\format\io\LevelProvider;
 use pocketmine\level\generator\Generator;
 use pocketmine\level\generator\GeneratorManager;
@@ -93,6 +95,30 @@ use pocketmine\timings\Timings;
 use pocketmine\utils\Random;
 use pocketmine\utils\ReversePriorityQueue;
 use pocketmine\utils\WeightedRandomItem;
+use function abs;
+use function array_fill_keys;
+use function array_map;
+use function array_merge;
+use function array_sum;
+use function assert;
+use function cos;
+use function count;
+use function floor;
+use function get_class;
+use function gettype;
+use function is_a;
+use function is_array;
+use function is_object;
+use function lcg_value;
+use function max;
+use function microtime;
+use function min;
+use function mt_rand;
+use function strtolower;
+use function trim;
+use const INT32_MAX;
+use const INT32_MIN;
+use const M_PI;
 
 #include <rules/Level.h>
 
@@ -718,7 +744,9 @@ class Level implements ChunkManager, Metadatable{
 	}
 
 	public function unregisterChunkLoader(ChunkLoader $loader, int $chunkX, int $chunkZ){
-		if(isset($this->chunkLoaders[$index = Level::chunkHash($chunkX, $chunkZ)][$hash = $loader->getLoaderId()])){
+		$index = Level::chunkHash($chunkX, $chunkZ);
+		$hash = $loader->getLoaderId();
+		if(isset($this->chunkLoaders[$index][$hash])){
 			unset($this->chunkLoaders[$index][$hash]);
 			unset($this->playerLoaders[$index][$hash]);
 			if(count($this->chunkLoaders[$index]) === 0){
@@ -859,6 +887,12 @@ class Level implements ChunkManager, Metadatable{
 		foreach($this->updateTiles as $blockHash => $tile){
 			if(!$tile->onUpdate()){
 				unset($this->updateTiles[$blockHash]);
+			}
+			if(!$tile->isClosed() and $tile instanceof Spawnable and $tile->isDirty()){
+				$this->clearChunkCache($tile->getFloorX() >> 4, $tile->getFloorZ() >> 4);
+				//TODO: merge this with block-updating (it'll send useless data if a full-chunk resend happens)
+				$this->broadcastPacketToViewers($tile, $tile->createSpawnPacket());
+				$tile->setDirty(false);
 			}
 		}
 		Timings::$tickTileEntityTimer->stopTiming();
@@ -1359,7 +1393,7 @@ class Level implements ChunkManager, Metadatable{
 	public function getSkyLightReduction() : int{
 		return $this->skyLightReduction;
 	}
-	
+
 	/**
 	 * Returns if $level equals this level
 	 * @return bool
@@ -1383,9 +1417,9 @@ class Level implements ChunkManager, Metadatable{
 	}
 
 	/**
-	 * @param $x
-	 * @param $y
-	 * @param $z
+	 * @param int $x
+	 * @param int $y
+	 * @param int $z
 	 *
 	 * @return int bitmap, (id << 4) | data
 	 */
@@ -2700,10 +2734,6 @@ class Level implements ChunkManager, Metadatable{
 
 		$this->tiles[Level::blockHash($tile->x, $tile->y, $tile->z)] = $tile;
 		$tile->scheduleUpdate();
-		if($tile instanceof Spawnable){
-			$this->clearChunkCache($chunkX, $chunkZ);
-			$tile->spawnToAll();
-		}
 	}
 
 	/**
@@ -2763,10 +2793,9 @@ class Level implements ChunkManager, Metadatable{
 
 		try{
 			$chunk = $this->provider->loadChunk($x, $z);
-		}catch(\Exception $e){
+		}catch(CorruptedChunkException | UnsupportedChunkFormatException $e){
 			$logger = $this->server->getLogger();
-			$logger->critical("An error occurred while loading chunk x=$x z=$z: " . $e->getMessage());
-			$logger->logException($e);
+			$logger->critical("Failed to load chunk x=$x z=$z: " . $e->getMessage());
 		}
 
 		if($chunk === null and $create){
@@ -2847,23 +2876,17 @@ class Level implements ChunkManager, Metadatable{
 				return false;
 			}
 
-			try{
-				if($trySave and $this->getAutoSave() and $chunk->isGenerated()){
-					if($chunk->hasChanged() or count($chunk->getTiles()) > 0 or count($chunk->getSavableEntities()) > 0){
-						$this->provider->saveChunk($chunk);
-					}
+			if($trySave and $this->getAutoSave() and $chunk->isGenerated()){
+				if($chunk->hasChanged() or count($chunk->getTiles()) > 0 or count($chunk->getSavableEntities()) > 0){
+					$this->provider->saveChunk($chunk);
 				}
-
-				foreach($this->getChunkLoaders($x, $z) as $loader){
-					$loader->onChunkUnloaded($chunk);
-				}
-
-				$chunk->onUnload();
-			}catch(\Throwable $e){
-				$logger = $this->server->getLogger();
-				$logger->error($this->server->getLanguage()->translateString("pocketmine.level.chunkUnloadError", [$e->getMessage()]));
-				$logger->logException($e);
 			}
+
+			foreach($this->getChunkLoaders($x, $z) as $loader){
+				$loader->onChunkUnloaded($chunk);
+			}
+
+			$chunk->onUnload();
 		}
 
 		unset($this->chunks[$chunkHash]);

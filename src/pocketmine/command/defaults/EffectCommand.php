@@ -33,6 +33,9 @@ use pocketmine\lang\TranslationContainer;
 use pocketmine\network\mcpe\protocol\types\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\utils\TextFormat;
+use function count;
+use function strtolower;
+use const INT32_MAX;
 
 class EffectCommand extends VanillaCommand{
 

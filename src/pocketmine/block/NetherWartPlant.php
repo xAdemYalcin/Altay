@@ -25,12 +25,14 @@ declare(strict_types=1);
 namespace pocketmine\block;
 
 
+use pocketmine\block\utils\BlockDataValidator;
 use pocketmine\event\block\BlockGrowEvent;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\math\Facing;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
+use function mt_rand;
 
 class NetherWartPlant extends Flowable{
 	protected $id = Block::NETHER_WART_PLANT;
@@ -49,7 +51,7 @@ class NetherWartPlant extends Flowable{
 	}
 
 	public function readStateFromMeta(int $meta) : void{
-		$this->age = $meta;
+		$this->age = BlockDataValidator::readBoundedInt("age", $meta, 0, 3);
 	}
 
 	public function getStateBitmask() : int{

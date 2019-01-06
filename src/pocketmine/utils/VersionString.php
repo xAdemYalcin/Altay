@@ -23,6 +23,10 @@ declare(strict_types=1);
 
 namespace pocketmine\utils;
 
+
+use function count;
+use function preg_match;
+
 /**
  * Manages PocketMine-MP version strings, and compares them
  */

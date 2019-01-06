@@ -26,8 +26,10 @@ namespace pocketmine\level\generator\object;
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
 use pocketmine\block\Wood;
+use pocketmine\level\BlockWriteBatch;
 use pocketmine\level\ChunkManager;
 use pocketmine\utils\Random;
+use function abs;
 
 class SpruceTree extends Tree{
 
@@ -35,14 +37,18 @@ class SpruceTree extends Tree{
 		parent::__construct(BlockFactory::get(Block::LOG, Wood::SPRUCE), BlockFactory::get(Block::LEAVES, Wood::SPRUCE), 10);
 	}
 
+	protected function generateChunkHeight(Random $random) : int{
+		return $this->treeHeight - $random->nextBoundedInt(3);
+	}
+
 	public function placeObject(ChunkManager $level, int $x, int $y, int $z, Random $random) : void{
 		$this->treeHeight = $random->nextBoundedInt(4) + 6;
+		parent::placeObject($level, $x, $y, $z, $random);
+	}
 
+	protected function placeCanopy(ChunkManager $level, int $x, int $y, int $z, Random $random, BlockWriteBatch $write) : void{
 		$topSize = $this->treeHeight - (1 + $random->nextBoundedInt(2));
 		$lRadius = 2 + $random->nextBoundedInt(2);
-
-		$this->placeTrunk($level, $x, $y, $z, $random, $this->treeHeight - $random->nextBoundedInt(3));
-
 		$radius = $random->nextBoundedInt(2);
 		$maxR = 1;
 		$minR = 0;
@@ -59,7 +65,7 @@ class SpruceTree extends Tree{
 					}
 
 					if(!$level->getBlockAt($xx, $yyy, $zz)->isSolid()){
-						$level->setBlockAt($xx, $yyy, $zz, $this->leafBlock);
+						$write->addBlockAt($xx, $yyy, $zz, $this->leafBlock);
 					}
 				}
 			}

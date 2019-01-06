@@ -30,6 +30,10 @@ use pocketmine\event\server\AddressBanEvent;
 use pocketmine\lang\TranslationContainer;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Player;
+use function array_shift;
+use function count;
+use function implode;
+use function preg_match;
 
 class BanIpCommand extends VanillaCommand{
 

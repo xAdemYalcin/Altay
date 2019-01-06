@@ -30,6 +30,9 @@ use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityRegainHealthEvent;
 use pocketmine\event\player\PlayerExhaustEvent;
 use pocketmine\utils\Color;
+use function constant;
+use function defined;
+use function strtoupper;
 
 class Effect{
 	public const SPEED = 1;

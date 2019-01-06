@@ -29,6 +29,10 @@ use pocketmine\network\mcpe\protocol\ProtocolInfo;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\plugin\Plugin;
 use pocketmine\utils\TextFormat;
+use function count;
+use function implode;
+use function stripos;
+use function strtolower;
 
 class VersionCommand extends VanillaCommand{
 

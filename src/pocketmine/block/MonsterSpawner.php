@@ -30,6 +30,7 @@ use pocketmine\item\Item;
 use pocketmine\Player;
 use pocketmine\tile\MobSpawner;
 use pocketmine\tile\Tile;
+use function mt_rand;
 
 class MonsterSpawner extends Transparent{
 

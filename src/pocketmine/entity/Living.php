@@ -58,6 +58,19 @@ use pocketmine\timings\Timings;
 use pocketmine\utils\Binary;
 use pocketmine\utils\Color;
 use pocketmine\utils\UUID;
+use function abs;
+use function array_shift;
+use function atan2;
+use function ceil;
+use function count;
+use function floor;
+use function lcg_value;
+use function max;
+use function min;
+use function mt_getrandmax;
+use function mt_rand;
+use function sqrt;
+use const M_PI;
 
 abstract class Living extends Entity implements Damageable{
 
@@ -666,10 +679,7 @@ abstract class Living extends Entity implements Damageable{
 			}
 
 			if($e !== null){
-				if((
-					$source->getCause() === EntityDamageEvent::CAUSE_PROJECTILE or
-					$source->getCause() === EntityDamageEvent::CAUSE_ENTITY_ATTACK
-				) and $e->isOnFire()){
+				if(($source->getCause() === EntityDamageEvent::CAUSE_PROJECTILE or $source->getCause() === EntityDamageEvent::CAUSE_ENTITY_ATTACK) and $e->isOnFire()){
 					$this->setOnFire(2 * $this->level->getDifficulty());
 				}
 
@@ -754,7 +764,7 @@ abstract class Living extends Entity implements Damageable{
 	}
 
 	protected function endDeathAnimation() : void{
-		//TODO
+		$this->despawnFromAll();
 	}
 
 	public function onUpdate(int $currentTick) : bool{

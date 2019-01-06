@@ -1,4 +1,4 @@
-# Main configuration file for Altay
+# Main configuration file for PocketMine-MP
 # These settings are the ones that cannot be included in server.properties
 # Some of these settings are safe, others can break your server if modified incorrectly
 # New settings/defaults won't appear automatically in this file when upgrading.
@@ -99,21 +99,15 @@ network:
  enable-encryption: true
 
 debug:
- #To enable assertion execution, set zend.assertions in your php.ini to 1
- assertions:
-  #Warn if assertions are enabled in php.ini, due to assertions may impact on runtime performance if enabled.
-  warn-if-enabled: true
  #If > 1, it will show debug messages in the console
  level: 1
- #Enables /status, /gc
- commands: false
- 
+
 player:
  #Choose whether to enable player data saving.
  save-player-data: true
  anti-cheat:
   #If false, will try to prevent speed and noclip cheats. May cause movement issues.
-  allow-movement-cheats: false
+  allow-movement-cheats: true
 
 level-settings:
  #The default format that levels will use when created
@@ -145,13 +139,36 @@ chunk-ticking:
   #- 2 # grass
 
 chunk-generation:
- #Max. amount of chunks in the waiting queue to be generated
- queue-size: 8
  #Max. amount of chunks in the waiting queue to be populated
  population-queue-size: 8
 
 ticks-per:
  autosave: 6000
+
+auto-report:
+ #Send crash reports for processing
+ enabled: true
+ send-code: true
+ send-settings: true
+ send-phpinfo: false
+ use-https: true
+ host: crash.pmmp.io
+
+anonymous-statistics:
+ #Sends anonymous statistics for data aggregation, plugin usage tracking
+ enabled: false #TODO: re-enable this when we have a new stats host
+ host: stats.pocketmine.net
+
+auto-updater:
+ enabled: true
+ on-update:
+  warn-console: true
+  warn-ops: true
+ #Can be development, alpha, beta or stable.
+ preferred-channel: stable
+ #If using a development version, it will suggest changing the channel
+ suggest-channels: true
+ host: update.pmmp.io
 
 timings:
  #Choose the host to use for viewing your timings results.

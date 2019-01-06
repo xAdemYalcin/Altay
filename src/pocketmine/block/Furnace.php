@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use pocketmine\block\utils\BlockDataValidator;
 use pocketmine\item\Item;
 use pocketmine\item\TieredTool;
 use pocketmine\math\Facing;
@@ -53,7 +54,7 @@ class Furnace extends Solid{
 	}
 
 	public function readStateFromMeta(int $meta) : void{
-		$this->facing = $meta;
+		$this->facing = BlockDataValidator::readHorizontalFacing($meta);
 	}
 
 	public function getStateBitmask() : int{
@@ -99,9 +100,7 @@ class Furnace extends Solid{
 			$this->facing = Facing::opposite($player->getHorizontalFacing());
 		}
 		if(parent::place($item, $blockReplace, $blockClicked, $face, $clickVector, $player)){
-			if(($tile = Tile::createFromItem(Tile::FURNACE, $this->getLevel(), $this->asVector3(), $item)) !== null){
-				$this->level->addTile($tile);
-			}
+			$this->level->addTile(Tile::createFromItem(TileFurnace::class, $this->getLevel(), $this->asVector3(), $item));
 			return true;
 		}
 

@@ -32,6 +32,7 @@ use pocketmine\level\Level;
 use pocketmine\math\Facing;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
+use function mt_rand;
 
 class Leaves extends Transparent{
 	/** @var int */

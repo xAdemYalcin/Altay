@@ -26,6 +26,10 @@ namespace pocketmine\scheduler;
 use pocketmine\utils\MainLogger;
 use pocketmine\utils\Utils;
 use pocketmine\Worker;
+use function error_reporting;
+use function gc_enable;
+use function ini_set;
+use function set_error_handler;
 
 class AsyncWorker extends Worker{
 	/** @var mixed[] */
@@ -51,6 +55,7 @@ class AsyncWorker extends Worker{
 		//set this after the autoloader is registered
 		set_error_handler([Utils::class, 'errorExceptionHandler']);
 
+		\GlobalLogger::set($this->logger);
 		if($this->logger instanceof MainLogger){
 			$this->logger->registerStatic();
 		}

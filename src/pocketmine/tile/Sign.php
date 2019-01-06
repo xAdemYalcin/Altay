@@ -28,6 +28,14 @@ use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\StringTag;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
+use function array_map;
+use function array_pad;
+use function array_slice;
+use function assert;
+use function count;
+use function explode;
+use function implode;
+use function sprintf;
 
 class Sign extends Spawnable{
 	public const TAG_TEXT_BLOB = "Text";
@@ -88,17 +96,14 @@ class Sign extends Spawnable{
 	/**
 	 * @param int    $index 0-3
 	 * @param string $line
-	 * @param bool   $update
 	 */
-	public function setLine(int $index, string $line, bool $update = true) : void{
+	public function setLine(int $index, string $line) : void{
 		if($index < 0 or $index > 3){
 			throw new \InvalidArgumentException("Index must be in the range 0-3!");
 		}
 
 		$this->text[$index] = $line;
-		if($update){
-			$this->onChanged();
-		}
+		$this->onChanged();
 	}
 
 	/**
@@ -125,19 +130,10 @@ class Sign extends Spawnable{
 	}
 
 	public function updateCompoundTag(CompoundTag $nbt, Player $player) : bool{
-		if($nbt->getString("id") !== Tile::SIGN){
-			return false;
-		}
-
 		if($nbt->hasTag(self::TAG_TEXT_BLOB, StringTag::class)){
-			$lines = array_pad(explode("\n", $nbt->getString(self::TAG_TEXT_BLOB)), 4, "");
+			$lines = array_slice(array_pad(explode("\n", $nbt->getString(self::TAG_TEXT_BLOB)), 4, ""), 0, 4);
 		}else{
-			$lines = [
-				$nbt->getString(sprintf(self::TAG_TEXT_LINE, 1)),
-				$nbt->getString(sprintf(self::TAG_TEXT_LINE, 2)),
-				$nbt->getString(sprintf(self::TAG_TEXT_LINE, 3)),
-				$nbt->getString(sprintf(self::TAG_TEXT_LINE, 4))
-			];
+			return false;
 		}
 
 		$removeFormat = $player->getRemoveFormat();

@@ -24,10 +24,17 @@ declare(strict_types=1);
 namespace pocketmine\block;
 
 use pocketmine\block\utils\Color;
+use pocketmine\block\utils\InvalidBlockStateException;
 use pocketmine\block\utils\PillarRotationTrait;
 use pocketmine\block\utils\WoodType;
 use pocketmine\item\Item;
 use pocketmine\level\Position;
+use function array_fill;
+use function file_get_contents;
+use function get_class;
+use function json_decode;
+use function max;
+use function min;
 
 /**
  * Manages block registration and instance creation
@@ -481,10 +488,16 @@ class BlockFactory{
 			$index = ($id << 4) | $m;
 
 			$v = clone $block;
-			$v->readStateFromMeta($m & $stateMask);
-			if($v->getDamage() === $m){ //don't register anything that isn't the same when we read it back again
-				self::fillStaticArrays($index, $v);
+			try{
+				$v->readStateFromMeta($m & $stateMask);
+				if($v->getDamage() !== $m){
+					throw new InvalidBlockStateException("Corrupted meta"); //don't register anything that isn't the same when we read it back again
+				}
+			}catch(InvalidBlockStateException $e){ //invalid property combination
+				continue;
 			}
+
+			self::fillStaticArrays($index, $v);
 		}
 
 		if(!self::isRegistered($id, $variant)){

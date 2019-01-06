@@ -30,6 +30,7 @@ use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\StringTag;
 use pocketmine\tile\Banner as TileBanner;
+use function assert;
 
 class Banner extends Item{
 	public const TAG_BASE = TileBanner::TAG_BASE;
@@ -55,7 +56,7 @@ class Banner extends Item{
 	 * @return int
 	 */
 	public function getBaseColor() : int{
-		return $this->getNamedTag()->getInt(self::TAG_BASE, 0);
+		return $this->getNamedTag()->getInt(self::TAG_BASE, $this->getDamage());
 	}
 
 	/**
