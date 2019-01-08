@@ -88,12 +88,12 @@ class Boat extends Vehicle{
 	}
 
 	protected function applyGravity() : void{
-	    if(!$this->isUnderwater()){
-            parent::applyGravity();
-        }
-    }
+		if(!$this->isUnderwater()){
+			parent::applyGravity();
+		}
+	}
 
-    public function getSeatCount() : int{
-        return 2;
-    }
+	public function getSeatCount() : int{
+		return 2;
+	}
 }

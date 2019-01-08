@@ -24,10 +24,6 @@ declare(strict_types=1);
 
 namespace pocketmine\entity\hostile;
 
-use pocketmine\entity\Monster;
-use pocketmine\entity\projectile\SmallFireball;
-use pocketmine\event\entity\EntityDamageEvent;
-use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\entity\behavior\FindAttackableTargetBehavior;
 use pocketmine\entity\behavior\HurtByTargetBehavior;
 use pocketmine\entity\behavior\LookAtPlayerBehavior;
@@ -35,10 +31,15 @@ use pocketmine\entity\behavior\RandomLookAroundBehavior;
 use pocketmine\entity\behavior\RangedAttackBehavior;
 use pocketmine\entity\behavior\WanderBehavior;
 use pocketmine\entity\Entity;
+use pocketmine\entity\Monster;
+use pocketmine\entity\projectile\SmallFireball;
+use pocketmine\entity\RangedAttackerMob;
+use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\Player;
-use pocketmine\entity\RangedAttackerMob;
+use function rand;
 
 class Blaze extends Monster implements RangedAttackerMob{
 

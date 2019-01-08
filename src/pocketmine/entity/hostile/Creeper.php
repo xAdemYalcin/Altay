@@ -47,6 +47,9 @@ use pocketmine\network\mcpe\protocol\LevelEventPacket;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\Player;
 use pocketmine\tile\Skull;
+use function boolval;
+use function intval;
+use function rand;
 
 class Creeper extends Monster implements Ageable{
 

@@ -41,6 +41,11 @@ use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\protocol\EntityEventPacket;
 use pocketmine\Player;
+use function cos;
+use function floor;
+use function mt_rand;
+use function sin;
+use function sqrt;
 
 class FishingHook extends Projectile{
 
@@ -58,7 +63,7 @@ class FishingHook extends Projectile{
 	protected $ticksCatchable = 0;
 	protected $ticksCaughtDelay = 0;
 	protected $ticksCatchableDelay = 0;
-	/** @var int */
+	/** @var float */
 	protected $fishApproachAngle = 0;
 
 	public function attack(EntityDamageEvent $source) : void{

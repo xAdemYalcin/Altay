@@ -31,6 +31,7 @@ use pocketmine\entity\Animal;
 use pocketmine\level\GameRules;
 use pocketmine\level\particle\DestroyBlockParticle;
 use pocketmine\network\mcpe\protocol\EntityEventPacket;
+use function max;
 
 class EatBlockBehavior extends Behavior{
 

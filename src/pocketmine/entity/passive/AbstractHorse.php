@@ -24,31 +24,18 @@ declare(strict_types=1);
 
 namespace pocketmine\entity\passive;
 
-use pocketmine\entity\Animal;
 use pocketmine\entity\Attribute;
-use pocketmine\entity\behavior\FloatBehavior;
-use pocketmine\entity\behavior\FollowParentBehavior;
-use pocketmine\entity\behavior\HorseRiddenBehavior;
-use pocketmine\entity\behavior\LookAtPlayerBehavior;
-use pocketmine\entity\behavior\MateBehavior;
-use pocketmine\entity\behavior\PanicBehavior;
-use pocketmine\entity\behavior\RandomLookAroundBehavior;
-use pocketmine\entity\behavior\TemptedBehavior;
-use pocketmine\entity\behavior\WanderBehavior;
-use pocketmine\entity\Effect;
-use pocketmine\entity\Entity;
 use pocketmine\entity\Tamable;
 use pocketmine\item\Saddle;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
-use pocketmine\math\Facing;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\nbt\tag\IntTag;
-use pocketmine\network\mcpe\protocol\EntityEventPacket;
-use pocketmine\network\mcpe\protocol\RiderJumpPacket;
 use pocketmine\network\mcpe\protocol\UpdateAttributesPacket;
 use pocketmine\Player;
+use function boolval;
+use function intval;
+use function mt_rand;
 
 abstract class AbstractHorse extends Tamable{
 
@@ -143,7 +130,7 @@ abstract class AbstractHorse extends Tamable{
 	}
 
 	public function getXpDropAmount() : int{
-		return rand(1, ($this->isInLove() ? 7 : 3));
+		return mt_rand(1, ($this->isInLove() ? 7 : 3));
 	}
 
 	public function getDrops() : array{

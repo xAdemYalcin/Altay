@@ -37,6 +37,7 @@ use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\Player;
+use function mt_rand;
 
 class Zombie extends Monster implements Ageable{
 	public const NETWORK_ID = self::ZOMBIE;

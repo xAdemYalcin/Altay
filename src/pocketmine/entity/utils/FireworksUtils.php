@@ -33,6 +33,7 @@ use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\ListTag;
 use pocketmine\utils\Random;
+use function is_null;
 
 class FireworksUtils{
 	public const COLOR_BLACK = 0;
@@ -77,7 +78,7 @@ class FireworksUtils{
 		]);
 	}
 
-	public static function createEntityNBT(Vector3 $pos, ?Vector3 $motion = null, Fireworks $rocket, float $spread = 5.0, ?Random $random = null, ?float $yaw = null, ?float $pitch = null) : CompoundTag{
+	public static function createEntityNBT(Vector3 $pos, ?Vector3 $motion, Fireworks $rocket, float $spread = 5.0, ?Random $random = null, ?float $yaw = null, ?float $pitch = null) : CompoundTag{
 		$random = $random ?? new Random();
 		$pos = $pos->add(0.5, 0, 0.5);
 		$yaw = $yaw ?? $random->nextBoundedInt(360);

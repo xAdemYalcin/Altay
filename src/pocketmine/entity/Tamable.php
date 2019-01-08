@@ -27,6 +27,8 @@ namespace pocketmine\entity;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\StringTag;
 use pocketmine\utils\UUID;
+use function boolval;
+use function intval;
 
 abstract class Tamable extends Animal{
 

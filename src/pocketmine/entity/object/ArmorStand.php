@@ -33,7 +33,6 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\inventory\AltayEntityEquipment;
 use pocketmine\inventory\ArmorInventory;
-use pocketmine\inventory\utils\EquipmentSlot;
 use pocketmine\item\Armor;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
@@ -44,6 +43,8 @@ use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\ListTag;
 use pocketmine\network\mcpe\protocol\LevelEventPacket;
 use pocketmine\Player;
+use function array_merge;
+use function min;
 
 class ArmorStand extends Living{
 

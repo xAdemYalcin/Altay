@@ -41,6 +41,7 @@ use pocketmine\item\ItemFactory;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\Player;
+use function rand;
 
 class Skeleton extends Monster implements RangedAttackerMob{
 

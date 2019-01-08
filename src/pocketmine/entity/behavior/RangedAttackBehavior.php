@@ -28,6 +28,8 @@ use pocketmine\entity\Mob;
 use pocketmine\entity\RangedAttackerMob;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
+use function floor;
+use function sqrt;
 
 class RangedAttackBehavior extends Behavior{
 

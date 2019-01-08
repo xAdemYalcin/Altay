@@ -43,6 +43,9 @@ use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\Player;
 use pocketmine\utils\Random;
+use function boolval;
+use function intval;
+use function rand;
 
 class Sheep extends Animal{
 

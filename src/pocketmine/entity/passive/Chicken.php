@@ -37,6 +37,9 @@ use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
+use function boolval;
+use function intval;
+use function rand;
 
 class Chicken extends Animal{
 

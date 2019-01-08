@@ -34,6 +34,13 @@ use pocketmine\math\Facing;
 use pocketmine\math\Vector2;
 use pocketmine\math\Vector3;
 use pocketmine\timings\Timings;
+use function abs;
+use function array_unshift;
+use function array_values;
+use function count;
+use function floor;
+use function reset;
+use function uasort;
 
 class EntityNavigator{
 

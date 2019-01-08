@@ -26,6 +26,7 @@ namespace pocketmine\entity;
 
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
+use function max;
 
 abstract class Monster extends Mob{
 

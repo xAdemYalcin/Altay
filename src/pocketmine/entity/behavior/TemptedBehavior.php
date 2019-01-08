@@ -26,6 +26,7 @@ namespace pocketmine\entity\behavior;
 
 use pocketmine\entity\Mob;
 use pocketmine\Player;
+use function in_array;
 
 class TemptedBehavior extends Behavior{
 

@@ -36,6 +36,9 @@ use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\ListTag;
 use pocketmine\Player;
+use function array_rand;
+use function count;
+use function mt_rand;
 
 class Villager extends Mob implements NPC, Ageable{
 

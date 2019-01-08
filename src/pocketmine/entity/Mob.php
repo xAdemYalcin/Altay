@@ -24,22 +24,17 @@ declare(strict_types=1);
 
 namespace pocketmine\entity;
 
-
 use pocketmine\entity\behavior\BehaviorPool;
 use pocketmine\entity\pathfinder\EntityNavigator;
-use pocketmine\item\Lead;
-use pocketmine\item\Item;
-use pocketmine\level\Level;
 use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Facing;
 use pocketmine\math\Vector3;
-use pocketmine\math\VoxelRayTrace;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\network\mcpe\protocol\EntityEventPacket;
-use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
-use pocketmine\network\mcpe\protocol\PlaySoundPacket;
-use pocketmine\Player;
 use pocketmine\timings\Timings;
+use function abs;
+use function boolval;
+use function in_array;
+use function intval;
 
 abstract class Mob extends Living{
 

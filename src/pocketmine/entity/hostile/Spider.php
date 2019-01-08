@@ -37,6 +37,7 @@ use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\Player;
+use function rand;
 
 class Spider extends Monster implements Ageable{
 

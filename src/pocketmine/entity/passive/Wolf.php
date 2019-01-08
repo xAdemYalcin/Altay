@@ -42,6 +42,7 @@ use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\protocol\EntityEventPacket;
 use pocketmine\Player;
+use function mt_rand;
 
 class Wolf extends Tamable{
 	public const NETWORK_ID = self::WOLF;

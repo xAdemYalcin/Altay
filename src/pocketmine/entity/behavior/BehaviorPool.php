@@ -25,6 +25,7 @@ declare(strict_types=1);
 namespace pocketmine\entity\behavior;
 
 use pocketmine\Server;
+use function spl_object_hash;
 
 class BehaviorPool{
 

@@ -25,12 +25,10 @@ declare(strict_types=1);
 namespace pocketmine\entity\behavior;
 
 use pocketmine\block\Block;
-use pocketmine\block\Grass;
-use pocketmine\entity\Animal;
+use pocketmine\block\Water;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Mob;
 use pocketmine\math\Vector3;
-use pocketmine\block\Water;
 
 class FleeSunBehavior extends Behavior{
 
