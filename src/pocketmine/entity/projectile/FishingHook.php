@@ -109,15 +109,15 @@ class FishingHook extends Projectile{
 	 */
 	public function handleHookCasting(float $x, float $y, float $z, float $f1, float $f2){
 		$f = sqrt($x * $x + $y * $y + $z * $z);
-		$x = $x / (float) $f;
-		$y = $y / (float) $f;
-		$z = $z / (float) $f;
-		$x = $x + $this->random->nextSignedFloat() * 0.007499999832361937 * (float) $f2;
-		$y = $y + $this->random->nextSignedFloat() * 0.007499999832361937 * (float) $f2;
-		$z = $z + $this->random->nextSignedFloat() * 0.007499999832361937 * (float) $f2;
-		$x = $x * (float) $f1;
-		$y = $y * (float) $f1;
-		$z = $z * (float) $f1;
+		$x = $x / $f;
+		$y = $y / $f;
+		$z = $z / $f;
+		$x = $x + $this->random->nextSignedFloat() * 0.0075 * $f2;
+		$y = $y + $this->random->nextSignedFloat() * 0.0075 * $f2;
+		$z = $z + $this->random->nextSignedFloat() * 0.0075 * $f2;
+		$x = $x * $f1;
+		$y = $y * $f1;
+		$z = $z * $f1;
 		$this->motion->x += $x;
 		$this->motion->y += $y;
 		$this->motion->z += $z;
@@ -177,13 +177,13 @@ class FishingHook extends Projectile{
 							$this->motion->y -= 0.2;
 							$this->ticksCatchable = mt_rand(10, 30);
 						}else{
-							$this->fishApproachAngle = (float) ((int) $this->fishApproachAngle + $this->random->nextSignedFloat() * 4.0);
-							$f7 = $this->fishApproachAngle * 0.017453292;
+							$this->fishApproachAngle = $this->fishApproachAngle + $this->random->nextSignedFloat() * 4.0;
+							$f7 = $this->fishApproachAngle * 0.01745;
 							$f10 = sin($f7);
 							$f11 = cos($f7);
-							$d13 = $this->x + (int) ($f10 * (float) $this->ticksCatchableDelay * 0.1);
-							$d15 = (int) $this->y + 1;
-							$d16 = $this->z + (int) ($f11 * (float) $this->ticksCatchableDelay * 0.1);
+							$d13 = $this->x + ($f10 * $this->ticksCatchableDelay * 0.1);
+							$d15 = $this->y + 1;
+							$d16 = $this->z + ($f11 * $this->ticksCatchableDelay * 0.1);
 							$block1 = $this->level->getBlock(new Vector3($d13, $d15 - 1, $d16));
 
 							if($block1 instanceof Water){
@@ -199,19 +199,19 @@ class FishingHook extends Projectile{
 						$f1 = 0.15;
 
 						if($this->ticksCaughtDelay < 20){
-							$f1 = (float) ((float) $f1 + (int) (20 - $this->ticksCaughtDelay) * 0.05);
+							$f1 = ($f1 + (20 - $this->ticksCaughtDelay) * 0.05);
 						}elseif($this->ticksCaughtDelay < 40){
-							$f1 = (float) ((float) $f1 + (int) (40 - $this->ticksCaughtDelay) * 0.02);
+							$f1 = ($f1 + (40 - $this->ticksCaughtDelay) * 0.02);
 						}elseif($this->ticksCaughtDelay < 60){
-							$f1 = (float) ((float) $f1 + (int) (60 - $this->ticksCaughtDelay) * 0.01);
+							$f1 = ($f1 + (60 - $this->ticksCaughtDelay) * 0.01);
 						}
 
 						if($this->random->nextFloat() < $f1){
-							$f9 = mt_rand(0, 360) * 0.017453292;
+							$f9 = mt_rand(0, 360) * 0.01745;
 							$f2 = mt_rand(25, 60);
-							$d12 = $this->x + (int) (sin($f9) * $f2 * 0.1);
-							$d14 = (int) ((float) floor($this->y) + 1.0);
-							$d6 = $this->z + (int) (cos($f9) * $f2 * 0.1);
+							$d12 = $this->x + (sin($f9) * $f2 * 0.1);
+							$d14 = floor($this->y) + 1.0;
+							$d6 = $this->z + (cos($f9) * $f2 * 0.1);
 							$block = $this->level->getBlock(new Vector3($d12, $d14 - 1, $d6));
 
 							if($block instanceof Water){
@@ -229,20 +229,20 @@ class FishingHook extends Projectile{
 					}
 
 					if($this->ticksCatchable > 0){
-						$this->motion->y -= (int) ($this->random->nextFloat() * $this->random->nextFloat() * $this->random->nextFloat()) * 0.2;
+						$this->motion->y -= ($this->random->nextFloat() * $this->random->nextFloat() * $this->random->nextFloat()) * 0.2;
 					}
 
 					$d11 = $d10 * 2.0 - 1.0;
 					$this->motion->y += 0.03999999910593033 * $d11;
 
 					if($d10 > 0.0){
-						$f6 = (float) ((int) $f6 * 0.9);
+						$f6 = $f6 * 0.9;
 						$this->motion->y *= 0.8;
 					}
 
-					$this->motion->x *= (int) $f6;
-					$this->motion->y *= (int) $f6;
-					$this->motion->z *= (int) $f6;
+					$this->motion->x *= $f6;
+					$this->motion->y *= $f6;
+					$this->motion->z *= $f6;
 				}
 			}
 		}else{
@@ -269,9 +269,9 @@ class FishingHook extends Projectile{
 				$d0 = $angler->x - $this->x;
 				$d2 = $angler->y - $this->y;
 				$d4 = $angler->z - $this->z;
-				$d6 = (int) sqrt($d0 * $d0 + $d2 * $d2 + $d4 * $d4);
+				$d6 = sqrt($d0 * $d0 + $d2 * $d2 + $d4 * $d4);
 				$d8 = 0.1;
-				$this->ridingEntity->setMotion(new Vector3($d0 * $d8, $d2 * $d8 + (int) sqrt($d6) * 0.08, $d4 * $d8));
+				$this->ridingEntity->setMotion(new Vector3($d0 * $d8, $d2 * $d8 + sqrt($d6) * 0.08, $d4 * $d8));
 			}elseif($this->ticksCatchable > 0){
 				// TODO: Random weighted items
 				$items = [
@@ -292,9 +292,9 @@ class FishingHook extends Projectile{
 					$d0 = $angler->x - $this->x;
 					$d2 = $angler->y - $this->y;
 					$d4 = $angler->z - $this->z;
-					$d6 = (int) sqrt($d0 * $d0 + $d2 * $d2 + $d4 * $d4);
+					$d6 = sqrt($d0 * $d0 + $d2 * $d2 + $d4 * $d4);
 					$d8 = 0.1;
-					$entityitem->setMotion(new Vector3($d0 * $d8, $d2 * $d8 + (int) sqrt($d6) * 0.08, $d4 * $d8));
+					$entityitem->setMotion(new Vector3($d0 * $d8, $d2 * $d8 + sqrt($d6) * 0.08, $d4 * $d8));
 					$entityitem->spawnToAll();
 					$this->level->dropExperience($angler, $ev->getXpDropAmount());
 				}
