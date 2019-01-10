@@ -36,6 +36,7 @@ use pocketmine\command\ConsoleCommandSender;
 use pocketmine\command\PluginIdentifiableCommand;
 use pocketmine\command\SimpleCommandMap;
 use pocketmine\entity\Entity;
+use pocketmine\entity\EntityFactory;
 use pocketmine\entity\Skin;
 use pocketmine\entity\utils\Bossbar;
 use pocketmine\event\HandlerList;
@@ -64,7 +65,7 @@ use pocketmine\maps\MapManager;
 use pocketmine\metadata\EntityMetadataStore;
 use pocketmine\metadata\LevelMetadataStore;
 use pocketmine\metadata\PlayerMetadataStore;
-use pocketmine\nbt\BigEndianNBTStream;
+use pocketmine\nbt\BigEndianNbtSerializer;
 use pocketmine\nbt\NBT;
 use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\CompoundTag;
@@ -105,10 +106,9 @@ use pocketmine\resourcepacks\ResourcePackManager;
 use pocketmine\scheduler\AsyncPool;
 use pocketmine\snooze\SleeperHandler;
 use pocketmine\snooze\SleeperNotifier;
-use pocketmine\tile\Tile;
+use pocketmine\tile\TileFactory;
 use pocketmine\timings\Timings;
 use pocketmine\timings\TimingsHandler;
-use pocketmine\utils\Binary;
 use pocketmine\utils\Config;
 use pocketmine\utils\MainLogger;
 use pocketmine\utils\Terminal;
@@ -155,6 +155,7 @@ use function pcntl_signal;
 use function pcntl_signal_dispatch;
 use function preg_replace;
 use function random_bytes;
+use function random_int;
 use function realpath;
 use function register_shutdown_function;
 use function rename;
@@ -173,6 +174,8 @@ use function time;
 use function touch;
 use function trim;
 use const DIRECTORY_SEPARATOR;
+use const INT32_MAX;
+use const INT32_MIN;
 use const PHP_EOL;
 use const PHP_INT_MAX;
 use const PTHREADS_INHERIT_NONE;
@@ -883,7 +886,7 @@ class Server{
 		if($this->shouldSavePlayerData()){
 			if(file_exists($path . "$name.dat")){
 				try{
-					$nbt = new BigEndianNBTStream();
+					$nbt = new BigEndianNbtSerializer();
 					return $nbt->readCompressed(file_get_contents($path . $name . ".dat"));
 				}catch(\Throwable $e){ //zlib decode error / corrupt data
 					rename($path . "$name.dat", $path . "$name.dat.bak");
@@ -945,7 +948,7 @@ class Server{
 		$ev->call();
 
 		if(!$ev->isCancelled()){
-			$nbt = new BigEndianNBTStream();
+			$nbt = new BigEndianNbtSerializer();
 			try{
 				file_put_contents($this->getDataPath() . "players/" . strtolower($name) . ".dat", $nbt->writeCompressed($ev->getSaveData()));
 			}catch(\Throwable $e){
@@ -1205,7 +1208,7 @@ class Server{
 			return false;
 		}
 
-		$seed = $seed ?? Binary::readInt(random_bytes(4));
+		$seed = $seed ?? random_int(INT32_MIN, INT32_MAX);
 
 		if(!isset($options["preset"])){
 			$options["preset"] = $this->getConfigString("generator-settings", "");
@@ -1798,8 +1801,8 @@ class Server{
 
 			$this->commandMap = new SimpleCommandMap($this);
 
-			Entity::init();
-			Tile::init();
+			EntityFactory::init();
+			TileFactory::init();
 			BlockFactory::init();
 			BlockFactory::registerStaticRuntimeIdMappings();
 			Enchantment::init();
@@ -2446,7 +2449,7 @@ class Server{
 			"fullFile" => $e->getFile(),
 			"file" => $errfile,
 			"line" => $errline,
-			"trace" => Utils::printableTrace($trace)
+			"trace" => $trace
 		];
 
 		global $lastExceptionError, $lastError;
@@ -2483,7 +2486,7 @@ class Server{
 				if(is_string($plugin)){
 					$p = $this->pluginManager->getPlugin($plugin);
 					if($p instanceof Plugin and !($p->getPluginLoader() instanceof PharPluginLoader)){
-						$report = false;
+						$this->logger->debug("Not sending crashdump due to caused by non-phar plugin");
 					}
 				}
 

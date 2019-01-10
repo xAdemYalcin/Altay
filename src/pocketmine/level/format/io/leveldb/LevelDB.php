@@ -31,9 +31,8 @@ use pocketmine\level\format\io\exception\UnsupportedChunkFormatException;
 use pocketmine\level\format\io\exception\UnsupportedLevelFormatException;
 use pocketmine\level\format\io\LevelData;
 use pocketmine\level\format\SubChunk;
-use pocketmine\nbt\LittleEndianNBTStream;
+use pocketmine\nbt\LittleEndianNbtSerializer;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\nbt\tag\IntTag;
 use pocketmine\utils\Binary;
 use pocketmine\utils\BinaryStream;
 use function array_values;
@@ -240,19 +239,12 @@ class LevelDB extends BaseLevelProvider{
 				throw new UnsupportedChunkFormatException("don't know how to decode chunk format version $chunkVersion");
 		}
 
-		$nbt = new LittleEndianNBTStream();
+		$nbt = new LittleEndianNbtSerializer();
 
 		/** @var CompoundTag[] $entities */
 		$entities = [];
 		if(($entityData = $this->db->get($index . self::TAG_ENTITY)) !== false and $entityData !== ""){
 			$entities = $nbt->readMultiple($entityData);
-		}
-
-		/** @var CompoundTag $entityNBT */
-		foreach($entities as $entityNBT){
-			if($entityNBT->hasTag("id", IntTag::class)){
-				$entityNBT->setInt("id", $entityNBT->getInt("id") & 0xff); //remove type flags - TODO: use these instead of removing them)
-			}
 		}
 
 		/** @var CompoundTag[] $tiles */
@@ -340,7 +332,7 @@ class LevelDB extends BaseLevelProvider{
 	 */
 	private function writeTags(array $targets, string $index) : void{
 		if(!empty($targets)){
-			$nbt = new LittleEndianNBTStream();
+			$nbt = new LittleEndianNbtSerializer();
 			$this->db->put($index, $nbt->writeMultiple($targets));
 		}else{
 			$this->db->delete($index);

@@ -109,20 +109,16 @@ use pocketmine\utils\Random;
 use pocketmine\utils\Utils;
 use pocketmine\utils\UUID;
 use function abs;
-use function array_unique;
 use function assert;
 use function cos;
 use function count;
-use function current;
 use function deg2rad;
 use function floor;
 use function get_class;
-use function in_array;
 use function is_array;
 use function is_infinite;
 use function is_nan;
 use function lcg_value;
-use function reset;
 use function sin;
 use const M_PI_2;
 
@@ -309,266 +305,6 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	public const DATA_FLAG_OVER_SCAFFOLDING = 69;
 	public const DATA_FLAG_FALL_THROUGH_SCAFFOLDING = 70;
 
-	public static $entityCount = 1;
-	/** @var Entity[] */
-	private static $knownEntities = [];
-	/** @var string[][] */
-	private static $saveNames = [];
-	/** @var int[][] */
-	public static $spawnPlacementTypes = [];
-
-	public const SPAWN_PLACEMENT_TYPE = SpawnPlacementTypes::PLACEMENT_TYPE_ON_GROUND;
-
-	/**
-	 * Called on server startup to register default entity types.
-	 */
-	public static function init() : void{
-		//define legacy save IDs first - use them for saving for maximum compatibility with Minecraft PC
-		//TODO: index them by version to allow proper multi-save compatibility
-
-		Entity::registerEntity(ArmorStand::class, false, [
-			'ArmorStand',
-			'minecraft:armor_stand'
-		]);
-		Entity::registerEntity(Arrow::class, false, [
-			'Arrow',
-			'minecraft:arrow'
-		]);
-		Entity::registerEntity(Boat::class, false, [
-			'Boat',
-			'minecraft:boat'
-		]);
-		Entity::registerEntity(Egg::class, false, [
-			'Egg',
-			'minecraft:egg'
-		]);
-		Entity::registerEntity(EnderPearl::class, false, [
-			'EnderPearl',
-			'ThrownEnderpearl',
-			'minecraft:ender_pearl'
-		]);
-		Entity::registerEntity(ExperienceBottle::class, false, [
-			'ThrownExpBottle',
-			'minecraft:xp_bottle'
-		]);
-		Entity::registerEntity(ExperienceOrb::class, false, [
-			'XPOrb',
-			'minecraft:xp_orb'
-		]);
-		Entity::registerEntity(FallingBlock::class, false, [
-			'FallingSand',
-			'minecraft:falling_block'
-		]);
-		Entity::registerEntity(FireworksRocket::class, false, [
-			'FireworkRocket',
-			'FireworksRocket',
-			'minecraft:fireworks_rocket'
-		]);
-		Entity::registerEntity(ItemEntity::class, false, [
-			'Item',
-			'minecraft:item'
-		]);
-		Entity::registerEntity(Painting::class, false, [
-			'Painting',
-			'minecraft:painting'
-		]);
-		Entity::registerEntity(PrimedTNT::class, false, [
-			'PrimedTnt',
-			'PrimedTNT',
-			'minecraft:tnt'
-		]);
-		Entity::registerEntity(SplashPotion::class, false, [
-			'ThrownPotion',
-			'minecraft:potion',
-			'thrownpotion'
-		]);
-		Entity::registerEntity(Snowball::class, false, [
-			'Snowball',
-			'minecraft:snowball'
-		]);
-		Entity::registerEntity(Squid::class, false, [
-			'Squid',
-			'minecraft:squid'
-		]);
-		Entity::registerEntity(Villager::class, false, [
-			'Villager',
-			'minecraft:villager'
-		]);
-		Entity::registerEntity(Wolf::class, false, [
-			'Wolf',
-			'minecraft:wolf'
-		]);
-		Entity::registerEntity(Zombie::class, false, [
-			'Zombie',
-			'minecraft:zombie'
-		]);
-		Entity::registerEntity(Cow::class, false, [
-			'Cow',
-			'minecraft:cow'
-		]);
-		Entity::registerEntity(Sheep::class, false, [
-			'Sheep',
-			'minecraft:sheep'
-		]);
-		Entity::registerEntity(Mooshroom::class, false, [
-			'Mooshroom',
-			'minecraft:mooshroom'
-		]);
-		Entity::registerEntity(Pig::class, false, [
-			'Pig',
-			'minecraft:pig'
-		]);
-		Entity::registerEntity(Skeleton::class, false, [
-			'Skeleton',
-			'minecraft:skeleton'
-		]);
-		Entity::registerEntity(Stray::class, false, [
-			'Stray',
-			'minecraft:stray'
-		]);
-		Entity::registerEntity(Husk::class, false, [
-			'Husk',
-			'minecraft:husk'
-		]);
-		Entity::registerEntity(Chicken::class, false, [
-			'Chicken',
-			'minecraft:chicken'
-		]);
-		Entity::registerEntity(Spider::class, false, [
-			'Spider',
-			'minecraft:spider'
-		]);
-		Entity::registerEntity(CaveSpider::class, false, [
-			'CaveSpider',
-			'minecraft:cave_spider'
-		]);
-		Entity::registerEntity(Creeper::class, false, [
-			'Creeper',
-			'minecraft:creeper'
-		]);
-		Entity::registerEntity(FishingHook::class, false, [
-			'FishingHook',
-			'minecraft:fishing_hook'
-		]);
-		Entity::registerEntity(LeashKnot::class, false, [
-			'LeashKnot',
-			'minecraft:leash_knot'
-		]);
-		Entity::registerEntity(Horse::class, false, [
-			'Horse',
-			'minecraft:horse'
-		]);
-		Entity::registerEntity(Blaze::class, false, [
-			'Blaze',
-			'minecraft:blaze'
-		]);
-		Entity::registerEntity(SmallFireball::class, false, [
-			'SmallFireball',
-			'minecraft:small_fireball'
-		]);
-
-		Entity::registerEntity(Human::class, true);
-
-		Attribute::init();
-		Effect::init();
-		PaintingMotive::init();
-	}
-
-
-	/**
-	 * Creates an entity with the specified type, level and NBT, with optional additional arguments to pass to the
-	 * entity's constructor
-	 *
-	 * @param int|string  $type
-	 * @param Level       $level
-	 * @param CompoundTag $nbt
-	 * @param mixed       ...$args
-	 *
-	 * @return Entity|null
-	 */
-	public static function createEntity($type, Level $level, CompoundTag $nbt, ...$args) : ?Entity{
-		if(isset(self::$knownEntities[$type])){
-			$class = self::$knownEntities[$type];
-			/** @see Entity::__construct() */
-			return new $class($level, $nbt, ...$args);
-		}
-
-		return null;
-	}
-
-	/**
-	 * Registers an entity type into the index.
-	 *
-	 * @param string   $className Class that extends Entity
-	 * @param bool     $force Force registration even if the entity does not have a valid network ID
-	 * @param string[] $saveNames An array of save names which this entity might be saved under. Defaults to the short name of the class itself if empty.
-	 *
-	 * NOTE: The first save name in the $saveNames array will be used when saving the entity to disk. The reflection
-	 * name of the class will be appended to the end and only used if no other save names are specified.
-	 *
-	 * @throws \InvalidArgumentException
-	 */
-	public static function registerEntity(string $className, bool $force = false, array $saveNames = []) : void{
-		Utils::testValidInstance($className, Entity ::class);
-
-		/** @var Entity $className */
-
-		if($className::NETWORK_ID !== -1){
-			self::$knownEntities[$className::NETWORK_ID] = $className;
-		}elseif(!$force){
-			throw new \InvalidArgumentException("Class $className does not declare a valid NETWORK_ID and not force-registering");
-		}
-
-		$shortName = (new \ReflectionClass($className))->getShortName();
-		if(!in_array($shortName, $saveNames, true)){
-			$saveNames[] = $shortName;
-		}
-
-		foreach($saveNames as $name){
-			self::$knownEntities[$name] = $className;
-		}
-
-		self::$saveNames[$className] = $saveNames;
-		self::$spawnPlacementTypes[$className] = $className::SPAWN_PLACEMENT_TYPE;
-	}
-
-	/**
-	 * Returns an array of all registered entity classpaths.
-	 *
-	 * @return string[]
-	 */
-	public static function getKnownEntityTypes() : array{
-		return array_unique(self::$knownEntities);
-	}
-
-	/**
-	 * Helper function which creates minimal NBT needed to spawn an entity.
-	 *
-	 * @param Vector3      $pos
-	 * @param Vector3|null $motion
-	 * @param float        $yaw
-	 * @param float        $pitch
-	 *
-	 * @return CompoundTag
-	 */
-	public static function createBaseNBT(Vector3 $pos, ?Vector3 $motion = null, float $yaw = 0.0, float $pitch = 0.0) : CompoundTag{
-		return new CompoundTag("", [
-			new ListTag("Pos", [
-				new DoubleTag("", $pos->x),
-				new DoubleTag("", $pos->y),
-				new DoubleTag("", $pos->z)
-			]),
-			new ListTag("Motion", [
-				new DoubleTag("", $motion ? $motion->x : 0.0),
-				new DoubleTag("", $motion ? $motion->y : 0.0),
-				new DoubleTag("", $motion ? $motion->z : 0.0)
-			]),
-			new ListTag("Rotation", [
-				new FloatTag("", $yaw),
-				new FloatTag("", $pitch)
-			])
-		]);
-	}
 
 	/**
 	 * @var Player[]
@@ -711,7 +447,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 			$this->eyeHeight = $this->height * 0.85;
 		}
 
-		$this->id = Entity::$entityCount++;
+		$this->id = EntityFactory::nextRuntimeId();
 		$this->server = $level->getServer();
 
 		/** @var float[] $pos */
@@ -1139,23 +875,10 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 		$this->savedWithChunk = $value;
 	}
 
-	/**
-	 * Returns the short save name
-	 *
-	 * @return string
-	 */
-	public function getSaveId() : string{
-		if(!isset(self::$saveNames[static::class])){
-			throw new \InvalidStateException("Entity is not registered");
-		}
-		reset(self::$saveNames[static::class]);
-		return current(self::$saveNames[static::class]);
-	}
-
 	public function saveNBT() : CompoundTag{
 		$nbt = new CompoundTag();
 		if(!($this instanceof Player)){
-			$nbt->setString("id", $this->getSaveId());
+			$nbt->setString("id", EntityFactory::getSaveId(get_class($this)));
 
 			if($this->getNameTag() !== ""){
 				$nbt->setString("CustomName", $this->getNameTag());

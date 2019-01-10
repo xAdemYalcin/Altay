@@ -31,7 +31,7 @@ use pocketmine\entity\Entity;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\math\Vector3;
-use pocketmine\nbt\LittleEndianNBTStream;
+use pocketmine\nbt\LittleEndianNbtSerializer;
 use pocketmine\network\mcpe\protocol\types\CommandOriginData;
 use pocketmine\network\mcpe\protocol\types\EntityLink;
 use pocketmine\level\GameRules;
@@ -41,7 +41,7 @@ use function count;
 use function strlen;
 
 class NetworkBinaryStream extends BinaryStream{
-	/** @var LittleEndianNBTStream */
+	/** @var LittleEndianNbtSerializer */
 	private static $itemNbtSerializer = null;
 
 	public function getString() : string{
@@ -87,7 +87,7 @@ class NetworkBinaryStream extends BinaryStream{
 		$compound = null;
 		if($nbtLen > 0){
 			if(self::$itemNbtSerializer === null){
-				self::$itemNbtSerializer = new LittleEndianNBTStream();
+				self::$itemNbtSerializer = new LittleEndianNbtSerializer();
 			}
 			$compound = self::$itemNbtSerializer->read($this->get($nbtLen));
 		}
@@ -121,7 +121,7 @@ class NetworkBinaryStream extends BinaryStream{
 		$nbtLen = 0;
 		if($item->hasNamedTag()){
 			if(self::$itemNbtSerializer === null){
-				self::$itemNbtSerializer = new LittleEndianNBTStream();
+				self::$itemNbtSerializer = new LittleEndianNbtSerializer();
 			}
 			$nbt = self::$itemNbtSerializer->write($item->getNamedTag());
 			$nbtLen = strlen($nbt);

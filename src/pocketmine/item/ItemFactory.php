@@ -26,7 +26,7 @@ namespace pocketmine\item;
 
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
-use pocketmine\entity\Entity;
+use pocketmine\entity\EntityFactory;
 use pocketmine\entity\Living;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
@@ -197,10 +197,10 @@ class ItemFactory{
 		//TODO: ENDER_EYE
 		self::registerItem(new Item(Item::GLISTERING_MELON, 0, "Glistering Melon"));
 
-		foreach(Entity::getKnownEntityTypes() as $className){
-			/** @var Living $className */
+		foreach(EntityFactory::getKnownTypes() as $className){
+			/** @var Living|string $className */
 			if(is_a($className, Living::class, true) and $className::NETWORK_ID !== -1){
-				self::registerItem(new SpawnEgg(Item::SPAWN_EGG, $className::NETWORK_ID, "Spawn Egg"));
+				self::registerItem(new SpawnEgg(Item::SPAWN_EGG, $className::NETWORK_ID, $className, "Spawn Egg"));
 			}
 		}
 

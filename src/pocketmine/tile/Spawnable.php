@@ -26,9 +26,10 @@ namespace pocketmine\tile;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\StringTag;
-use pocketmine\network\mcpe\NetworkLittleEndianNBTStream;
+use pocketmine\network\mcpe\NetworkNbtSerializer;
 use pocketmine\network\mcpe\protocol\BlockEntityDataPacket;
 use pocketmine\Player;
+use function get_class;
 
 abstract class Spawnable extends Tile{
 	/** @var string|null */
@@ -36,7 +37,7 @@ abstract class Spawnable extends Tile{
 	/** @var bool */
 	private $dirty = true; //default dirty, until it's been spawned appropriately on the level
 
-	/** @var NetworkLittleEndianNBTStream|null */
+	/** @var NetworkNbtSerializer|null */
 	private static $nbtWriter = null;
 
 	public function createSpawnPacket() : BlockEntityDataPacket{
@@ -94,7 +95,7 @@ abstract class Spawnable extends Tile{
 	final public function getSerializedSpawnCompound() : string{
 		if($this->spawnCompoundCache === null){
 			if(self::$nbtWriter === null){
-				self::$nbtWriter = new NetworkLittleEndianNBTStream();
+				self::$nbtWriter = new NetworkNbtSerializer();
 			}
 
 			$this->spawnCompoundCache = self::$nbtWriter->write($this->getSpawnCompound());
@@ -108,7 +109,7 @@ abstract class Spawnable extends Tile{
 	 */
 	final public function getSpawnCompound() : CompoundTag{
 		$nbt = new CompoundTag("", [
-			new StringTag(self::TAG_ID, static::getSaveId()),
+			new StringTag(self::TAG_ID, TileFactory::getSaveId(get_class($this))), //TODO: disassociate network ID from save ID
 			new IntTag(self::TAG_X, $this->x),
 			new IntTag(self::TAG_Y, $this->y),
 			new IntTag(self::TAG_Z, $this->z)

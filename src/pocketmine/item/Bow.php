@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\item;
 
-use pocketmine\entity\Entity;
+use pocketmine\entity\EntityFactory;
 use pocketmine\entity\projectile\Arrow as ArrowEntity;
 use pocketmine\entity\projectile\Projectile;
 use pocketmine\event\entity\EntityShootBowEvent;
@@ -53,7 +53,7 @@ class Bow extends Tool{
 			return false;
 		}
 
-		$nbt = Entity::createBaseNBT(
+		$nbt = EntityFactory::createBaseNBT(
 			$player->add(0, $player->getEyeHeight(), 0),
 			$player->getDirectionVector(),
 			($player->yaw > 180 ? 360 : 0) - $player->yaw,
@@ -65,61 +65,56 @@ class Bow extends Tool{
 		$p = $diff / 20;
 		$force = min((($p ** 2) + $p * 2) / 3, 1) * 2;
 
+		/** @var ArrowEntity $entity */
+		$entity = EntityFactory::create(ArrowEntity::class, $player->getLevel(), $nbt, $player, $force == 2);
 
-		$entity = Entity::createEntity("Arrow", $player->getLevel(), $nbt, $player, $force == 2);
-		if($entity instanceof Projectile){
-			$infinity = $this->hasEnchantment(Enchantment::INFINITY);
-			if($entity instanceof ArrowEntity){
-				if($infinity){
-					$entity->setPickupMode(ArrowEntity::PICKUP_CREATIVE);
-				}
-				if(($punchLevel = $this->getEnchantmentLevel(Enchantment::PUNCH)) > 0){
-					$entity->setPunchKnockback($punchLevel);
-				}
-			}
-			if(($powerLevel = $this->getEnchantmentLevel(Enchantment::POWER)) > 0){
-				$entity->setBaseDamage($entity->getBaseDamage() + (($powerLevel + 1) / 2));
-			}
-			if($this->hasEnchantment(Enchantment::FLAME)){
-				$entity->setOnFire(intdiv($entity->getFireTicks(), 20) + 100);
-			}
-			$ev = new EntityShootBowEvent($player, $this, $entity, $force);
+		$infinity = $this->hasEnchantment(Enchantment::INFINITY);
+		if($infinity){
+			$entity->setPickupMode(ArrowEntity::PICKUP_CREATIVE);
+		}
+		if(($punchLevel = $this->getEnchantmentLevel(Enchantment::PUNCH)) > 0){
+			$entity->setPunchKnockback($punchLevel);
+		}
+		if(($powerLevel = $this->getEnchantmentLevel(Enchantment::POWER)) > 0){
+			$entity->setBaseDamage($entity->getBaseDamage() + (($powerLevel + 1) / 2));
+		}
+		if($this->hasEnchantment(Enchantment::FLAME)){
+			$entity->setOnFire(intdiv($entity->getFireTicks(), 20) + 100);
+		}
+		$ev = new EntityShootBowEvent($player, $this, $entity, $force);
 
-			if($force < 0.1 or $diff < 5){
-				$ev->setCancelled();
-			}
+		if($force < 0.1 or $diff < 5){
+			$ev->setCancelled();
+		}
 
-			$ev->call();
+		$ev->call();
 
-			$entity = $ev->getProjectile(); //This might have been changed by plugins
+		$entity = $ev->getProjectile(); //This might have been changed by plugins
 
-			if($ev->isCancelled()){
-				$entity->flagForDespawn();
-				$player->getInventory()->sendContents($player);
-			}else{
-				$entity->setMotion($entity->getMotion()->multiply($ev->getForce() * 2));
-				if($player->isSurvival()){
-					if(!$infinity){ //TODO: tipped arrows are still consumed when Infinity is applied
-						$player->getInventory()->removeItem(ItemFactory::get(Item::ARROW, 0, 1));
-					}
-					$this->applyDamage(1);
-				}
-
-				if($entity instanceof Projectile){
-					$projectileEv = new ProjectileLaunchEvent($entity);
-					$projectileEv->call();
-					if($projectileEv->isCancelled()){
-						$ev->getProjectile()->flagForDespawn();
-					}else{
-						$ev->getProjectile()->spawnToAll();
-						$player->getLevel()->broadcastLevelSoundEvent($player, LevelSoundEventPacket::SOUND_BOW);
-					}
-				}else{
-					$entity->spawnToAll();
-				}
-			}
+		if($ev->isCancelled()){
+			$entity->flagForDespawn();
+			$player->getInventory()->sendContents($player);
 		}else{
-			$entity->spawnToAll();
+			$entity->setMotion($entity->getMotion()->multiply($ev->getForce()));
+			if($player->isSurvival()){
+				if(!$infinity){ //TODO: tipped arrows are still consumed when Infinity is applied
+					$player->getInventory()->removeItem(ItemFactory::get(Item::ARROW, 0, 1));
+				}
+				$this->applyDamage(1);
+			}
+
+			if($entity instanceof Projectile){
+				$projectileEv = new ProjectileLaunchEvent($entity);
+				$projectileEv->call();
+				if($projectileEv->isCancelled()){
+					$ev->getProjectile()->flagForDespawn();
+				}else{
+					$ev->getProjectile()->spawnToAll();
+					$player->getLevel()->broadcastLevelSoundEvent($player, LevelSoundEventPacket::SOUND_BOW);
+				}
+			}else{
+				$entity->spawnToAll();
+			}
 		}
 
 		return true;

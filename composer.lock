@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cdf1ae08bd2f3e13b0a766a835ed8cb8",
+    "content-hash": "959fe32be1db4613fd22eb2c7c7b23c6",
     "packages": [
         {
             "name": "adhocore/json-comment",
@@ -232,17 +232,79 @@
             "time": "2018-12-03T18:17:01+00:00"
         },
         {
-            "name": "pocketmine/binaryutils",
-            "version": "0.1.5",
+            "name": "particle/validator",
+            "version": "v2.3.4",
             "source": {
                 "type": "git",
-                "url": "https://github.com/pmmp/BinaryUtils.git",
-                "reference": "03361b0d78ef2b400a99e96406aa594a5bc1c4ed"
+                "url": "https://github.com/particle-php/Validator.git",
+                "reference": "657c7543e51938dd9d114750e49d695129527a7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pmmp/BinaryUtils/zipball/03361b0d78ef2b400a99e96406aa594a5bc1c4ed",
-                "reference": "03361b0d78ef2b400a99e96406aa594a5bc1c4ed",
+                "url": "https://api.github.com/repos/particle-php/Validator/zipball/657c7543e51938dd9d114750e49d695129527a7a",
+                "reference": "657c7543e51938dd9d114750e49d695129527a7a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "byrokrat/checkdigit": "^1.0",
+                "giggsey/libphonenumber-for-php": "^7.2",
+                "phpunit/phpunit": "~4.0",
+                "squizlabs/php_codesniffer": "2.*"
+            },
+            "suggest": {
+                "byrokrat/checkdigit": "If you want to use CreditCard validation rule, this library must be installed.",
+                "giggsey/libphonenumber-for-php": "If you want to use Phone validation rule, this library must be installed."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Particle\\Validator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Berry Langerak",
+                    "email": "berry@berryllium.nl",
+                    "role": "developer"
+                },
+                {
+                    "name": "Rick van der Staaij",
+                    "homepage": "http://rickvanderstaaij.nl",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Flexible and highly usable validation library with no dependencies.",
+            "homepage": "http://github.com/particle-php/validator",
+            "keywords": [
+                "validation",
+                "validator"
+            ],
+            "time": "2019-01-07T13:39:13+00:00"
+        },
+        {
+            "name": "pocketmine/binaryutils",
+            "version": "0.1.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pmmp/BinaryUtils.git",
+                "reference": "3403751da9d39853b43426085cd242173baadd2b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pmmp/BinaryUtils/zipball/3403751da9d39853b43426085cd242173baadd2b",
+                "reference": "3403751da9d39853b43426085cd242173baadd2b",
                 "shasum": ""
             },
             "require": {
@@ -260,10 +322,10 @@
             ],
             "description": "Classes and methods for conveniently handling binary data",
             "support": {
-                "source": "https://github.com/pmmp/BinaryUtils/tree/0.1.5",
+                "source": "https://github.com/pmmp/BinaryUtils/tree/0.1.7",
                 "issues": "https://github.com/pmmp/BinaryUtils/issues"
             },
-            "time": "2019-01-04T13:32:11+00:00"
+            "time": "2019-01-07T15:59:50+00:00"
         },
         {
             "name": "pocketmine/math",
@@ -310,19 +372,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pmmp/NBT.git",
-                "reference": "863b2e509485baffd4897cd6fa8e98e7e7e5ae14"
+                "reference": "8b211471159b4aca329c665bdbd9149046ca6550"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pmmp/NBT/zipball/863b2e509485baffd4897cd6fa8e98e7e7e5ae14",
-                "reference": "863b2e509485baffd4897cd6fa8e98e7e7e5ae14",
+                "url": "https://api.github.com/repos/pmmp/NBT/zipball/8b211471159b4aca329c665bdbd9149046ca6550",
+                "reference": "8b211471159b4aca329c665bdbd9149046ca6550",
                 "shasum": ""
             },
             "require": {
                 "ext-zlib": "*",
                 "php": ">=7.2.0",
                 "php-64bit": "*",
-                "pocketmine/binaryutils": "^0.1.0"
+                "pocketmine/binaryutils": "^0.1.7"
             },
             "type": "library",
             "autoload": {
@@ -343,7 +405,7 @@
                 "source": "https://github.com/pmmp/NBT/tree/master",
                 "issues": "https://github.com/pmmp/NBT/issues"
             },
-            "time": "2019-01-04T15:32:10+00:00"
+            "time": "2019-01-09T00:12:13+00:00"
         },
         {
             "name": "pocketmine/raklib",
@@ -351,12 +413,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pmmp/RakLib.git",
-                "reference": "8f189b687d39489e422bb30be984a33763f29662"
+                "reference": "2f5dfdaa28ff69d72cd1682faa521e18b17a15ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pmmp/RakLib/zipball/8f189b687d39489e422bb30be984a33763f29662",
-                "reference": "8f189b687d39489e422bb30be984a33763f29662",
+                "url": "https://api.github.com/repos/pmmp/RakLib/zipball/2f5dfdaa28ff69d72cd1682faa521e18b17a15ef",
+                "reference": "2f5dfdaa28ff69d72cd1682faa521e18b17a15ef",
                 "shasum": ""
             },
             "require": {
@@ -384,7 +446,7 @@
                 "source": "https://github.com/pmmp/RakLib/tree/master",
                 "issues": "https://github.com/pmmp/RakLib/issues"
             },
-            "time": "2019-01-04T15:05:24+00:00"
+            "time": "2019-01-09T18:42:21+00:00"
         },
         {
             "name": "pocketmine/snooze",
