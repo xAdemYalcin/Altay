@@ -102,7 +102,7 @@ class Beacon extends Spawnable implements Nameable, InventoryHolder{
 	}
 
 	public function updateCompoundTag(CompoundTag $nbt, Player $player) : bool{
-		if($nbt->getString("id") !== Tile::BEACON){
+		if($nbt->getString("id") !== "Beacon"){
 			return false;
 		}
 
