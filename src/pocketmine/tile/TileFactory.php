@@ -48,15 +48,21 @@ final class TileFactory{
 
 	public static function init(){
 		self::register(Banner::class, ["Banner", "minecraft:banner"]);
+		self::register(Beacon::class, ["Beacon", "minecraft:beacon"]);
 		self::register(Bed::class, ["Bed", "minecraft:bed"]);
 		self::register(Chest::class, ["Chest", "minecraft:chest"]);
 		self::register(EnchantTable::class, ["EnchantTable", "minecraft:enchanting_table"]);
 		self::register(EnderChest::class, ["EnderChest", "minecraft:ender_chest"]);
 		self::register(FlowerPot::class, ["FlowerPot", "minecraft:flower_pot"]);
 		self::register(Furnace::class, ["Furnace", "minecraft:furnace"]);
+		self::register(Hopper::class, ["Hopper", "minecraft:hopper"]);
 		self::register(ItemFrame::class, ["ItemFrame"]); //this is an entity in PC
+		self::register(Jukebox::class, ["Jukebox", "minecraft:jukebox"]);
+		self::register(NoteBlock::class, ["NoteBlock", "minecraft:noteblock"]);
 		self::register(Sign::class, ["Sign", "minecraft:sign"]);
 		self::register(Skull::class, ["Skull", "minecraft:skull"]);
+		self::register(ShulkerBox::class, ["ShulkerBox", "minecraft:shulker_box"]);
+		self::register(MobSpawner::class, ["MobSpawner", "minecraft:mob_spawner"]);
 	}
 
 	/**

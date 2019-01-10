@@ -24,9 +24,9 @@ declare(strict_types=1);
 namespace pocketmine\entity;
 
 use pocketmine\block\Block;
-use pocketmine\event\entity\EntityArmorChangeEvent;
 use pocketmine\entity\object\LeashKnot;
 use pocketmine\entity\projectile\Projectile;
+use pocketmine\event\entity\EntityArmorChangeEvent;
 use pocketmine\event\entity\EntityDamageByChildEntityEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
@@ -1093,7 +1093,7 @@ abstract class Living extends Entity implements Damageable{
 				$knot = LeashKnot::getKnotFromPosition($this->level, $pos);
 
 				if($knot === null){
-					$knot = new LeashKnot($this->level, Entity::createBaseNBT($pos));
+					$knot = new LeashKnot($this->level, EntityFactory::createBaseNBT($pos));
 					$knot->spawnToAll();
 				}
 

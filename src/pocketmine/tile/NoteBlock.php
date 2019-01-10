@@ -39,7 +39,7 @@ class NoteBlock extends Spawnable{
 	/** @var bool */
 	protected $powered = false;
 
-	protected function readSaveData(CompoundTag $nbt) : void{
+	public function readSaveData(CompoundTag $nbt) : void{
 		$this->note = max(0, min(24, $nbt->getByte(self::TAG_NOTE, 0, true)));
 		$this->powered = boolval($nbt->getByte(self::TAG_POWERED, 0));
 	}

@@ -54,7 +54,7 @@ class Hopper extends Spawnable implements Container, Nameable, InventoryHolder{
 		$this->scheduleUpdate();
 	}
 
-	protected function readSaveData(CompoundTag $nbt) : void{
+	public function readSaveData(CompoundTag $nbt) : void{
 		$this->transferCooldown = $nbt->getInt(self::TAG_TRANSFER_COOLDOWN, 8);
 
 		$this->loadName($nbt);

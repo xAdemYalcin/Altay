@@ -26,7 +26,7 @@ namespace pocketmine\item;
 
 use pocketmine\block\Block;
 use pocketmine\block\Fence;
-use pocketmine\entity\Entity;
+use pocketmine\entity\EntityFactory;
 use pocketmine\entity\Living;
 use pocketmine\entity\object\LeashKnot;
 use pocketmine\math\AxisAlignedBB;
@@ -50,7 +50,7 @@ class Lead extends Item{
 				if($entity instanceof Living){
 					if($entity->isLeashed() and $entity->getLeashedToEntity() === $player){
 						if($knot === null){
-							$knot = new LeashKnot($player->level, Entity::createBaseNBT($blockClicked));
+							$knot = new LeashKnot($player->level, EntityFactory::createBaseNBT($blockClicked));
 							$knot->spawnToAll();
 						}
 

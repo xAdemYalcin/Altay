@@ -24,15 +24,14 @@ declare(strict_types=1);
 
 namespace pocketmine\level\biome;
 
-use pocketmine\entity\Living;
-use pocketmine\utils\Utils;
+use pocketmine\entity\Entity;
 use pocketmine\utils\WeightedRandomItem;
 
 class SpawnListEntry extends WeightedRandomItem{
-
+	/** @var Entity */
 	public $entityClass;
-	public $minGroupCount;
-	public $maxGroupCount;
+	public $minGroupCount = 0;
+	public $maxGroupCount = 0;
 
 	public function __construct(string $entityClass, int $itemWeight, int $minGroupCount, int $maxGroupCount){
 		parent::__construct($itemWeight);

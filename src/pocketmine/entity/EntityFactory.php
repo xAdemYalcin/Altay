@@ -23,16 +23,36 @@ declare(strict_types=1);
 
 namespace pocketmine\entity;
 
+use pocketmine\entity\hostile\Blaze;
+use pocketmine\entity\hostile\CaveSpider;
+use pocketmine\entity\hostile\Creeper;
+use pocketmine\entity\hostile\Husk;
+use pocketmine\entity\hostile\Skeleton;
+use pocketmine\entity\hostile\Spider;
+use pocketmine\entity\hostile\Stray;
+use pocketmine\entity\hostile\Zombie;
 use pocketmine\entity\object\ExperienceOrb;
 use pocketmine\entity\object\FallingBlock;
-use pocketmine\entity\object\ItemEntity;
+use pocketmine\entity\object\LeashKnot;
 use pocketmine\entity\object\Painting;
 use pocketmine\entity\object\PaintingMotive;
 use pocketmine\entity\object\PrimedTNT;
+use pocketmine\entity\object\ItemEntity;
+use pocketmine\entity\passive\Chicken;
+use pocketmine\entity\passive\Cow;
+use pocketmine\entity\passive\Horse;
+use pocketmine\entity\passive\Mooshroom;
+use pocketmine\entity\passive\Pig;
+use pocketmine\entity\passive\Sheep;
+use pocketmine\entity\passive\Squid;
+use pocketmine\entity\passive\Villager;
+use pocketmine\entity\passive\Wolf;
 use pocketmine\entity\projectile\Arrow;
 use pocketmine\entity\projectile\Egg;
 use pocketmine\entity\projectile\EnderPearl;
 use pocketmine\entity\projectile\ExperienceBottle;
+use pocketmine\entity\projectile\FishingHook;
+use pocketmine\entity\projectile\SmallFireball;
 use pocketmine\entity\projectile\Snowball;
 use pocketmine\entity\projectile\SplashPotion;
 use pocketmine\level\Level;
@@ -40,9 +60,9 @@ use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\DoubleTag;
 use pocketmine\nbt\tag\FloatTag;
-use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\StringTag;
+use pocketmine\nbt\tag\IntTag;
 use pocketmine\utils\Utils;
 use function array_keys;
 use function assert;
@@ -55,7 +75,7 @@ final class EntityFactory{
 	private static $entityCount = 1;
 	/** @var string[] base class => currently used class for construction */
 	private static $classMapping = [];
-	/** @var Entity[] */
+	/** @var Entity|string[] */
 	private static $knownEntities = [];
 	/** @var string[][] */
 	private static $saveNames = [];
@@ -84,7 +104,24 @@ final class EntityFactory{
 		self::register(SplashPotion::class, false, ['ThrownPotion', 'minecraft:potion', 'thrownpotion']);
 		self::register(Squid::class, false, ['Squid', 'minecraft:squid']);
 		self::register(Villager::class, false, ['Villager', 'minecraft:villager']);
+		self::register(Wolf::class, false, ['Wolf', 'minecraft:wolf']);
 		self::register(Zombie::class, false, ['Zombie', 'minecraft:zombie']);
+		self::register(Cow::class, false, ['Cow', 'minecraft:cow']);
+		self::register(Sheep::class, false, ['Sheep', 'minecraft:sheep']);
+		self::register(Mooshroom::class, false, ['Mooshroom', 'minecraft:mooshroom']);
+		self::register(Pig::class, false, ['Pig', 'minecraft:pig']);
+		self::register(Skeleton::class, false, ['Skeleton', 'minecraft:skeleton']);
+		self::register(Stray::class, false, ['Stray', 'minecraft:stray']);
+		self::register(Husk::class, false, ['Husk', 'minecraft:husk']);
+		self::register(Chicken::class, false, ['Chicken', 'minecraft:chicken']);
+		self::register(Spider::class, false, ['Spider', 'minecraft:spider']);
+		self::register(CaveSpider::class, false, ['CaveSpider', 'minecraft:cave_spider']);
+		self::register(Creeper::class, false, ['Creeper', 'minecraft:creeper']);
+		self::register(FishingHook::class, false, ['FishingHook', 'minecraft:fishing_hook']);
+		self::register(LeashKnot::class, false, ['LeashKnot', 'minecraft:leash_knot']);
+		self::register(Horse::class, false, ['Horse', 'minecraft:horse']);
+		self::register(Blaze::class, false, ['Blaze', 'minecraft:blaze']);
+		self::register(SmallFireball::class, false, ['SmallFireball', 'minecraft:small_fireball']);
 
 		self::register(Human::class, true);
 
@@ -153,6 +190,15 @@ final class EntityFactory{
 	 */
 	public static function getKnownTypes() : array{
 		return array_keys(self::$classMapping);
+	}
+
+	/**
+	 * @param int $entityId
+	 *
+	 * @return null|Entity|string
+	 */
+	public static function getClassByEntityId(int $entityId) : ?string{
+		return self::$knownEntities[$entityId] ?? null;
 	}
 
 	/**
@@ -245,21 +291,6 @@ final class EntityFactory{
 	 * @return CompoundTag
 	 */
 	public static function createBaseNBT(Vector3 $pos, ?Vector3 $motion = null, float $yaw = 0.0, float $pitch = 0.0) : CompoundTag{
-		return new CompoundTag("", [
-			new ListTag("Pos", [
-				new DoubleTag("", $pos->x),
-				new DoubleTag("", $pos->y),
-				new DoubleTag("", $pos->z)
-			]),
-			new ListTag("Motion", [
-				new DoubleTag("", $motion ? $motion->x : 0.0),
-				new DoubleTag("", $motion ? $motion->y : 0.0),
-				new DoubleTag("", $motion ? $motion->z : 0.0)
-			]),
-			new ListTag("Rotation", [
-				new FloatTag("", $yaw),
-				new FloatTag("", $pitch)
-			])
-		]);
+		return new CompoundTag("", [new ListTag("Pos", [new DoubleTag("", $pos->x), new DoubleTag("", $pos->y), new DoubleTag("", $pos->z)]), new ListTag("Motion", [new DoubleTag("", $motion ? $motion->x : 0.0), new DoubleTag("", $motion ? $motion->y : 0.0), new DoubleTag("", $motion ? $motion->z : 0.0)]), new ListTag("Rotation", [new FloatTag("", $yaw), new FloatTag("", $pitch)])]);
 	}
 }

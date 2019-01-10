@@ -26,12 +26,11 @@ namespace pocketmine\block;
 
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
-use pocketmine\math\Facing;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\Player;
 use pocketmine\tile\ShulkerBox as TileShulkerBox;
-use pocketmine\tile\Tile;
+use pocketmine\tile\TileFactory;
 
 class ShulkerBox extends Transparent{
 
@@ -46,7 +45,7 @@ class ShulkerBox extends Transparent{
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
 		if(parent::place($item, $blockReplace, $blockClicked, $face, $clickVector, $player)){
 			/** @var TileShulkerBox $tile */
-			$tile = Tile::createFromItem(TileShulkerBox::class, $this->getLevel(), $this, $item);
+			$tile = TileFactory::createFromItem(TileShulkerBox::class, $this->getLevel(), $this, $item);
 			$tile->setFacing($face);
 			$this->level->addTile($tile);
 

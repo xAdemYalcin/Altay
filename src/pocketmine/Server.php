@@ -174,14 +174,14 @@ use function time;
 use function touch;
 use function trim;
 use const DIRECTORY_SEPARATOR;
-use const INT32_MAX;
-use const INT32_MIN;
 use const PHP_EOL;
 use const PHP_INT_MAX;
 use const PTHREADS_INHERIT_NONE;
 use const SIGHUP;
-use const SIGINT;
 use const SIGTERM;
+use const SIGINT;
+use const INT32_MAX;
+use const INT32_MIN;
 
 /**
  * The class that manages everything

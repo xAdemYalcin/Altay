@@ -30,41 +30,6 @@ namespace pocketmine\entity;
 
 use pocketmine\block\Block;
 use pocketmine\block\Water;
-use pocketmine\entity\hostile\Blaze;
-use pocketmine\entity\hostile\CaveSpider;
-use pocketmine\entity\hostile\Creeper;
-use pocketmine\entity\hostile\Husk;
-use pocketmine\entity\hostile\Skeleton;
-use pocketmine\entity\hostile\Spider;
-use pocketmine\entity\hostile\Stray;
-use pocketmine\entity\hostile\Zombie;
-use pocketmine\entity\object\ArmorStand;
-use pocketmine\entity\object\ExperienceOrb;
-use pocketmine\entity\object\FallingBlock;
-use pocketmine\entity\object\FireworksRocket;
-use pocketmine\entity\object\LeashKnot;
-use pocketmine\entity\object\Painting;
-use pocketmine\entity\object\PrimedTNT;
-use pocketmine\entity\object\ItemEntity;
-use pocketmine\entity\passive\Chicken;
-use pocketmine\entity\passive\Cow;
-use pocketmine\entity\passive\Horse;
-use pocketmine\entity\passive\Mooshroom;
-use pocketmine\entity\passive\Pig;
-use pocketmine\entity\passive\Sheep;
-use pocketmine\entity\passive\Squid;
-use pocketmine\entity\passive\Villager;
-use pocketmine\entity\passive\Wolf;
-use pocketmine\entity\projectile\Arrow;
-use pocketmine\entity\projectile\Egg;
-use pocketmine\entity\projectile\EnderPearl;
-use pocketmine\entity\projectile\ExperienceBottle;
-use pocketmine\entity\projectile\FishingHook;
-use pocketmine\entity\projectile\SmallFireball;
-use pocketmine\entity\projectile\Snowball;
-use pocketmine\entity\projectile\SplashPotion;
-use pocketmine\entity\object\PaintingMotive;
-use pocketmine\entity\vehicle\Boat;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityDeathEvent;
 use pocketmine\event\entity\EntityDespawnEvent;
@@ -91,7 +56,6 @@ use pocketmine\nbt\tag\FloatTag;
 use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\StringTag;
 use pocketmine\network\mcpe\protocol\AddEntityPacket;
-use pocketmine\network\mcpe\protocol\AddPlayerPacket;
 use pocketmine\network\mcpe\protocol\AnimatePacket;
 use pocketmine\network\mcpe\protocol\EntityEventPacket;
 use pocketmine\network\mcpe\protocol\MoveEntityAbsolutePacket;
@@ -106,7 +70,6 @@ use pocketmine\Server;
 use pocketmine\timings\Timings;
 use pocketmine\timings\TimingsHandler;
 use pocketmine\utils\Random;
-use pocketmine\utils\Utils;
 use pocketmine\utils\UUID;
 use function abs;
 use function assert;
@@ -305,6 +268,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	public const DATA_FLAG_OVER_SCAFFOLDING = 69;
 	public const DATA_FLAG_FALL_THROUGH_SCAFFOLDING = 70;
 
+	public const SPAWN_PLACEMENT_TYPE = SpawnPlacementTypes::PLACEMENT_TYPE_ON_GROUND;
 
 	/**
 	 * @var Player[]

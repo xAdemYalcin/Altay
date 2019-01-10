@@ -24,8 +24,8 @@ declare(strict_types=1);
 
 namespace pocketmine\maps;
 
-use pocketmine\nbt\BigEndianNBTStream;
-use pocketmine\nbt\LittleEndianNBTStream;
+use pocketmine\nbt\BigEndianNbtSerializer;
+use pocketmine\nbt\LittleEndianNbtSerializer;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\Server;
 
@@ -52,7 +52,7 @@ class MapManager{
 	public static function initMaps() : void{
 		@mkdir($path = Server::getInstance()->getDataPath() . "maps/", 0777);
 
-		$stream = new LittleEndianNBTStream();
+		$stream = new LittleEndianNbtSerializer();
 
 		if(is_file($path . "idcounts.dat")){
 			/** @var \pocketmine\nbt\tag\CompoundTag $data */
@@ -61,7 +61,7 @@ class MapManager{
 			self::$mapIdCounter = $data->getInt("map", 0);
 		}
 
-		$stream = new BigEndianNBTStream();
+		$stream = new BigEndianNbtSerializer();
 		for($i = self::$mapIdCounter; $i >= 0; $i--){
 			$item = $path . "map_" . strval($i) . ".dat";
 			if(is_file($item)){
@@ -76,13 +76,13 @@ class MapManager{
 	public static function saveMaps() : void{
 		@mkdir($path = Server::getInstance()->getDataPath() . "maps/", 0777);
 
-		$stream = new LittleEndianNBTStream();
+		$stream = new LittleEndianNbtSerializer();
 		$idcounts = new CompoundTag();
 		$idcounts->setInt("map", self::$mapIdCounter);
 
 		file_put_contents($path . "idcounts.dat", $stream->write($idcounts));
 
-		$stream = new BigEndianNBTStream();
+		$stream = new BigEndianNbtSerializer();
 
 		foreach(self::$maps as $data){
 			$tag = new CompoundTag("data");

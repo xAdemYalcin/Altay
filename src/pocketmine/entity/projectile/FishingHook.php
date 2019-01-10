@@ -26,6 +26,7 @@ namespace pocketmine\entity\projectile;
 
 use pocketmine\block\Water;
 use pocketmine\entity\Entity;
+use pocketmine\entity\EntityFactory;
 use pocketmine\entity\object\ItemEntity;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
@@ -291,7 +292,7 @@ class FishingHook extends Projectile{
 				$ev->call();
 
 				if(!$ev->isCancelled()){
-					$nbt = Entity::createBaseNBT($this);
+					$nbt = EntityFactory::createBaseNBT($this);
 					$nbt->setTag($ev->getResultItem()->nbtSerialize(-1, "Item"));
 					$entityitem = new ItemEntity($this->level, $nbt);
 					$d0 = $angler->x - $this->x;

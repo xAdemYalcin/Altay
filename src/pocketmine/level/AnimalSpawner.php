@@ -32,6 +32,7 @@ use pocketmine\entity\Animal;
 use pocketmine\entity\Creature;
 use pocketmine\entity\CreatureType;
 use pocketmine\entity\Entity;
+use pocketmine\entity\EntityFactory;
 use pocketmine\entity\Living;
 use pocketmine\entity\Mob;
 use pocketmine\entity\Monster;
@@ -127,12 +128,12 @@ class AnimalSpawner{
 													}
 												}
 
-												if($level->canCreatureTypeSpawnHere($creatureType, $entry, $pos1) and self::canCreatureTypeSpawnAtLocation(Entity::$spawnPlacementTypes[$entry->entityClass] ?? 0, $level, $pos1)){
+												if($level->canCreatureTypeSpawnHere($creatureType, $entry, $pos1) and self::canCreatureTypeSpawnAtLocation($entry->entityClass::SPAWN_PLACEMENT_TYPE, $level, $pos1)){
 													$entity = null;
 													try{
 														$class = $entry->entityClass;
 														/** @var Living $entity */
-														$entity = new $class($level, Entity::createBaseNBT($pos1->add(0.5, 0, 0.5)));
+														$entity = new $class($level, EntityFactory::createBaseNBT($pos1->add(0.5, 0, 0.5)));
 													}catch(\Exception $e){
 														return;
 													}
@@ -253,7 +254,7 @@ class AnimalSpawner{
 							try{
 								$class = $entry->entityClass;
 								/** @var Entity $entity */
-								$entity = new $class($level, Entity::createBaseNBT($pos->add(0.5, 0, 0.5)));
+								$entity = new $class($level, EntityFactory::createBaseNBT($pos->add(0.5, 0, 0.5)));
 							}catch(\Exception $e){
 								continue;
 							}

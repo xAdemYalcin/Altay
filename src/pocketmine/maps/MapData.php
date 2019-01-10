@@ -21,7 +21,6 @@
 
 declare(strict_types=1);
 
-
 namespace pocketmine\maps;
 
 use pocketmine\math\Vector2;

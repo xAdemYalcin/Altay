@@ -117,9 +117,9 @@ use function min;
 use function mt_rand;
 use function strtolower;
 use function trim;
+use const M_PI;
 use const INT32_MAX;
 use const INT32_MIN;
-use const M_PI;
 
 #include <rules/Level.h>
 

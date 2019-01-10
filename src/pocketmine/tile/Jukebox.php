@@ -26,11 +26,9 @@ namespace pocketmine\tile;
 
 use pocketmine\item\Record;
 use pocketmine\item\Item;
-use pocketmine\level\particle\{
-    GenericParticle, Particle
-};
+use pocketmine\level\particle\{GenericParticle, Particle};
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\network\mcpe\protocol\{LevelSoundEventPacket, PlaySoundPacket, StopSoundPacket, TextPacket};
+use pocketmine\network\mcpe\protocol\{LevelSoundEventPacket, TextPacket};
 use pocketmine\Player;
 use pocketmine\Server;
 
@@ -97,7 +95,7 @@ class Jukebox extends Spawnable{
 		return "Jukebox";
 	}
 
-	protected function readSaveData(CompoundTag $nbt) : void{
+	public function readSaveData(CompoundTag $nbt) : void{
 		if($nbt->hasTag(self::TAG_RECORD_ITEM)){
 			$this->recordItem = Item::nbtDeserialize($nbt->getCompoundTag(self::TAG_RECORD_ITEM));
 		}

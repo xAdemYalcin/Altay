@@ -31,6 +31,7 @@ use pocketmine\entity\behavior\RandomLookAroundBehavior;
 use pocketmine\entity\behavior\RangedAttackBehavior;
 use pocketmine\entity\behavior\WanderBehavior;
 use pocketmine\entity\Entity;
+use pocketmine\entity\EntityFactory;
 use pocketmine\entity\Monster;
 use pocketmine\entity\projectile\SmallFireball;
 use pocketmine\entity\RangedAttackerMob;
@@ -96,7 +97,7 @@ class Blaze extends Monster implements RangedAttackerMob{
 
 	public function onRangedAttackToTarget(Entity $target, float $power) : void{
 		$dv = $target->subtract($this)->normalize();
-		$fireball = new SmallFireball($this->level, Entity::createBaseNBT($this->add($this->random->nextFloat() * $power, $this->getEyeHeight(), $this->random->nextFloat() * $power), $dv), $this);
+		$fireball = new SmallFireball($this->level, EntityFactory::createBaseNBT($this->add($this->random->nextFloat() * $power, $this->getEyeHeight(), $this->random->nextFloat() * $power), $dv), $this);
 		$fireball->setMotion($dv->multiply($power));
 		$fireball->spawnToAll();
 	}

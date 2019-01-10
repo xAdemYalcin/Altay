@@ -32,7 +32,6 @@ use pocketmine\inventory\InventoryHolder;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\Player;
 
 class Beacon extends Spawnable implements Nameable, InventoryHolder{
@@ -51,19 +50,14 @@ class Beacon extends Spawnable implements Nameable, InventoryHolder{
 	/** @var int */
 	protected $currentTick = 0;
 	/** @var array */
-	protected $minerals = [
-		Block::IRON_BLOCK,
-		Block::GOLD_BLOCK,
-		Block::EMERALD_BLOCK,
-		Block::DIAMOND_BLOCK
-	];
-	
+	protected $minerals = [Block::IRON_BLOCK, Block::GOLD_BLOCK, Block::EMERALD_BLOCK, Block::DIAMOND_BLOCK];
+
 	public function __construct(Level $level, Vector3 $pos){
 		parent::__construct($level, $pos);
 		$this->inventory = new BeaconInventory($this);
 	}
-    
-	protected function readSaveData(CompoundTag $nbt) : void{
+
+	public function readSaveData(CompoundTag $nbt) : void{
 		$this->primary = $nbt->getInt(self::TAG_PRIMARY, 0);
 		$this->secondary = $nbt->getInt(self::TAG_SECONDARY, 0);
 

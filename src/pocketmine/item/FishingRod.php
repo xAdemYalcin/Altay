@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\item;
 
-use pocketmine\entity\Entity;
+use pocketmine\entity\EntityFactory;
 use pocketmine\entity\projectile\FishingHook;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\AnimatePacket;
@@ -49,7 +49,7 @@ class FishingRod extends Tool{
 
 	public function onClickAir(Player $player, Vector3 $directionVector) : bool{
 		if($player->getFishingHook() === null){
-			$hook = new FishingHook($player->level, Entity::createBaseNBT($player), $player);
+			$hook = new FishingHook($player->level, EntityFactory::createBaseNBT($player), $player);
 			if($hook instanceof FishingHook){
 				$hook->spawnToAll();
 			}
