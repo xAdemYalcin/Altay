@@ -103,7 +103,7 @@ class Skeleton extends Monster implements RangedAttackerMob{
 	public function onRangedAttackToTarget(Entity $target, float $power) : void{
 		$dir = $this->getDirectionVector();
 		/** @var Arrow $arrow */
-		$arrow = EntityFactory::create("Arrow", $this->level, EntityFactory::createBaseNBT($this->add($dir->add(0, $this->getEyeHeight(), 0))));
+		$arrow = EntityFactory::create(Arrow::class, $this->level, EntityFactory::createBaseNBT($this->add($dir->add(0, $this->getEyeHeight(), 0))));
 		// TODO: Enchants
 		$arrow->setMotion($dir->multiply($power * 2.5)->add($this->level->random->nextFloat() * 0.02, $this->level->random->nextFloat() * 0.01 , $this->level->random->nextFloat() * 0.02));
 		$arrow->setPickupMode(Arrow::PICKUP_NONE);
