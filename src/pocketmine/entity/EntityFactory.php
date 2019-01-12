@@ -193,12 +193,12 @@ final class EntityFactory{
 	}
 
 	/**
-	 * @param int $entityId
+	 * @param string|int $baseName
 	 *
 	 * @return null|Entity|string
 	 */
-	public static function getClassByEntityId(int $entityId) : ?string{
-		return self::$knownEntities[$entityId] ?? null;
+	public static function getEntityClassName($baseName) : ?string{
+		return self::$knownEntities[$baseName] ?? null;
 	}
 
 	/**

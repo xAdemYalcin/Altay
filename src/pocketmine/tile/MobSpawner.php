@@ -249,7 +249,7 @@ class MobSpawner extends Spawnable{
 					for($i = 0; $i < $this->spawnCount; $i++){
 						$spawnPos = $this->add(rand(-$this->spawnRange, $this->spawnRange), rand(0, 1), rand(-$this->spawnRange, $this->spawnRange));
 						if($this->isValidSpawnPosition($spawnPos)){
-							$mob = EntityFactory::create(EntityFactory::getClassByEntityId($this->entityId), $this->level, EntityFactory::createBaseNBT($spawnPos->add(0.5, 0, 0.5)));
+							$mob = EntityFactory::create(EntityFactory::getEntityClassName($this->entityId), $this->level, EntityFactory::createBaseNBT($spawnPos->add(0.5, 0, 0.5)));
 							if($mob instanceof Entity){
 								if($mob instanceof Mob){
 									if(Server::getInstance()->mobAiEnabled){

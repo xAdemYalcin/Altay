@@ -38,7 +38,7 @@ class ArmorStand extends Item{
 	}
 
 	public function onActivate(Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector) : bool{
-		$entity = EntityFactory::create("ArmorStand", $player->level, EntityFactory::createBaseNBT($blockReplace->asVector3()->add(0.5, 0, 0.5), null, $this->getDirection($player->getYaw())));
+		$entity = EntityFactory::create(EntityArmorStand::class, $player->level, EntityFactory::createBaseNBT($blockReplace->asVector3()->add(0.5, 0, 0.5), null, $this->getDirection($player->getYaw())));
 
 		if($entity instanceof EntityArmorStand){
 			if($player->isSurvival()){

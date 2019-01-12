@@ -95,7 +95,7 @@ class MateBehavior extends Behavior{
 
 	private function spawnBaby() : void{
 		/** @var Mob $baby */
-		$baby = EntityFactory::create($this->mob::NETWORK_ID, $this->mob->level, EntityFactory::createBaseNBT($this->mob));
+		$baby = EntityFactory::create(EntityFactory::getEntityClassName($this->mob::NETWORK_ID), $this->mob->level, EntityFactory::createBaseNBT($this->mob));
 		$baby->setBaby(true);
 		$baby->setImmobile(false);
 		$baby->spawnToAll();
