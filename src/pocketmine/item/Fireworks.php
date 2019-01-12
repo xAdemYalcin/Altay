@@ -27,6 +27,7 @@ namespace pocketmine\item;
 use pocketmine\block\Block;
 use pocketmine\entity\Entity;
 use pocketmine\entity\EntityFactory;
+use pocketmine\entity\object\FireworksRocket;
 use pocketmine\level\sound\BlazeShootSound;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
@@ -100,7 +101,7 @@ class Fireworks extends Item{
 	public function onActivate(Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector) : bool{
 		$nbt = EntityFactory::createBaseNBT($blockReplace->add(0.5, 0, 0.5), new Vector3(0.001, 0.05, 0.001), lcg_value() * 360, 90);
 
-		$entity = EntityFactory::create("FireworksRocket", $player->getLevel(), $nbt, $this);
+		$entity = EntityFactory::create(FireworksRocket::class, $player->getLevel(), $nbt, $this);
 
 		if($entity instanceof Entity){
 			--$this->count;
@@ -120,7 +121,7 @@ class Fireworks extends Item{
 			);
 
 			$nbt = EntityFactory::createBaseNBT($player, $motion->subtract(0, 0.1, 0), lcg_value() * 360, 90);
-			$entity = EntityFactory::create("FireworksRocket", $player->getLevel(), $nbt, $this);
+			$entity = EntityFactory::create(FireworksRocket::class, $player->getLevel(), $nbt, $this);
 
 			if($entity instanceof Entity){
 				--$this->count;
