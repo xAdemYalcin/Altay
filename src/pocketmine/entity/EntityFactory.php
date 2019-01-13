@@ -31,6 +31,7 @@ use pocketmine\entity\hostile\Skeleton;
 use pocketmine\entity\hostile\Spider;
 use pocketmine\entity\hostile\Stray;
 use pocketmine\entity\hostile\Zombie;
+use pocketmine\entity\object\ArmorStand;
 use pocketmine\entity\object\ExperienceOrb;
 use pocketmine\entity\object\FallingBlock;
 use pocketmine\entity\object\LeashKnot;
@@ -122,6 +123,7 @@ final class EntityFactory{
 		self::register(Horse::class, false, ['Horse', 'minecraft:horse']);
 		self::register(Blaze::class, false, ['Blaze', 'minecraft:blaze']);
 		self::register(SmallFireball::class, false, ['SmallFireball', 'minecraft:small_fireball']);
+		self::register(ArmorStand::class, false, ['ArmorStand", "minecraft:armor_stand']);
 
 		self::register(Human::class, true);
 
