@@ -56,6 +56,7 @@ use pocketmine\entity\projectile\FishingHook;
 use pocketmine\entity\projectile\SmallFireball;
 use pocketmine\entity\projectile\Snowball;
 use pocketmine\entity\projectile\SplashPotion;
+use pocketmine\entity\vehicle\Boat;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
@@ -123,7 +124,8 @@ final class EntityFactory{
 		self::register(Horse::class, false, ['Horse', 'minecraft:horse']);
 		self::register(Blaze::class, false, ['Blaze', 'minecraft:blaze']);
 		self::register(SmallFireball::class, false, ['SmallFireball', 'minecraft:small_fireball']);
-		self::register(ArmorStand::class, false, ['ArmorStand", "minecraft:armor_stand']);
+		self::register(ArmorStand::class, false, ['armor_stand", "minecraft:armor_stand']);
+		self::register(Boat::class, false, ['boat', 'minecraft:boat']);
 
 		self::register(Human::class, true);
 
