@@ -27,6 +27,7 @@ namespace pocketmine\command\defaults;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\lang\TranslationContainer;
+use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\StopSoundPacket;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\utils\TextFormat;
@@ -40,8 +41,8 @@ class StopSoundCommand extends VanillaCommand{
 			"/stopsound <player: target> [sound: string]",
 			[],
 			[[
-				new CommandParameter("player", CommandParameter::ARG_TYPE_TARGET, false),
-				new CommandParameter("sound", CommandParameter::ARG_TYPE_STRING)
+				new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET, false),
+				new CommandParameter("sound", AvailableCommandsPacket::ARG_TYPE_STRING)
 			]]
 		);
 

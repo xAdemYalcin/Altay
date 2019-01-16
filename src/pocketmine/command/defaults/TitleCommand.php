@@ -28,6 +28,7 @@ use pocketmine\command\CommandEnumValues;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\lang\TranslationContainer;
+use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use function array_slice;
@@ -40,27 +41,27 @@ class TitleCommand extends VanillaCommand{
 		parent::__construct($name, "%pocketmine.command.title.description", "%commands.title.usage");
 		$this->setPermission("pocketmine.command.title");
 
-		$player = new CommandParameter("player", CommandParameter::ARG_TYPE_TARGET, false);
+		$player = new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET, false);
 
 		$this->setParameters([
 			$player,
-			new CommandParameter("clear", CommandParameter::ARG_TYPE_STRING, false, new CommandEnum("clear", ["clear"]))
+			new CommandParameter("clear", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("clear", ["clear"]))
 		], 0);
 		$this->setParameters([
 			$player,
-			new CommandParameter("reset", CommandParameter::ARG_TYPE_STRING, false, new CommandEnum("reset", ["reset"]))
+			new CommandParameter("reset", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("reset", ["reset"]))
 		], 1);
 		$this->setParameters([
 			$player,
-			new CommandParameter("TitleSet", CommandParameter::ARG_TYPE_STRING, false, CommandEnumValues::getTitleSet()),
-			new CommandParameter("titleText", CommandParameter::ARG_TYPE_RAWTEXT, false)
+			new CommandParameter("TitleSet", AvailableCommandsPacket::ARG_TYPE_STRING, false, CommandEnumValues::getTitleSet()),
+			new CommandParameter("titleText", AvailableCommandsPacket::ARG_TYPE_RAWTEXT, false)
 		], 2);
 		$this->setParameters([
 			$player,
-			new CommandParameter("times", CommandParameter::ARG_TYPE_STRING, false, new CommandEnum("times", ["times"])),
-			new CommandParameter("fadeIn", CommandParameter::ARG_TYPE_INT),
-			new CommandParameter("stay", CommandParameter::ARG_TYPE_INT),
-			new CommandParameter("fadeOut", CommandParameter::ARG_TYPE_INT)
+			new CommandParameter("times", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("times", ["times"])),
+			new CommandParameter("fadeIn", AvailableCommandsPacket::ARG_TYPE_INT),
+			new CommandParameter("stay", AvailableCommandsPacket::ARG_TYPE_INT),
+			new CommandParameter("fadeOut", AvailableCommandsPacket::ARG_TYPE_INT)
 		], 3);
 	}
 

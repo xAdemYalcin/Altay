@@ -32,6 +32,7 @@ use pocketmine\item\ItemFactory;
 use pocketmine\lang\TranslationContainer;
 use pocketmine\nbt\JsonNbtParser;
 use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\utils\TextFormat;
 use function array_slice;
@@ -44,7 +45,12 @@ class GiveCommand extends VanillaCommand{
 		parent::__construct($name, "%pocketmine.command.give.description", "%pocketmine.command.give.usage");
 		$this->setPermission("pocketmine.command.give");
 
-		$parameters = [new CommandParameter("player", CommandParameter::ARG_TYPE_TARGET, false), new CommandParameter("itemName", CommandParameter::ARG_TYPE_STRING, false, CommandEnumValues::getItem()), new CommandParameter("amount", CommandParameter::ARG_TYPE_INT), new CommandParameter("components", CommandParameter::ARG_TYPE_JSON)];
+		$parameters = [
+			new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET, false),
+			new CommandParameter("itemName", AvailableCommandsPacket::ARG_TYPE_STRING, false, CommandEnumValues::getItem()),
+			new CommandParameter("amount", AvailableCommandsPacket::ARG_TYPE_INT),
+			new CommandParameter("components", AvailableCommandsPacket::ARG_TYPE_JSON)
+		];
 		$this->setParameters($parameters, 0);
 	}
 

@@ -29,6 +29,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\lang\TranslationContainer;
 use pocketmine\math\Vector3;
+use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Player;
@@ -44,14 +45,14 @@ class TeleportCommand extends VanillaCommand{
 		parent::__construct($name, "%pocketmine.command.tp.description", "%commands.tp.usage", ["teleport"]);
 		$this->setPermission("pocketmine.command.teleport");
 
-		$destination = new CommandParameter("destination", CommandParameter::ARG_TYPE_POSITION, false);
-		$targetDestination = new CommandParameter("destination", CommandParameter::ARG_TYPE_TARGET, false);
-		$victim = new CommandParameter("victim", CommandParameter::ARG_TYPE_TARGET, false);
-		$yRot = new CommandParameter("yRot", CommandParameter::ARG_TYPE_VALUE);
-		$xRot = new CommandParameter("xRot", CommandParameter::ARG_TYPE_VALUE);
-		$facing = new CommandParameter("facing", CommandParameter::ARG_TYPE_STRING, false, new CommandEnum("facing", ["facing"]));
-		$lookAtPosition = new CommandParameter("lookAtPosition", CommandParameter::ARG_TYPE_POSITION, false);
-		$lookAtEntity = new CommandParameter("lookAtEntity", CommandParameter::ARG_TYPE_TARGET, false);
+		$destination = new CommandParameter("destination", AvailableCommandsPacket::ARG_TYPE_POSITION, false);
+		$targetDestination = new CommandParameter("destination", AvailableCommandsPacket::ARG_TYPE_TARGET, false);
+		$victim = new CommandParameter("victim", AvailableCommandsPacket::ARG_TYPE_TARGET, false);
+		$yRot = new CommandParameter("yRot", AvailableCommandsPacket::ARG_TYPE_VALUE);
+		$xRot = new CommandParameter("xRot", AvailableCommandsPacket::ARG_TYPE_VALUE);
+		$facing = new CommandParameter("facing", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("facing", ["facing"]));
+		$lookAtPosition = new CommandParameter("lookAtPosition", AvailableCommandsPacket::ARG_TYPE_POSITION, false);
+		$lookAtEntity = new CommandParameter("lookAtEntity", AvailableCommandsPacket::ARG_TYPE_TARGET, false);
 
 		$this->setParameters([
 			$destination,

@@ -26,6 +26,7 @@ namespace pocketmine\command\defaults;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\lang\TranslationContainer;
+use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\permission\BanEntry;
@@ -42,7 +43,7 @@ class BanListCommand extends VanillaCommand{
             "%pocketmine.command.banlist.description",
             "%commands.banlist.usage",
             [], [[
-                new CommandParameter("args", CommandParameter::ARG_TYPE_STRING, false, new CommandEnum("banlist", [
+		        new CommandParameter("args", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("banlist", [
                     "ip", "players"
                 ]))
             ]]

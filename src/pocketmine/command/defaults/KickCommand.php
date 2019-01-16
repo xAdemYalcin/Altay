@@ -27,6 +27,7 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\lang\TranslationContainer;
+use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
@@ -43,8 +44,8 @@ class KickCommand extends VanillaCommand{
             "%pocketmine.command.kick.description",
             "%commands.kick.usage",
             [], [[
-                new CommandParameter("player", CommandParameter::ARG_TYPE_TARGET, false),
-                new CommandParameter("reason", CommandParameter::ARG_TYPE_RAWTEXT)
+		        new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET, false),
+		        new CommandParameter("reason", AvailableCommandsPacket::ARG_TYPE_RAWTEXT)
             ]]
         );
         $this->setPermission("pocketmine.command.kick");

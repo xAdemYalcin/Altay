@@ -29,6 +29,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\lang\TranslationContainer;
 use pocketmine\math\Vector3;
+use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
@@ -43,7 +44,7 @@ class SetWorldSpawnCommand extends VanillaCommand{
             "%pocketmine.command.setworldspawn.description",
             "%commands.setworldspawn.usage",
             [], [[
-                new CommandParameter("spawnPoint", CommandParameter::ARG_TYPE_POSITION)
+		        new CommandParameter("spawnPoint", AvailableCommandsPacket::ARG_TYPE_POSITION)
             ]]
         );
         $this->setPermission("pocketmine.command.setworldspawn");

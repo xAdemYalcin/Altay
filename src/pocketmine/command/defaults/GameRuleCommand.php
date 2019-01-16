@@ -27,6 +27,7 @@ namespace pocketmine\command\defaults;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\lang\TranslationContainer;
+use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Player;
@@ -36,8 +37,8 @@ class GameRuleCommand extends VanillaCommand{
 	public function __construct(string $name){
 		parent::__construct($name, "%altay.command.gamerule.description", "%altay.command.gamerule.usage", [], [
 			[
-				new CommandParameter("rule", CommandParameter::ARG_TYPE_STRING, false, new CommandEnum("BoolGameRule", $this->getKnownGameRules())),
-				new CommandParameter("value", CommandParameter::ARG_TYPE_VALUE),
+				new CommandParameter("rule", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("BoolGameRule", $this->getKnownGameRules())),
+				new CommandParameter("value", AvailableCommandsPacket::ARG_TYPE_VALUE),
 			]
 		]);
 

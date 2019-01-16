@@ -28,6 +28,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\command\ConsoleCommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\lang\TranslationContainer;
+use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
@@ -43,7 +44,7 @@ class SayCommand extends VanillaCommand{
             "%commands.say.usage",
             [],
             [[
-                new CommandParameter("message", CommandParameter::ARG_TYPE_MESSAGE, false)
+	            new CommandParameter("message", AvailableCommandsPacket::ARG_TYPE_MESSAGE, false)
             ]]
         );
         $this->setPermission("pocketmine.command.say");

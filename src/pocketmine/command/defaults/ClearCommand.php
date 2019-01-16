@@ -32,6 +32,7 @@ use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\lang\TranslationContainer;
+use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
@@ -40,7 +41,11 @@ class ClearCommand extends VanillaCommand{
 
 	public function __construct(string $name){
 		parent::__construct($name, "%altay.command.clear.description", "%altay.command.clear.usage", [], [[// 3 parameter for Altay (normal 4)
-			new CommandParameter("player", CommandParameter::ARG_TYPE_TARGET), new CommandParameter("itemName", CommandParameter::ARG_TYPE_STRING, true, CommandEnumValues::getItem()), new CommandParameter("maxCount", CommandParameter::ARG_TYPE_INT)]]);
+			new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET),
+			new CommandParameter("itemName", AvailableCommandsPacket::ARG_TYPE_STRING, true, CommandEnumValues::getItem()),
+			new CommandParameter("maxCount", AvailableCommandsPacket::ARG_TYPE_INT)
+		]
+		]);
 
 		$this->setPermission("altay.command.clear.self;altay.command.clear.other");
 	}

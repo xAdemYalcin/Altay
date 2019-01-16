@@ -27,6 +27,7 @@ use pocketmine\command\CommandEnumValues;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\lang\TranslationContainer;
+use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Server;
 use function count;
@@ -41,10 +42,10 @@ class DefaultGamemodeCommand extends VanillaCommand{
             [],
             [
                 [
-                    new CommandParameter("gameMode", CommandParameter::ARG_TYPE_STRING, false, CommandEnumValues::getGameMode()),
+	                new CommandParameter("gameMode", AvailableCommandsPacket::ARG_TYPE_STRING, false, CommandEnumValues::getGameMode()),
                 ],
                 [
-                    new CommandParameter("gameMode", CommandParameter::ARG_TYPE_INT, false),
+	                new CommandParameter("gameMode", AvailableCommandsPacket::ARG_TYPE_INT, false),
                 ]
             ]
         );

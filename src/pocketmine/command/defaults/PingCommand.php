@@ -27,6 +27,7 @@ namespace pocketmine\command\defaults;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\lang\TranslationContainer;
+use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
@@ -39,7 +40,7 @@ class PingCommand extends VanillaCommand{
 			"%pocketmine.command.ping.description",
 			"%commands.ping.usage",
 			[], [[
-                new CommandParameter("player", CommandParameter::ARG_TYPE_TARGET)
+				new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET)
             ]]
 		);
 		$this->setPermission("altay.command.ping");

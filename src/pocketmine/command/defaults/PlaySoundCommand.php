@@ -28,12 +28,11 @@ use pocketmine\command\CommandSender;
 use pocketmine\command\utils\CommandSelector;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\lang\TranslationContainer;
-use pocketmine\level\Position;
 use pocketmine\math\Vector3;
+use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Player;
-use pocketmine\utils\TextFormat;
 
 class PlaySoundCommand extends VanillaCommand{
 
@@ -44,11 +43,11 @@ class PlaySoundCommand extends VanillaCommand{
 			"/playsound <sound: string> [player: target] [position: x y z] [volume: float] [pitch: float]",
 			[],
 			[[
-				new CommandParameter("sound", CommandParameter::ARG_TYPE_STRING, false),
-				new CommandParameter("player", CommandParameter::ARG_TYPE_TARGET),
-				new CommandParameter("pos", CommandParameter::ARG_TYPE_POSITION),
-				new CommandParameter("volume", CommandParameter::ARG_TYPE_FLOAT),
-				new CommandParameter("pitch", CommandParameter::ARG_TYPE_FLOAT)
+				new CommandParameter("sound", AvailableCommandsPacket::ARG_TYPE_STRING, false),
+				new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET),
+				new CommandParameter("pos", AvailableCommandsPacket::ARG_TYPE_POSITION),
+				new CommandParameter("volume", AvailableCommandsPacket::ARG_TYPE_FLOAT),
+				new CommandParameter("pitch", AvailableCommandsPacket::ARG_TYPE_FLOAT)
 			]]
 		);
 

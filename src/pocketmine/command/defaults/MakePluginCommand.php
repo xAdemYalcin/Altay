@@ -26,6 +26,7 @@ namespace pocketmine\command\defaults;
 
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
+use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\plugin\FolderPluginLoader;
 use pocketmine\plugin\Plugin;
@@ -40,7 +41,7 @@ class MakePluginCommand extends VanillaCommand{
             "Creates a Phar plugin from a unarchived",
             '/makeplugin <pluginName>',
             ["mp"], [[
-                new CommandParameter("plugin", CommandParameter::ARG_TYPE_RAWTEXT, false)
+		        new CommandParameter("plugin", AvailableCommandsPacket::ARG_TYPE_RAWTEXT, false)
             ]]
         );
 

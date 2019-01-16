@@ -30,6 +30,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\lang\TranslationContainer;
 use pocketmine\level\Level;
+use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Player;
@@ -42,11 +43,11 @@ class TimeCommand extends VanillaCommand{
 		parent::__construct($name, "%pocketmine.command.time.description", "%pocketmine.command.time.usage");
 		$this->setPermission("pocketmine.command.time.add;pocketmine.command.time.set;pocketmine.command.time.start;pocketmine.command.time.stop");
 
-		$amount = new CommandParameter("amount", CommandParameter::ARG_TYPE_INT);
-		$set = new CommandParameter("set", CommandParameter::ARG_TYPE_STRING, false, new CommandEnum("set", ["set"]));
+		$amount = new CommandParameter("amount", AvailableCommandsPacket::ARG_TYPE_INT);
+		$set = new CommandParameter("set", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("set", ["set"]));
 
 		$this->setParameters([
-			new CommandParameter("add", CommandParameter::ARG_TYPE_STRING, false, new CommandEnum("add", ["add"])),
+			new CommandParameter("add", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("add", ["add"])),
 			$amount
 		], 0);
 		$this->setParameters([
@@ -55,11 +56,11 @@ class TimeCommand extends VanillaCommand{
 		], 1);
 		$this->setParameters([
 			$set,
-			new CommandParameter("time", CommandParameter::ARG_TYPE_STRING, false, CommandEnumValues::getTimeSpec())
+			new CommandParameter("time", AvailableCommandsPacket::ARG_TYPE_STRING, false, CommandEnumValues::getTimeSpec())
 		], 2);
 		$this->setParameters([
-			new CommandParameter("querySE", CommandParameter::ARG_TYPE_STRING, false, new CommandEnum("query", ["query"])),
-			new CommandParameter("query", CommandParameter::ARG_TYPE_STRING, false, CommandEnumValues::getTimeSpec())
+			new CommandParameter("querySE", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("query", ["query"])),
+			new CommandParameter("query", AvailableCommandsPacket::ARG_TYPE_STRING, false, CommandEnumValues::getTimeSpec())
 		], 3);
 	}
 

@@ -28,6 +28,7 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\lang\TranslationContainer;
+use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
@@ -43,7 +44,7 @@ class OpCommand extends VanillaCommand{
             "%commands.op.usage",
             [],
             [[
-                new CommandParameter("player", CommandParameter::ARG_TYPE_TARGET, false)
+	            new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET, false)
             ]]
         );
         $this->setPermission("pocketmine.command.op.give");

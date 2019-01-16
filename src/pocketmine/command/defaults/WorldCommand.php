@@ -27,6 +27,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\lang\TranslationContainer;
 use pocketmine\level\Level;
+use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Player;
 use pocketmine\Server;
@@ -36,8 +37,8 @@ class WorldCommand extends VanillaCommand{
 	public function __construct(string $name){
 		parent::__construct($name, "%pocketmine.command.world.description", "%commands.world.usage", [], [
 			[
-				new CommandParameter("world", CommandParameter::ARG_TYPE_RAWTEXT, false),
-				new CommandParameter("player", CommandParameter::ARG_TYPE_TARGET, true)
+				new CommandParameter("world", AvailableCommandsPacket::ARG_TYPE_RAWTEXT, false),
+				new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET, true)
 			]
 		]);
 		$this->setPermission("pocketmine.command.world");

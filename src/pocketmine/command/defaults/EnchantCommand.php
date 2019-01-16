@@ -30,6 +30,7 @@ use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\lang\TranslationContainer;
+use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\utils\TextFormat;
 use function count;
@@ -40,14 +41,14 @@ class EnchantCommand extends VanillaCommand{
 	public function __construct(string $name){
 		parent::__construct($name, "%pocketmine.command.enchant.description", "%commands.enchant.usage", [], [
 				[
-					new CommandParameter("player", CommandParameter::ARG_TYPE_TARGET),
-					new CommandParameter("enchantName", CommandParameter::ARG_TYPE_STRING, false, CommandEnumValues::getEnchant()),
-					new CommandParameter("level", CommandParameter::ARG_TYPE_INT)
+					new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET),
+					new CommandParameter("enchantName", AvailableCommandsPacket::ARG_TYPE_STRING, false, CommandEnumValues::getEnchant()),
+					new CommandParameter("level", AvailableCommandsPacket::ARG_TYPE_INT)
 				],
 				[
-					new CommandParameter("player", CommandParameter::ARG_TYPE_INT, false),
-					new CommandParameter("enchantmentId", CommandParameter::ARG_TYPE_INT, false),
-					new CommandParameter("level", CommandParameter::ARG_TYPE_INT, false)
+					new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_INT, false),
+					new CommandParameter("enchantmentId", AvailableCommandsPacket::ARG_TYPE_INT, false),
+					new CommandParameter("level", AvailableCommandsPacket::ARG_TYPE_INT, false)
 				]
 			]);
 		$this->setPermission("pocketmine.command.enchant");

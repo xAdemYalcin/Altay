@@ -30,6 +30,7 @@ use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\entity\Effect;
 use pocketmine\entity\EffectInstance;
 use pocketmine\lang\TranslationContainer;
+use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\utils\TextFormat;
@@ -47,15 +48,15 @@ class EffectCommand extends VanillaCommand{
             [],
             [
                 [
-                    new CommandParameter("player", CommandParameter::ARG_TYPE_TARGET, false),
-                    new CommandParameter("clear", CommandParameter::ARG_TYPE_STRING, false, new CommandEnum("clear", ["clear"]))
+	                new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET, false),
+	                new CommandParameter("clear", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("clear", ["clear"]))
                 ],
                 [
-                    new CommandParameter("player", CommandParameter::ARG_TYPE_TARGET, false),
-                    new CommandParameter("effect", CommandParameter::ARG_TYPE_STRING, false, CommandEnumValues::getEffect()),
-                    new CommandParameter("seconds", CommandParameter::ARG_TYPE_INT),
-                    new CommandParameter("amplifier", CommandParameter::ARG_TYPE_INT),
-                    new CommandParameter("bool", CommandParameter::ARG_TYPE_VALUE, false, CommandEnumValues::getBoolean())
+	                new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET, false),
+	                new CommandParameter("effect", AvailableCommandsPacket::ARG_TYPE_STRING, false, CommandEnumValues::getEffect()),
+	                new CommandParameter("seconds", AvailableCommandsPacket::ARG_TYPE_INT),
+	                new CommandParameter("amplifier", AvailableCommandsPacket::ARG_TYPE_INT),
+	                new CommandParameter("bool", AvailableCommandsPacket::ARG_TYPE_VALUE, false, CommandEnumValues::getBoolean())
                 ]
             ]
         );

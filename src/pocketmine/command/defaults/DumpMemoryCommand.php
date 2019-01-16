@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace pocketmine\command\defaults;
 
 use pocketmine\command\CommandSender;
+use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use function date;
 
@@ -32,7 +33,7 @@ class DumpMemoryCommand extends VanillaCommand{
 	public function __construct(string $name){
 		parent::__construct($name, "Dumps the memory", "/$name [path]", [], [
 				[
-					new CommandParameter("path", CommandParameter::ARG_TYPE_VALUE)
+					new CommandParameter("path", AvailableCommandsPacket::ARG_TYPE_VALUE)
 				]
 			]);
 		$this->setPermission("pocketmine.command.dumpmemory");

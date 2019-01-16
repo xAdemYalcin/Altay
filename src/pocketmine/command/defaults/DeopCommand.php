@@ -28,6 +28,7 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\lang\TranslationContainer;
+use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
@@ -37,15 +38,11 @@ use function count;
 class DeopCommand extends VanillaCommand{
 
 	public function __construct(string $name){
-		parent::__construct(
-			$name,
-			"%pocketmine.command.deop.description",
-			"%commands.deop.usage",
-			[],
-            [[
-                new CommandParameter("player", CommandParameter::ARG_TYPE_TARGET, false)
-            ]]
-		);
+		parent::__construct($name, "%pocketmine.command.deop.description", "%commands.deop.usage", [], [
+			[
+				new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET, false)
+			]
+		]);
 		$this->setPermission("pocketmine.command.op.take");
 	}
 
