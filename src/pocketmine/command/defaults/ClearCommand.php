@@ -31,8 +31,10 @@ use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use pocketmine\lang\TranslationContainer;
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
+use pocketmine\network\mcpe\protocol\types\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
@@ -40,9 +42,25 @@ use pocketmine\utils\TextFormat;
 class ClearCommand extends VanillaCommand{
 
 	public function __construct(string $name){
+		$itemNames = [];
+		foreach((new \ReflectionClass(ItemIds::class))->getConstants() as $n => $id){
+			if(ItemFactory::isRegistered($id)){
+				for($i = 0; $i < 15; $i++){
+					if(ItemFactory::isRegistered($id, $i)){
+						$itemName = (ItemFactory::get($id, $i))->getName();
+						$itemNames[$itemName] = $itemName;
+					}else{
+						goto go_to_next;
+					}
+				}
+			}else{
+				$itemNames[$id] = strtolower($n);
+			}
+			go_to_next:
+		}
 		parent::__construct($name, "%altay.command.clear.description", "%altay.command.clear.usage", [], [[// 3 parameter for Altay (normal 4)
 			new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET),
-			new CommandParameter("itemName", AvailableCommandsPacket::ARG_TYPE_STRING, true, CommandEnumValues::getItem()),
+			new CommandParameter("itemName", AvailableCommandsPacket::ARG_TYPE_STRING, true, new CommandEnum("clear_item_names", array_values($itemNames))),
 			new CommandParameter("maxCount", AvailableCommandsPacket::ARG_TYPE_INT)
 		]
 		]);

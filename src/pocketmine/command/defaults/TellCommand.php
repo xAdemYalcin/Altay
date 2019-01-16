@@ -37,44 +37,40 @@ use function implode;
 
 class TellCommand extends VanillaCommand{
 
-    public function __construct(string $name){
-        parent::__construct(
-            $name,
-            "%pocketmine.command.tell.description",
-            "%commands.message.usage",
-            ["w", "msg"],
-            [[
-	            new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET, false),
-	            new CommandParameter("message", AvailableCommandsPacket::ARG_TYPE_MESSAGE, false)
-            ]]
-        );
-        $this->setPermission("pocketmine.command.tell");
-    }
+	public function __construct(string $name){
+		parent::__construct($name, "%pocketmine.command.tell.description", "%commands.message.usage", ["w", "msg"], [
+			[
+				new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET, false),
+				new CommandParameter("message", AvailableCommandsPacket::ARG_TYPE_MESSAGE, false)
+			]
+		]);
+		$this->setPermission("pocketmine.command.tell");
+	}
 
-    public function execute(CommandSender $sender, string $commandLabel, array $args){
-        if(!$this->testPermission($sender)){
-            return true;
-        }
+	public function execute(CommandSender $sender, string $commandLabel, array $args){
+		if(!$this->testPermission($sender)){
+			return true;
+		}
 
-        if(count($args) < 2){
-            throw new InvalidCommandSyntaxException();
-        }
+		if(count($args) < 2){
+			throw new InvalidCommandSyntaxException();
+		}
 
-        $player = $sender->getServer()->getPlayer(array_shift($args));
+		$player = $sender->getServer()->getPlayer(array_shift($args));
 
-        if($player === $sender){
-            $sender->sendMessage(new TranslationContainer(TextFormat::RED . "%commands.message.sameTarget"));
-            return true;
-        }
+		if($player === $sender){
+			$sender->sendMessage(new TranslationContainer(TextFormat::RED . "%commands.message.sameTarget"));
+			return true;
+		}
 
-        if($player instanceof Player){
-            $sender->sendMessage("[{$sender->getName()} -> {$player->getDisplayName()}] " . implode(" ", $args));
-            $name = $sender instanceof Player ? $sender->getDisplayName() : $sender->getName();
-            $player->sendMessage("[$name -> {$player->getName()}] " . implode(" ", $args));
-        }else{
-            $sender->sendMessage(new TranslationContainer("commands.generic.player.notFound"));
-        }
+		if($player instanceof Player){
+			$sender->sendMessage("[{$sender->getName()} -> {$player->getDisplayName()}] " . implode(" ", $args));
+			$name = $sender instanceof Player ? $sender->getDisplayName() : $sender->getName();
+			$player->sendMessage("[$name -> {$player->getName()}] " . implode(" ", $args));
+		}else{
+			$sender->sendMessage(new TranslationContainer("commands.generic.player.notFound"));
+		}
 
-        return true;
-    }
+		return true;
+	}
 }

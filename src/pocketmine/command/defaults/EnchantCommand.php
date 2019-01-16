@@ -31,6 +31,7 @@ use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\lang\TranslationContainer;
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
+use pocketmine\network\mcpe\protocol\types\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\utils\TextFormat;
 use function count;
@@ -39,10 +40,13 @@ use function is_numeric;
 class EnchantCommand extends VanillaCommand{
 
 	public function __construct(string $name){
+		$enchantNames = array_map(function(Enchantment $enchantment){
+			return str_replace(["%enchantment.", "."], ["", "_"], $enchantment->getName());
+		}, Enchantment::getEnchantments());
 		parent::__construct($name, "%pocketmine.command.enchant.description", "%commands.enchant.usage", [], [
 				[
 					new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET),
-					new CommandParameter("enchantName", AvailableCommandsPacket::ARG_TYPE_STRING, false, CommandEnumValues::getEnchant()),
+					new CommandParameter("enchantName", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("enchantNames", $enchantNames)),
 					new CommandParameter("level", AvailableCommandsPacket::ARG_TYPE_INT)
 				],
 				[

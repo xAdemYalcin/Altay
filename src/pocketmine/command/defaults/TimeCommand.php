@@ -56,11 +56,15 @@ class TimeCommand extends VanillaCommand{
 		], 1);
 		$this->setParameters([
 			$set,
-			new CommandParameter("time", AvailableCommandsPacket::ARG_TYPE_STRING, false, CommandEnumValues::getTimeSpec())
+			new CommandParameter("time", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("time", [
+				"day", "sunrise", "noon", "sunset", "night", "midnight"
+			]))
 		], 2);
 		$this->setParameters([
 			new CommandParameter("querySE", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("query", ["query"])),
-			new CommandParameter("query", AvailableCommandsPacket::ARG_TYPE_STRING, false, CommandEnumValues::getTimeSpec())
+			new CommandParameter("query", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("queryTime", [
+				"day", "sunrise", "noon", "sunset", "night", "midnight"
+			]))
 		], 3);
 	}
 

@@ -31,6 +31,7 @@ use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\lang\TranslationContainer;
 use pocketmine\level\Level;
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
+use pocketmine\network\mcpe\protocol\types\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use function count;
 
@@ -39,7 +40,9 @@ class DifficultyCommand extends VanillaCommand{
 	public function __construct(string $name){
 		parent::__construct($name, "%pocketmine.command.difficulty.description", "%commands.difficulty.usage", [], [
 				[
-					new CommandParameter("difficulty", AvailableCommandsPacket::ARG_TYPE_STRING, false, CommandEnumValues::getDifficulty())
+					new CommandParameter("difficulty", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("difficulty", [
+						"normal", "peaceful", "easy", "hard"
+					]))
 				],
 				[
 					new CommandParameter("difficulty", AvailableCommandsPacket::ARG_TYPE_INT, false)

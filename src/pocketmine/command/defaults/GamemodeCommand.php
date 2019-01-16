@@ -30,6 +30,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\lang\TranslationContainer;
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
+use pocketmine\network\mcpe\protocol\types\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Player;
 use pocketmine\Server;
@@ -46,7 +47,9 @@ class GamemodeCommand extends VanillaCommand{
             ["gm"],
             [
                 [
-	                new CommandParameter("gameMode", AvailableCommandsPacket::ARG_TYPE_STRING, false, CommandEnumValues::getGameMode()),
+	                new CommandParameter("gameMode", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("gameMode", [
+		                "creative", "survival", "adventure"
+	                ])),
 	                new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET)
                 ],
                 [

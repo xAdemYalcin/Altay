@@ -37,18 +37,14 @@ use function count;
 
 class OpCommand extends VanillaCommand{
 
-    public function __construct(string $name){
-        parent::__construct(
-            $name,
-            "%pocketmine.command.op.description",
-            "%commands.op.usage",
-            [],
-            [[
-	            new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET, false)
-            ]]
-        );
-        $this->setPermission("pocketmine.command.op.give");
-    }
+	public function __construct(string $name){
+		parent::__construct($name, "%pocketmine.command.op.description", "%commands.op.usage", [], [
+			[
+				new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET, false)
+			]
+		]);
+		$this->setPermission("pocketmine.command.op.give");
+	}
 
 	public function execute(CommandSender $sender, string $commandLabel, array $args){
 		if(!$this->testPermission($sender)){

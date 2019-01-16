@@ -28,29 +28,25 @@ use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\lang\TranslationContainer;
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
+use pocketmine\network\mcpe\protocol\types\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Server;
 use function count;
 
 class DefaultGamemodeCommand extends VanillaCommand{
 
-    public function __construct(string $name){
-        parent::__construct(
-            $name,
-            "%pocketmine.command.defaultgamemode.description",
-            "%commands.defaultgamemode.usage",
-            [],
-            [
-                [
-	                new CommandParameter("gameMode", AvailableCommandsPacket::ARG_TYPE_STRING, false, CommandEnumValues::getGameMode()),
-                ],
-                [
-	                new CommandParameter("gameMode", AvailableCommandsPacket::ARG_TYPE_INT, false),
-                ]
-            ]
-        );
-        $this->setPermission("pocketmine.command.defaultgamemode");
-    }
+	public function __construct(string $name){
+		parent::__construct($name, "%pocketmine.command.defaultgamemode.description", "%commands.defaultgamemode.usage", [], [
+			[
+				new CommandParameter("gameMode", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("defaultGameMode", [
+					"creative", "survival", "adventure"
+				])),
+			], [
+				new CommandParameter("gameMode", AvailableCommandsPacket::ARG_TYPE_INT, false),
+			]
+		]);
+		$this->setPermission("pocketmine.command.defaultgamemode");
+	}
 
 	public function execute(CommandSender $sender, string $commandLabel, array $args){
 		if(!$this->testPermission($sender)){

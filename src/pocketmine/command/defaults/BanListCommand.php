@@ -37,19 +37,16 @@ use function strtolower;
 
 class BanListCommand extends VanillaCommand{
 
-    public function __construct(string $name){
-        parent::__construct(
-            $name,
-            "%pocketmine.command.banlist.description",
-            "%commands.banlist.usage",
-            [], [[
-		        new CommandParameter("args", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("banlist", [
-                    "ip", "players"
-                ]))
-            ]]
-        );
-        $this->setPermission("pocketmine.command.ban.list");
-    }
+	public function __construct(string $name){
+		parent::__construct($name, "%pocketmine.command.banlist.description", "%commands.banlist.usage", [], [
+			[
+				new CommandParameter("args", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("banlist", [
+					"ip", "players"
+				]))
+			]
+		]);
+		$this->setPermission("pocketmine.command.ban.list");
+	}
 
 	public function execute(CommandSender $sender, string $commandLabel, array $args){
 		if(!$this->testPermission($sender)){

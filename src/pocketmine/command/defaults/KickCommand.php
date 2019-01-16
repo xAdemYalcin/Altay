@@ -38,18 +38,15 @@ use function trim;
 
 class KickCommand extends VanillaCommand{
 
-    public function __construct(string $name){
-        parent::__construct(
-            $name,
-            "%pocketmine.command.kick.description",
-            "%commands.kick.usage",
-            [], [[
-		        new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET, false),
-		        new CommandParameter("reason", AvailableCommandsPacket::ARG_TYPE_RAWTEXT)
-            ]]
-        );
-        $this->setPermission("pocketmine.command.kick");
-    }
+	public function __construct(string $name){
+		parent::__construct($name, "%pocketmine.command.kick.description", "%commands.kick.usage", [], [
+			[
+				new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET, false),
+				new CommandParameter("reason", AvailableCommandsPacket::ARG_TYPE_RAWTEXT)
+			]
+		]);
+		$this->setPermission("pocketmine.command.kick");
+	}
 
 	public function execute(CommandSender $sender, string $commandLabel, array $args){
 		if(!$this->testPermission($sender)){
@@ -66,7 +63,9 @@ class KickCommand extends VanillaCommand{
 		if(($player = $sender->getServer()->getPlayer($name)) instanceof Player){
 			$player->kick($reason);
 			if($reason !== ""){
-				Command::broadcastCommandMessage($sender, new TranslationContainer("commands.kick.success.reason", [$player->getName(), $reason]));
+				Command::broadcastCommandMessage($sender, new TranslationContainer("commands.kick.success.reason", [
+					$player->getName(), $reason
+				]));
 			}else{
 				Command::broadcastCommandMessage($sender, new TranslationContainer("commands.kick.success", [$player->getName()]));
 			}

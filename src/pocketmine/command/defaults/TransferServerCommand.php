@@ -34,30 +34,27 @@ use function count;
 
 class TransferServerCommand extends VanillaCommand{
 
-    public function __construct(string $name){
-        parent::__construct(
-            $name,
-            "%pocketmine.command.transferserver.description",
-            "%pocketmine.command.transferserver.usage",
-            [], [[
-		        new CommandParameter("ip", AvailableCommandsPacket::ARG_TYPE_VALUE, false),
-		        new CommandParameter("port", AvailableCommandsPacket::ARG_TYPE_INT)
-            ]]
-        );
-        $this->setPermission("pocketmine.command.transferserver");
-    }
+	public function __construct(string $name){
+		parent::__construct($name, "%pocketmine.command.transferserver.description", "%pocketmine.command.transferserver.usage", [], [
+			[
+				new CommandParameter("ip", AvailableCommandsPacket::ARG_TYPE_VALUE, false),
+				new CommandParameter("port", AvailableCommandsPacket::ARG_TYPE_INT)
+			]
+		]);
+		$this->setPermission("pocketmine.command.transferserver");
+	}
 
-    public function execute(CommandSender $sender, string $commandLabel, array $args){
-        if(count($args) < 1){
-            throw new InvalidCommandSyntaxException();
-        }elseif(!($sender instanceof Player)){
-            $sender->sendMessage("This command must be executed as a player");
+	public function execute(CommandSender $sender, string $commandLabel, array $args){
+		if(count($args) < 1){
+			throw new InvalidCommandSyntaxException();
+		}elseif(!($sender instanceof Player)){
+			$sender->sendMessage("This command must be executed as a player");
 
-            return false;
-        }
+			return false;
+		}
 
-        $sender->transfer($args[0], (int) ($args[1] ?? 19132));
+		$sender->transfer($args[0], (int) ($args[1] ?? 19132));
 
-        return true;
-    }
+		return true;
+	}
 }

@@ -53,7 +53,9 @@ class TitleCommand extends VanillaCommand{
 		], 1);
 		$this->setParameters([
 			$player,
-			new CommandParameter("TitleSet", AvailableCommandsPacket::ARG_TYPE_STRING, false, CommandEnumValues::getTitleSet()),
+			new CommandParameter("titleSet", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("titleSet", [
+				"title", "subtitle", "actionbar"
+			])),
 			new CommandParameter("titleText", AvailableCommandsPacket::ARG_TYPE_RAWTEXT, false)
 		], 2);
 		$this->setParameters([

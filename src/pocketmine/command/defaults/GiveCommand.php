@@ -29,10 +29,12 @@ use pocketmine\command\CommandEnumValues;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use pocketmine\lang\TranslationContainer;
 use pocketmine\nbt\JsonNbtParser;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
+use pocketmine\network\mcpe\protocol\types\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\utils\TextFormat;
 use function array_slice;
@@ -44,10 +46,26 @@ class GiveCommand extends VanillaCommand{
 	public function __construct(string $name){
 		parent::__construct($name, "%pocketmine.command.give.description", "%pocketmine.command.give.usage");
 		$this->setPermission("pocketmine.command.give");
+		$itemNames = [];
+		foreach((new \ReflectionClass(ItemIds::class))->getConstants() as $n => $id){
+			if(ItemFactory::isRegistered($id)){
+				for($i = 0; $i < 15; $i++){
+					if(ItemFactory::isRegistered($id, $i)){
+						$itemName = (ItemFactory::get($id, $i))->getName();
+						$itemNames[$itemName] = $itemName;
+					}else{
+						goto go_to_next;
+					}
+				}
+			}else{
+				$itemNames[$id] = strtolower($n);
+			}
+			go_to_next:
+		}
 
 		$parameters = [
 			new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET, false),
-			new CommandParameter("itemName", AvailableCommandsPacket::ARG_TYPE_STRING, false, CommandEnumValues::getItem()),
+			new CommandParameter("itemName", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("itemNames", array_values($itemNames))),
 			new CommandParameter("amount", AvailableCommandsPacket::ARG_TYPE_INT),
 			new CommandParameter("components", AvailableCommandsPacket::ARG_TYPE_JSON)
 		];
@@ -102,7 +120,10 @@ class GiveCommand extends VanillaCommand{
 		//TODO: overflow
 		$player->getInventory()->addItem(clone $item);
 
-		Command::broadcastCommandMessage($sender, new TranslationContainer("%commands.give.success", [$item->getName() . " (" . $item->getId() . ":" . $item->getDamage() . ")", (string) $item->getCount(), $player->getName()]));
+		Command::broadcastCommandMessage($sender, new TranslationContainer("%commands.give.success", [
+			$item->getName() . " (" . $item->getId() . ":" . $item->getDamage() . ")", (string) $item->getCount(),
+			$player->getName()
+		]));
 		return true;
 	}
 }
