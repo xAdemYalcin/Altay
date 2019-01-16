@@ -1307,10 +1307,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$this->setSpawn($pos);
 
 		$this->level->setSleepTicks(60);
-		$this->height = $this->width = 0.2;
-		$this->recalculateBoundingBox();
-		$this->propertyManager->setFloat(self::DATA_BOUNDING_BOX_WIDTH, $this->width);
-		$this->propertyManager->setFloat(self::DATA_BOUNDING_BOX_HEIGHT, $this->height);
+		$this->updateBoundingBox(0.2, 0.2);
 
 		return true;
 	}
@@ -1324,7 +1321,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			(new PlayerBedLeaveEvent($this, $b))->call();
 
 			$this->sleeping = null;
-			$this->resetHeight();
+			$this->updateBoundingBox(1.8, 0.6);
 			$this->propertyManager->setBlockPos(self::DATA_PLAYER_BED_POSITION, null);
 			$this->setPlayerFlag(self::DATA_PLAYER_FLAG_SLEEP, false);
 
@@ -1338,12 +1335,9 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		parent::setSneaking($value);
 
 		if($value){
-			$this->height = 1.65;
-			$this->recalculateBoundingBox();
-			$this->propertyManager->setFloat(self::DATA_BOUNDING_BOX_WIDTH, $this->width);
-			$this->propertyManager->setFloat(self::DATA_BOUNDING_BOX_HEIGHT, $this->height);
+			$this->updateBoundingBox(1.65, 0.6);
 		}else{
-			$this->resetHeight();
+			$this->updateBoundingBox(1.8, 0.6);
 		}
 	}
 
@@ -1351,12 +1345,9 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		parent::setGliding($value);
 
 		if($value){
-			$this->height = $this->width = 0.6;
-			$this->recalculateBoundingBox();
-			$this->propertyManager->setFloat(self::DATA_BOUNDING_BOX_WIDTH, $this->width);
-			$this->propertyManager->setFloat(self::DATA_BOUNDING_BOX_HEIGHT, $this->height);
+			$this->updateBoundingBox(0.6, 0.6);
 		}else{
-			$this->resetHeight();
+			$this->updateBoundingBox(1.8, 0.6);
 		}
 	}
 
@@ -1364,22 +1355,24 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		parent::setSwimming($value);
 
 		if($value){
-			$this->height = $this->width = 0.6;
-			$this->recalculateBoundingBox();
-			$this->propertyManager->setFloat(self::DATA_BOUNDING_BOX_WIDTH, $this->width);
-			$this->propertyManager->setFloat(self::DATA_BOUNDING_BOX_HEIGHT, $this->height);
+			$this->updateBoundingBox(0.6, 0.6);
 		}else{
-			$this->resetHeight();
+			$this->updateBoundingBox(1.8, 0.6);
 		}
 	}
 
-	/** Reset player height to default */
-	public function resetHeight() : void{
-		$this->height = 1.8;
-		$this->width = 0.6;
+	/**
+	 * Update player's height and width
+	 *
+	 * @param float $height
+	 * @param float $width
+	 */
+	public function updateBoundingBox(float $height, float $width) : void{
+		$this->height = $height;
+		$this->width = $width;
 		$this->recalculateBoundingBox();
-		$this->propertyManager->setFloat(self::DATA_BOUNDING_BOX_WIDTH, $this->width);
-		$this->propertyManager->setFloat(self::DATA_BOUNDING_BOX_HEIGHT, $this->height);
+		$this->propertyManager->setFloat(self::DATA_BOUNDING_BOX_WIDTH, $width);
+		$this->propertyManager->setFloat(self::DATA_BOUNDING_BOX_HEIGHT, $height);
 	}
 
 	/**
