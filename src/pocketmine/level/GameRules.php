@@ -231,9 +231,9 @@ class GameRules{
 	 * @param string $name
 	 * @param int    $defaultValue
 	 *
-	 * @return bool
+	 * @return int
 	 */
-	public function getInt(string $name, int $defaultValue = 0) : bool{
+	public function getInt(string $name, int $defaultValue = 0) : int{
 		return $this->getRule($name, self::RULE_TYPE_INT, $defaultValue);
 	}
 
@@ -249,9 +249,9 @@ class GameRules{
 	 * @param string $name
 	 * @param float  $defaultValue
 	 *
-	 * @return bool
+	 * @return float
 	 */
-	public function getFloat(string $name, float $defaultValue = 0.0) : bool{
+	public function getFloat(string $name, float $defaultValue = 0.0) : float{
 		return $this->getRule($name, self::RULE_TYPE_FLOAT, $defaultValue);
 	}
 
