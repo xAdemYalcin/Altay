@@ -39,14 +39,8 @@ use pocketmine\utils\TextFormat;
 class ClearCommand extends VanillaCommand{
 
 	public function __construct(string $name){
-		parent::__construct($name, "%altay.command.clear.description", "%altay.command.clear.usage", [], [
-				[
-					// 3 parameter for Altay (normal 4)
-					new CommandParameter("player", CommandParameter::ARG_TYPE_TARGET),
-					new CommandParameter("itemName", CommandParameter::ARG_TYPE_STRING, true, CommandEnumValues::getItem()),
-					new CommandParameter("maxCount", CommandParameter::ARG_TYPE_INT)
-				]
-			]);
+		parent::__construct($name, "%altay.command.clear.description", "%altay.command.clear.usage", [], [[// 3 parameter for Altay (normal 4)
+			new CommandParameter("player", CommandParameter::ARG_TYPE_TARGET), new CommandParameter("itemName", CommandParameter::ARG_TYPE_STRING, true, CommandEnumValues::getItem()), new CommandParameter("maxCount", CommandParameter::ARG_TYPE_INT)]]);
 
 		$this->setPermission("altay.command.clear.self;altay.command.clear.other");
 	}
@@ -59,7 +53,7 @@ class ClearCommand extends VanillaCommand{
 			}
 
 			if($sender instanceof Player){
-				$selectors = [$sender];
+				$targets = [$sender];
 			}else{
 				throw new InvalidCommandSyntaxException();
 			}
@@ -69,16 +63,16 @@ class ClearCommand extends VanillaCommand{
 				return true;
 			}
 
-			$selectors = (new CommandSelector($args[0], $sender, Player::class))->getSelected();
+			$targets = CommandSelector::findTargets($sender, $args[0], Player::class);
 		}
 
 		if(isset($args[1])){
-			$silinen = 0;
+			$removedCount = 0;
 
 			$item = ItemFactory::fromString($args[1]);
 			if(isset($args[2])){
 				$maxCount = (int) $args[2];
-				$silinen = $maxCount;
+				$removedCount = $maxCount;
 			}
 
 			if($item->isNull() && isset($maxCount) && $maxCount <= 0){
@@ -87,14 +81,14 @@ class ClearCommand extends VanillaCommand{
 			}
 
 			/** @var Player $player */
-			foreach($selectors as $player){
+			foreach($targets as $player){
 				$all = $this->getItemCount($item, $player->getInventory());
 
 				if(isset($maxCount)){
 					$item->setCount($maxCount);
-					$kalan = $player->getInventory()->removeItem($item);
+					$remaining = $player->getInventory()->removeItem($item);
 
-					if(empty($kalan)){
+					if(empty($remaining)){
 						$maxCount -= $all;
 						$all = $this->getItemCount($item, $player->getArmorInventory());
 						if($all <= $maxCount){
@@ -103,7 +97,7 @@ class ClearCommand extends VanillaCommand{
 						}
 					}
 
-					if($maxCount > 0) $silinen += $maxCount;
+					if($maxCount > 0) $removedCount += $maxCount;
 				}else{
 					$all = $this->getItemCount($item, $player->getInventory());
 					$all += $this->getItemCount($item, $player->getArmorInventory());
@@ -111,29 +105,22 @@ class ClearCommand extends VanillaCommand{
 					$player->getInventory()->removeItem($item);
 					$player->getArmorInventory()->removeItem($item);
 
-					$silinen = $all;
+					$removedCount = $all;
 				}
 
-				$sender->sendMessage(new TranslationContainer("%commands.clear.success", [
-					$player->getName(),
-					$silinen
-				]));
+				$sender->sendMessage(new TranslationContainer("%commands.clear.success", [$player->getName(), $removedCount]));
 			}
 
 			return true;
 		}
 
 		/** @var Player $player */
-		foreach($selectors as $player){
-			$sayi = count($player->getInventory()->getContents(false));
-			$sayi += count($player->getArmorInventory()->getContents(false));
+		foreach($targets as $player){
+			$removedCount = count($player->getInventory()->getContents(false)) + count($player->getArmorInventory()->getContents(false));
 			$player->getInventory()->clearAll();
 			$player->getArmorInventory()->clearAll();
 
-			$sender->sendMessage(new TranslationContainer("%commands.clear.success", [
-				$player->getName(),
-				$sayi
-			]));
+			$sender->sendMessage(new TranslationContainer("%commands.clear.success", [$player->getName(), $removedCount]));
 		}
 
 		return true;

@@ -40,28 +40,13 @@ use function implode;
 
 class GiveCommand extends VanillaCommand{
 
-    public function __construct(string $name){
-        parent::__construct(
-            $name,
-            "%pocketmine.command.give.description",
-            "%pocketmine.command.give.usage"
-        );
-        $this->setPermission("pocketmine.command.give");
+	public function __construct(string $name){
+		parent::__construct($name, "%pocketmine.command.give.description", "%pocketmine.command.give.usage");
+		$this->setPermission("pocketmine.command.give");
 
-        $itemName = [
-            new CommandParameter("player", CommandParameter::ARG_TYPE_TARGET, false),
-            new CommandParameter("itemName", CommandParameter::ARG_TYPE_STRING, false, CommandEnumValues::getItem()),
-            new CommandParameter("amount", CommandParameter::ARG_TYPE_INT),
-            //new CommandParameter("data", CommandParameter::ARG_TYPE_INT), not in Altay
-            new CommandParameter("components", CommandParameter::ARG_TYPE_JSON),
-        ];
-        // FOR ALTAY NOT IN VANILLA
-        $itemId = $itemName;
-        $itemId[1] = new CommandParameter("itemId", CommandParameter::ARG_TYPE_INT, false);
-
-        $this->setParameters($itemName, 0);
-        $this->setParameters($itemId, 1);
-    }
+		$parameters = [new CommandParameter("player", CommandParameter::ARG_TYPE_TARGET, false), new CommandParameter("itemName", CommandParameter::ARG_TYPE_STRING, false, CommandEnumValues::getItem()), new CommandParameter("amount", CommandParameter::ARG_TYPE_INT), new CommandParameter("components", CommandParameter::ARG_TYPE_JSON)];
+		$this->setParameters($parameters, 0);
+	}
 
 	public function execute(CommandSender $sender, string $commandLabel, array $args){
 		if(!$this->testPermission($sender)){
@@ -111,11 +96,7 @@ class GiveCommand extends VanillaCommand{
 		//TODO: overflow
 		$player->getInventory()->addItem(clone $item);
 
-		Command::broadcastCommandMessage($sender, new TranslationContainer("%commands.give.success", [
-			$item->getName() . " (" . $item->getId() . ":" . $item->getDamage() . ")",
-			(string) $item->getCount(),
-			$player->getName()
-		]));
+		Command::broadcastCommandMessage($sender, new TranslationContainer("%commands.give.success", [$item->getName() . " (" . $item->getId() . ":" . $item->getDamage() . ")", (string) $item->getCount(), $player->getName()]));
 		return true;
 	}
 }

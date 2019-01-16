@@ -25,8 +25,10 @@ declare(strict_types=1);
 namespace pocketmine\command\defaults;
 
 use pocketmine\command\CommandSender;
+use pocketmine\command\utils\CommandSelector;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\lang\TranslationContainer;
+use pocketmine\level\Position;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
@@ -62,30 +64,27 @@ class PlaySoundCommand extends VanillaCommand{
 			throw new InvalidCommandSyntaxException();
 		}
 
-		$soundName = $args[0];
-
-		if(isset($args[1])){
-			$player = $sender->getServer()->getPlayer($args[1]);
-
-			if($player === null){
-				$sender->sendMessage(new TranslationContainer(TextFormat::RED . "%commands.generic.player.notFound"));
-				return true;
-			}
-		}else{
-			if($sender instanceof Player){
-				$player = $sender;
-			}else{
-				throw new InvalidCommandSyntaxException();
-			}
-		}
+		$pos = null;
 
 		if(count($args) >= 5){
 			$pos = [$args[2], $args[3], $args[4]];
 			$pos = array_map("intval", $pos);
 
 			$pos = new Vector3(...$pos);
+		}
+
+		$soundName = $args[0];
+
+		if(isset($args[1])){
+			/** @var Player[] $targets */
+			$targets = CommandSelector::findTargets($sender, $args[1], Player::class, $pos);
 		}else{
-			$pos = $player->asVector3();
+			if($sender instanceof Player){
+				$targets = [$sender];
+				$pos = $sender->asVector3();
+			}else{
+				throw new InvalidCommandSyntaxException();
+			}
 		}
 
 		$pk = new PlaySoundPacket();
@@ -93,11 +92,11 @@ class PlaySoundCommand extends VanillaCommand{
 		$pk->x = $pos->x;
 		$pk->y = $pos->y;
 		$pk->z = $pos->z;
-		$pk->volume = $args[5] ?? 1.0;
-		$pk->pitch = $args[6] ?? 1.0;
-		$player->sendDataPacket($pk);
+		$pk->volume = floatval($args[5] ?? 1.0);
+		$pk->pitch = floatval($args[6] ?? 1.0);
 
-		$player->sendMessage(new TranslationContainer("commands.playsound.success", [$soundName, $player->getName()]));
+		$sender->getServer()->broadcastPacket($targets, $pk);
+		$sender->sendMessage(new TranslationContainer("commands.playsound.success", [$soundName, $sender->getName()]));
 
 		return true;
 	}

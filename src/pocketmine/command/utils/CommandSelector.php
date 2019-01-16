@@ -27,74 +27,81 @@ namespace pocketmine\command\utils;
 use pocketmine\command\CommandSender;
 use pocketmine\entity\Entity;
 use pocketmine\level\Position;
-use pocketmine\Player;
+use pocketmine\math\Vector3;
+use pocketmine\utils\Utils;
 
 class CommandSelector{
 
-	public const ESCAPE = "\x40";
+	public const SELECTOR_ALL_PLAYERS = "@a";
+	public const SELECTOR_ALL_ENTITIES = "@e";
+	public const SELECTOR_CLOSEST_PLAYER = "@p";
+	public const SELECTOR_RANDOM_PLAYER = "@r";
+	public const SELECTOR_YOURSELF = "@s";
 
-	public const ALL_PLAYERS = CommandSelector::ESCAPE . "a";
-	public const ALL_ENTITIES = CommandSelector::ESCAPE . "e";
-	public const CLOSEST_PLAYER = CommandSelector::ESCAPE . "p";
-	public const RANDOM_PLAYER = CommandSelector::ESCAPE . "r";
-	public const YOURSELF = CommandSelector::ESCAPE . "s";
-
-	/** @var Entity[] */
-	protected $selected = [];
-
-	public function __construct(string $selector, CommandSender $sender, string $entityType = Entity::class){
-		if(!self::isSubClass($entityType, Entity::class)){
-			throw new NoSelectorMatchException(NoSelectorMatchException::NO_TARGET_MATCH);
-		}
-
-		$this->selected = self::setSelectedFromSelector($selector, $entityType, $sender);
-		if(empty($this->selected)){
-			throw new NoSelectorMatchException((int) self::isSubClass($entityType, Player::class));
-		}
-	}
-
-	public static function isSubClass(string $sClass, string $sExpectedParentClass) : bool{
-		return $sClass === $sExpectedParentClass ? true : is_subclass_of($sClass, $sExpectedParentClass);
-	}
-
-	public static function setSelectedFromSelector(string $selector, string $entityType, CommandSender $sender) : array{
-		switch($selector){
-			case CommandSelector::ALL_PLAYERS:
-				return $sender->getServer()->getOnlinePlayers();
-			case CommandSelector::ALL_ENTITIES:
-				$level = self::getPosFromSender($sender)->getLevel();
-				return array_filter($level->getEntities(), function($value) use ($entityType) : bool{ return $value instanceof $entityType; });
-			case CommandSelector::CLOSEST_PLAYER:
-				$pos = self::getPosFromSender($sender);
-				return $sender instanceof $entityType ? [$sender] : [$pos->getLevel()->getNearestEntity($pos, 100, $entityType)]; // hmm
-			case CommandSelector::RANDOM_PLAYER:
-				$players = $sender->getServer()->getOnlinePlayers();
-				return [$players[array_rand($players)]];
-			case CommandSelector::YOURSELF:
-				return $sender instanceof $entityType ? [$sender] : [];
-			default: // player name
-				$player = $sender->getServer()->getPlayerExact($selector);
-				return $player instanceof $entityType ? [$player] : [];
-		}
-	}
-
-	public static function getPosFromSender(CommandSender $sender) : Position{
-		return $sender instanceof Position ? $sender : $sender->getServer()->getDefaultLevel()->getSafeSpawn();
+	private function __construct(){
+		// NOOP
 	}
 
 	/**
+	 * @param CommandSender $sender
+	 * @param string        $selector
+	 * @param string        $entityType
+	 * @param Vector3|null  $pos
+	 *
 	 * @return Entity[]
 	 */
-	public function getSelected() : array{
-		return $this->selected;
-	}
+	public static function findTargets(CommandSender $sender, string $selector, string $entityType = Entity::class, ?Vector3 $pos = null) : array{
+		Utils::testValidInstance($entityType, Entity::class);
 
-	public function addToSelected(Entity $entity) : void{
-		$this->selected[] = $entity;
-	}
+		$targets = [];
 
-	public function setSelected(array $selected) : void{
-		$this->selected = array_filter($selected, function($value) : bool { return $value instanceof Entity; });
-	}
+		if(!($pos instanceof Position)){
+			if($sender instanceof Position){
+				$pos = $sender->asPosition()->setComponents($pos->x, $pos->y, $pos->z);
+			}else{
+				$pos = new Position($pos->x, $pos->y, $pos->z, $sender->getServer()->getDefaultLevel());
+			}
+		}
 
+		if($pos === null){
+			$pos = $sender instanceof Position ? $sender : $sender->getServer()->getDefaultLevel()->getSpawnLocation();
+		}
+		switch($selector){
+			case CommandSelector::SELECTOR_ALL_PLAYERS:
+				$targets = $sender->getServer()->getOnlinePlayers();
+				break;
+			case CommandSelector::SELECTOR_ALL_ENTITIES:
+				$targets = array_filter($pos->getLevel()->getEntities(), function($value) use ($entityType) : bool{
+					return $value instanceof $entityType;
+				});
+				break;
+			case CommandSelector::SELECTOR_CLOSEST_PLAYER:
+				if($sender instanceof $entityType){
+					$targets = [$sender];
+				}else{
+					$nearest = $pos->getLevel()->getNearestEntity($pos, 100, $entityType);
+					if($nearest !== null){
+						$targets = [$nearest];
+					}
+				}
+				break;
+			case CommandSelector::SELECTOR_RANDOM_PLAYER:
+				$players = array_values($sender->getServer()->getOnlinePlayers());
+				$targets = !empty($players) ? [$players[mt_rand(0, count($players) - 1)]] : [];
+				break;
+			case CommandSelector::SELECTOR_YOURSELF:
+				$targets = $sender instanceof $entityType ? [$sender] : [];
+				break;
+			default:
+				$player = $sender->getServer()->getPlayerExact($selector);
+				$targets = $player instanceof $entityType ? [$player] : [];
+				break;
+		}
+
+		if(empty($targets)){
+			throw new NoSelectorMatchException;
+		}
+
+		return $targets;
+	}
 }

@@ -25,17 +25,8 @@ declare(strict_types=1);
 namespace pocketmine\command\utils;
 
 class NoSelectorMatchException extends CommandException{
-	public const NO_TARGET_MATCH = 0;
-	public const TARGET_NO_PLAYER = 1;
 
-	public const MESSAGES = [
-		self::NO_TARGET_MATCH => "commands.generic.noTargetMatch",
-		self::TARGET_NO_PLAYER => "commands.generic.targetNotPlayer"
-	];
-
-	public function __construct(int $type){
-		$message = self::MESSAGES[$type] ?? self::MESSAGES[self::NO_TARGET_MATCH];
-		parent::__construct($message, 0, null);
+	public function __construct(){
+		parent::__construct("commands.generic.noTargetMatch", 0, null);
 	}
-
 }
