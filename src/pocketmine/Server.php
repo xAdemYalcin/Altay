@@ -1727,8 +1727,6 @@ class Server{
 			Timings::init();
 			TimingsHandler::setEnabled((bool) $this->getProperty("settings.enable-profiling", false));
 
-			$this->commandMap = new SimpleCommandMap($this);
-
 			EntityFactory::init();
 			TileFactory::init();
 			BlockFactory::init();
@@ -1738,6 +1736,8 @@ class Server{
 			Item::initCreativeItems();
 			Biome::init();
 			MapManager::initMaps();
+
+			$this->commandMap = new SimpleCommandMap($this);
 
 			$this->craftingManager = new CraftingManager();
 
