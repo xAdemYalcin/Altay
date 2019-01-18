@@ -33,11 +33,8 @@ class RiverBiome extends Biome{
 		parent::__construct();
 
 		$this->setGroundCover([
-			BlockFactory::get(Block::DIRT),
-			BlockFactory::get(Block::DIRT),
-			BlockFactory::get(Block::DIRT),
-			BlockFactory::get(Block::DIRT),
-			BlockFactory::get(Block::DIRT)
+			BlockFactory::get(Block::DIRT), BlockFactory::get(Block::DIRT), BlockFactory::get(Block::DIRT),
+			BlockFactory::get(Block::DIRT), BlockFactory::get(Block::DIRT)
 		]);
 
 		$tallGrass = new TallGrass();

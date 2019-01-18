@@ -488,7 +488,8 @@ abstract class BaseInventory implements Inventory{
 
 	public function setSlotChangeListener(?\Closure $eventProcessor) : void{
 		if($eventProcessor !== null){
-			Utils::validateCallableSignature(function(Inventory $inventory, int $slot, Item $oldItem, Item $newItem) : ?Item{}, $eventProcessor);
+			Utils::validateCallableSignature(function(Inventory $inventory, int $slot, Item $oldItem, Item $newItem) : ?Item{
+			}, $eventProcessor);
 		}
 		$this->slotChangeListener = $eventProcessor;
 	}

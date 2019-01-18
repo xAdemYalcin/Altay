@@ -29,37 +29,22 @@ class PaintingMotive{
 
 	public static function init() : void{
 		foreach([
-			new PaintingMotive(1, 1, "Alban"),
-			new PaintingMotive(1, 1, "Aztec"),
-			new PaintingMotive(1, 1, "Aztec2"),
-			new PaintingMotive(1, 1, "Bomb"),
-			new PaintingMotive(1, 1, "Kebab"),
-			new PaintingMotive(1, 1, "Plant"),
-			new PaintingMotive(1, 1, "Wasteland"),
-			new PaintingMotive(1, 2, "Graham"),
-			new PaintingMotive(1, 2, "Wanderer"),
-			new PaintingMotive(2, 1, "Courbet"),
-			new PaintingMotive(2, 1, "Creebet"),
-			new PaintingMotive(2, 1, "Pool"),
-			new PaintingMotive(2, 1, "Sea"),
-			new PaintingMotive(2, 1, "Sunset"),
-			new PaintingMotive(2, 2, "Bust"),
-			new PaintingMotive(2, 2, "Earth"),
-			new PaintingMotive(2, 2, "Fire"),
-			new PaintingMotive(2, 2, "Match"),
-			new PaintingMotive(2, 2, "SkullAndRoses"),
-			new PaintingMotive(2, 2, "Stage"),
-			new PaintingMotive(2, 2, "Void"),
-			new PaintingMotive(2, 2, "Water"),
-			new PaintingMotive(2, 2, "Wind"),
-			new PaintingMotive(2, 2, "Wither"),
-			new PaintingMotive(4, 2, "Fighters"),
-			new PaintingMotive(4, 3, "DonkeyKong"),
-			new PaintingMotive(4, 3, "Skeleton"),
-			new PaintingMotive(4, 4, "BurningSkull"),
-			new PaintingMotive(4, 4, "Pigscene"),
-			new PaintingMotive(4, 4, "Pointer")
-		] as $motive){
+			        new PaintingMotive(1, 1, "Alban"), new PaintingMotive(1, 1, "Aztec"),
+			        new PaintingMotive(1, 1, "Aztec2"), new PaintingMotive(1, 1, "Bomb"),
+			        new PaintingMotive(1, 1, "Kebab"), new PaintingMotive(1, 1, "Plant"),
+			        new PaintingMotive(1, 1, "Wasteland"), new PaintingMotive(1, 2, "Graham"),
+			        new PaintingMotive(1, 2, "Wanderer"), new PaintingMotive(2, 1, "Courbet"),
+			        new PaintingMotive(2, 1, "Creebet"), new PaintingMotive(2, 1, "Pool"),
+			        new PaintingMotive(2, 1, "Sea"), new PaintingMotive(2, 1, "Sunset"),
+			        new PaintingMotive(2, 2, "Bust"), new PaintingMotive(2, 2, "Earth"),
+			        new PaintingMotive(2, 2, "Fire"), new PaintingMotive(2, 2, "Match"),
+			        new PaintingMotive(2, 2, "SkullAndRoses"), new PaintingMotive(2, 2, "Stage"),
+			        new PaintingMotive(2, 2, "Void"), new PaintingMotive(2, 2, "Water"),
+			        new PaintingMotive(2, 2, "Wind"), new PaintingMotive(2, 2, "Wither"),
+			        new PaintingMotive(4, 2, "Fighters"), new PaintingMotive(4, 3, "DonkeyKong"),
+			        new PaintingMotive(4, 3, "Skeleton"), new PaintingMotive(4, 4, "BurningSkull"),
+			        new PaintingMotive(4, 4, "Pigscene"), new PaintingMotive(4, 4, "Pointer")
+		        ] as $motive){
 			self::registerMotive($motive);
 		}
 	}

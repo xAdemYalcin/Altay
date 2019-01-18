@@ -44,17 +44,16 @@ class EnchantCommand extends VanillaCommand{
 			return str_replace(["%enchantment.", "."], ["", "_"], $enchantment->getName());
 		}, Enchantment::getEnchantments());
 		parent::__construct($name, "%pocketmine.command.enchant.description", "%commands.enchant.usage", [], [
-				[
-					new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET),
-					new CommandParameter("enchantName", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("enchantNames", $enchantNames)),
-					new CommandParameter("level", AvailableCommandsPacket::ARG_TYPE_INT)
-				],
-				[
-					new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_INT, false),
-					new CommandParameter("enchantmentId", AvailableCommandsPacket::ARG_TYPE_INT, false),
-					new CommandParameter("level", AvailableCommandsPacket::ARG_TYPE_INT, false)
-				]
-			]);
+			[
+				new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET),
+				new CommandParameter("enchantName", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("enchantNames", $enchantNames)),
+				new CommandParameter("level", AvailableCommandsPacket::ARG_TYPE_INT)
+			], [
+				new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_INT, false),
+				new CommandParameter("enchantmentId", AvailableCommandsPacket::ARG_TYPE_INT, false),
+				new CommandParameter("level", AvailableCommandsPacket::ARG_TYPE_INT, false)
+			]
+		]);
 		$this->setPermission("pocketmine.command.enchant");
 	}
 

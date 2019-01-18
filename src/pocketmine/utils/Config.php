@@ -84,20 +84,11 @@ class Config{
 	private $changed = false;
 
 	public static $formats = [
-		"properties" => Config::PROPERTIES,
-		"cnf" => Config::CNF,
-		"conf" => Config::CNF,
-		"config" => Config::CNF,
-		"json" => Config::JSON,
-		"js" => Config::JSON,
-		"yml" => Config::YAML,
-		"yaml" => Config::YAML,
+		"properties" => Config::PROPERTIES, "cnf" => Config::CNF, "conf" => Config::CNF, "config" => Config::CNF,
+		"json" => Config::JSON, "js" => Config::JSON, "yml" => Config::YAML, "yaml" => Config::YAML,
 		//"export" => Config::EXPORT,
 		//"xport" => Config::EXPORT,
-		"sl" => Config::SERIALIZED,
-		"serialize" => Config::SERIALIZED,
-		"txt" => Config::ENUM,
-		"list" => Config::ENUM,
+		"sl" => Config::SERIALIZED, "serialize" => Config::SERIALIZED, "txt" => Config::ENUM, "list" => Config::ENUM,
 		"enum" => Config::ENUM
 	];
 

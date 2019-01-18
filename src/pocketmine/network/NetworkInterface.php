@@ -24,6 +24,7 @@ declare(strict_types=1);
 /**
  * Network-related classes
  */
+
 namespace pocketmine\network;
 
 use pocketmine\network\mcpe\NetworkSession;
@@ -42,8 +43,8 @@ interface NetworkInterface{
 	 * Sends a DataPacket to the interface, returns an unique identifier for the packet if $needACK is true
 	 *
 	 * @param NetworkSession $session
-	 * @param string $payload
-	 * @param bool $immediate
+	 * @param string         $payload
+	 * @param bool           $immediate
 	 */
 	public function putPacket(NetworkSession $session, string $payload, bool $immediate = true) : void;
 
@@ -51,7 +52,7 @@ interface NetworkInterface{
 	 * Terminates the connection
 	 *
 	 * @param NetworkSession $session
-	 * @param string $reason
+	 * @param string         $reason
 	 */
 	public function close(NetworkSession $session, string $reason = "unknown reason") : void;
 

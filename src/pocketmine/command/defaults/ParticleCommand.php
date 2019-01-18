@@ -73,11 +73,7 @@ use function strtolower;
 class ParticleCommand extends VanillaCommand{
 
 	public function __construct(string $name){
-		parent::__construct(
-			$name,
-			"%pocketmine.command.particle.description",
-			"%pocketmine.command.particle.usage"
-		);
+		parent::__construct($name, "%pocketmine.command.particle.description", "%pocketmine.command.particle.usage");
 		$this->setPermission("pocketmine.command.particle");
 	}
 
@@ -92,11 +88,7 @@ class ParticleCommand extends VanillaCommand{
 
 		if($sender instanceof Player){
 			$level = $sender->getLevel();
-			$pos = new Vector3(
-				$this->getRelativeDouble($sender->getX(), $sender, $args[1]),
-				$this->getRelativeDouble($sender->getY(), $sender, $args[2], 0, Level::Y_MAX),
-				$this->getRelativeDouble($sender->getZ(), $sender, $args[3])
-			);
+			$pos = new Vector3($this->getRelativeDouble($sender->getX(), $sender, $args[1]), $this->getRelativeDouble($sender->getY(), $sender, $args[2], 0, Level::Y_MAX), $this->getRelativeDouble($sender->getZ(), $sender, $args[3]));
 		}else{
 			$level = $sender->getServer()->getDefaultLevel();
 			$pos = new Vector3((float) $args[1], (float) $args[2], (float) $args[3]);
@@ -125,11 +117,7 @@ class ParticleCommand extends VanillaCommand{
 		$random = new Random((int) (microtime(true) * 1000) + mt_rand());
 
 		for($i = 0; $i < $count; ++$i){
-			$level->addParticle($pos->add(
-				$random->nextSignedFloat() * $xd,
-				$random->nextSignedFloat() * $yd,
-				$random->nextSignedFloat() * $zd
-			), $particle);
+			$level->addParticle($pos->add($random->nextSignedFloat() * $xd, $random->nextSignedFloat() * $yd, $random->nextSignedFloat() * $zd), $particle);
 		}
 
 		return true;

@@ -79,6 +79,7 @@ abstract class MenuForm extends Form{
 
 	/**
 	 * Sets the selected option to the specified index or null. null = no selection.
+	 *
 	 * @param int $option
 	 */
 	public function setSelectedOptionIndex(int $option) : void{
@@ -117,7 +118,9 @@ abstract class MenuForm extends Form{
 
 	/**
 	 * Called when a player clicks the close button on this form without selecting an option.
+	 *
 	 * @param Player $player
+	 *
 	 * @return Form|null a form which will be opened immediately (before queued forms) as a response to this form, or null if not applicable.
 	 */
 	public function onClose(Player $player) : ?Form{
@@ -146,8 +149,7 @@ abstract class MenuForm extends Form{
 
 	public function serializeFormData() : array{
 		return [
-			"content" => $this->content,
-			"buttons" => $this->options //yes, this is intended (MCPE calls them buttons)
+			"content" => $this->content, "buttons" => $this->options //yes, this is intended (MCPE calls them buttons)
 		];
 	}
 }

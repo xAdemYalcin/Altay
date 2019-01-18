@@ -50,11 +50,7 @@ class Vine extends Flowable{
 	}
 
 	protected function writeStateToMeta() : int{
-		return
-			(isset($this->faces[Facing::SOUTH]) ? self::FLAG_SOUTH : 0) |
-			(isset($this->faces[Facing::WEST]) ? self::FLAG_WEST : 0) |
-			(isset($this->faces[Facing::NORTH]) ? self::FLAG_NORTH : 0) |
-			(isset($this->faces[Facing::EAST]) ? self::FLAG_EAST : 0);
+		return (isset($this->faces[Facing::SOUTH]) ? self::FLAG_SOUTH : 0) | (isset($this->faces[Facing::WEST]) ? self::FLAG_WEST : 0) | (isset($this->faces[Facing::NORTH]) ? self::FLAG_NORTH : 0) | (isset($this->faces[Facing::EAST]) ? self::FLAG_EAST : 0);
 	}
 
 	public function readStateFromMeta(int $meta) : void{

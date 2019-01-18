@@ -179,12 +179,7 @@ class ProcessLoginTask extends AsyncTask{
 		$sig = new Signature(gmp_init(bin2hex($rString), 16), gmp_init(bin2hex($sString), 16));
 
 		$derSerializer = new DerPublicKeySerializer();
-		$v = openssl_verify(
-			"$headB64.$payloadB64",
-			(new DerSignatureSerializer())->serialize($sig),
-			(new PemPublicKeySerializer($derSerializer))->serialize($derSerializer->parse(base64_decode($currentPublicKey))),
-			OPENSSL_ALGO_SHA384
-		);
+		$v = openssl_verify("$headB64.$payloadB64", (new DerSignatureSerializer())->serialize($sig), (new PemPublicKeySerializer($derSerializer))->serialize($derSerializer->parse(base64_decode($currentPublicKey))), OPENSSL_ALGO_SHA384);
 
 		if($v !== 1){
 			throw new VerifyLoginException("%pocketmine.disconnect.invalidSession.badSignature");
@@ -210,21 +205,16 @@ class ProcessLoginTask extends AsyncTask{
 
 	private function generateServerHandshakeJwt(PrivateKeyInterface $serverPriv, string $salt) : string{
 		$jwtBody = self::b64UrlEncode(json_encode([
-				"x5u" => base64_encode((new DerPublicKeySerializer())->serialize($serverPriv->getPublicKey())),
-				"alg" => "ES384"
-			])
-		) . "." . self::b64UrlEncode(json_encode([
-				"salt" => base64_encode($salt)
-			])
-		);
+					"x5u" => base64_encode((new DerPublicKeySerializer())->serialize($serverPriv->getPublicKey())),
+					"alg" => "ES384"
+				])) . "." . self::b64UrlEncode(json_encode([
+					"salt" => base64_encode($salt)
+				]));
 
 		openssl_sign($jwtBody, $sig, (new PemPrivateKeySerializer(new DerPrivateKeySerializer()))->serialize($serverPriv), OPENSSL_ALGO_SHA384);
 
 		$decodedSig = (new DerSignatureSerializer())->parse($sig);
-		$jwtSig = self::b64UrlEncode(
-			hex2bin(str_pad(gmp_strval($decodedSig->getR(), 16), 96, "0", STR_PAD_LEFT)) .
-			hex2bin(str_pad(gmp_strval($decodedSig->getS(), 16), 96, "0", STR_PAD_LEFT))
-		);
+		$jwtSig = self::b64UrlEncode(hex2bin(str_pad(gmp_strval($decodedSig->getR(), 16), 96, "0", STR_PAD_LEFT)) . hex2bin(str_pad(gmp_strval($decodedSig->getS(), 16), 96, "0", STR_PAD_LEFT)));
 
 		return "$jwtBody.$jwtSig";
 	}

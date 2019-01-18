@@ -97,7 +97,9 @@ abstract class ModalForm extends Form{
 
 	/**
 	 * Called when a player closes the form
+	 *
 	 * @param Player $player
+	 *
 	 * @return Form|null a form which will be opened immediately (before queued forms) as a response to this form, or null if not applicable.
 	 */
 	public function onClose(Player $player) : ?Form{
@@ -124,9 +126,7 @@ abstract class ModalForm extends Form{
 
 	public function serializeFormData() : array{
 		return [
-			"content" => $this->content,
-			"button1" => $this->button1,
-			"button2" => $this->button2
+			"content" => $this->content, "button1" => $this->button1, "button2" => $this->button2
 		];
 	}
 

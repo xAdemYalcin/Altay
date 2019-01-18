@@ -62,8 +62,7 @@ class FireworksUtils{
 	public static function createNBT(int $flight = 1, array $explosionTags = []) : CompoundTag{
 		return new CompoundTag("", [
 			new CompoundTag("Fireworks", [
-				new ListTag("Explosions", $explosionTags, NBT::TAG_Compound),
-				new ByteTag("Flight", $flight)
+				new ListTag("Explosions", $explosionTags, NBT::TAG_Compound), new ByteTag("Flight", $flight)
 			])
 		]);
 	}
@@ -73,8 +72,7 @@ class FireworksUtils{
 			new ByteArrayTag("FireworkColor", chr($fireworkColor)),
 			new ByteArrayTag("FireworkFade", chr($fireworkFade)),
 			new ByteTag("FireworkFlicker", $fireworkFlicker ? 1 : 0),
-			new ByteTag("FireworkTrail", $fireworkTrail ? 1 : 0),
-			new ByteTag("FireworkType", $fireworkType),
+			new ByteTag("FireworkTrail", $fireworkTrail ? 1 : 0), new ByteTag("FireworkType", $fireworkType),
 		]);
 	}
 
@@ -87,7 +85,7 @@ class FireworksUtils{
 
 		/** @var CompoundTag $tags */
 		$tags = $rocket->getNamedTagEntry("Fireworks");
-		if (!is_null($tags)){
+		if(!is_null($tags)){
 			$nbt->setTag($tags);
 		}
 

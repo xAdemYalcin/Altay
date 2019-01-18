@@ -235,8 +235,7 @@ class PluginManager{
 					$name = $description->getName();
 					if(stripos($name, "pocketmine") !== false || stripos($name, "minecraft") !== false || stripos($name, "mojang") !== false || stripos($name, "altay") !== false){
 						$this->server->getLogger()->error($this->server->getLanguage()->translateString("pocketmine.plugin.loadError", [
-							$name,
-							"%pocketmine.plugin.restrictedName"
+							$name, "%pocketmine.plugin.restrictedName"
 						]));
 						continue;
 					}elseif(strpos($name, " ") !== false){
@@ -283,9 +282,7 @@ class PluginManager{
 					}
 				}catch(\Throwable $e){
 					$this->server->getLogger()->error($this->server->getLanguage()->translateString("pocketmine.plugin.fileError", [
-						$file,
-						$directory,
-						$e->getMessage()
+						$file, $directory, $e->getMessage()
 					]));
 					$this->server->getLogger()->logException($e);
 				}
@@ -356,8 +353,7 @@ class PluginManager{
 				if($missingDependency){
 					foreach($plugins as $name => $file){
 						$this->server->getLogger()->critical($this->server->getLanguage()->translateString("pocketmine.plugin.loadError", [
-							$name,
-							"%pocketmine.plugin.circularDependency"
+							$name, "%pocketmine.plugin.circularDependency"
 						]));
 					}
 					$plugins = [];
@@ -575,9 +571,7 @@ class PluginManager{
 		$tags = Utils::parseDocComment((string) (new \ReflectionClass($event))->getDocComment());
 		if(isset($tags["deprecated"]) and $this->server->getProperty("settings.deprecated-verbose", true)){
 			$this->server->getLogger()->warning($this->server->getLanguage()->translateString("pocketmine.plugin.deprecatedEvent", [
-				$plugin->getName(),
-				$event,
-				$handlerName
+				$plugin->getName(), $event, $handlerName
 			]));
 		}
 

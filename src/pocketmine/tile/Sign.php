@@ -138,7 +138,9 @@ class Sign extends Spawnable{
 
 		$removeFormat = $player->getRemoveFormat();
 
-		$ev = new SignChangeEvent($this->getBlock(), $player, array_map(function(string $line) use ($removeFormat){ return TextFormat::clean($line, $removeFormat); }, $lines));
+		$ev = new SignChangeEvent($this->getBlock(), $player, array_map(function(string $line) use ($removeFormat){
+			return TextFormat::clean($line, $removeFormat);
+		}, $lines));
 		$ev->call();
 
 		if(!$ev->isCancelled()){

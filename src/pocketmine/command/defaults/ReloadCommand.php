@@ -31,11 +31,7 @@ use pocketmine\utils\TextFormat;
 class ReloadCommand extends VanillaCommand{
 
 	public function __construct(string $name){
-		parent::__construct(
-			$name,
-			"%pocketmine.command.reload.description",
-			"%pocketmine.command.reload.usage"
-		);
+		parent::__construct($name, "%pocketmine.command.reload.description", "%pocketmine.command.reload.usage");
 		$this->setPermission("pocketmine.command.reload");
 	}
 

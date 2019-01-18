@@ -84,6 +84,7 @@ trait NameableTrait{
 
 	/**
 	 * @param Item $item
+	 *
 	 * @see Tile::copyDataFromItem()
 	 */
 	public function copyDataFromItem(Item $item) : void{

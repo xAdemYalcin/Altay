@@ -55,42 +55,26 @@ class TeleportCommand extends VanillaCommand{
 		$lookAtEntity = new CommandParameter("lookAtEntity", AvailableCommandsPacket::ARG_TYPE_TARGET, false);
 
 		$this->setParameters([
-			$destination,
-			$yRot,
-			$xRot
+			$destination, $yRot, $xRot
 		], 0);
 		$this->setParameters([
-			$destination,
-			$facing,
-			$lookAtPosition
+			$destination, $facing, $lookAtPosition
 		], 1);
 		$this->setParameters([
-			$destination,
-			$facing,
-			$lookAtEntity
+			$destination, $facing, $lookAtEntity
 		], 2);
 		$this->setParameters([
-			$victim,
-			$destination,
-			$yRot,
-			$xRot
+			$victim, $destination, $yRot, $xRot
 		], 3);
 		$this->setParameters([
-			$victim,
-			$destination,
-			$facing,
-			$lookAtPosition
+			$victim, $destination, $facing, $lookAtPosition
 		], 4);
 		$this->setParameters([
-			$victim,
-			$destination,
-			$facing,
-			$lookAtEntity
+			$victim, $destination, $facing, $lookAtEntity
 		], 5);
 		$this->setParameters([$targetDestination], 6);
 		$this->setParameters([
-			$victim,
-			$targetDestination
+			$victim, $targetDestination
 		], 7);
 	}
 
@@ -146,8 +130,7 @@ class TeleportCommand extends VanillaCommand{
 		if(count($args) < 3){
 			$origin->teleport($target);
 			Command::broadcastCommandMessage($sender, new TranslationContainer("commands.tp.success", [
-				$origin->getName(),
-				$target->getName()
+				$origin->getName(), $target->getName()
 			]));
 
 			return true;
@@ -171,10 +154,7 @@ class TeleportCommand extends VanillaCommand{
 
 			$target->teleport(new Vector3($x, $y, $z), $yaw, $pitch);
 			Command::broadcastCommandMessage($sender, new TranslationContainer("commands.tp.success.coordinates", [
-				$target->getName(),
-				round($x, 2),
-				round($y, 2),
-				round($z, 2)
+				$target->getName(), round($x, 2), round($y, 2), round($z, 2)
 			]));
 
 			return true;

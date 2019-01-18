@@ -36,20 +36,15 @@ class PMAnvil extends RegionLevelProvider{
 
 	protected function serializeSubChunk(SubChunk $subChunk) : CompoundTag{
 		return new CompoundTag("", [
-			new ByteArrayTag("Blocks",     $subChunk->getBlockIdArray()),
-			new ByteArrayTag("Data",       $subChunk->getBlockDataArray()),
-			new ByteArrayTag("SkyLight",   $subChunk->getBlockSkyLightArray()),
+			new ByteArrayTag("Blocks", $subChunk->getBlockIdArray()),
+			new ByteArrayTag("Data", $subChunk->getBlockDataArray()),
+			new ByteArrayTag("SkyLight", $subChunk->getBlockSkyLightArray()),
 			new ByteArrayTag("BlockLight", $subChunk->getBlockLightArray())
 		]);
 	}
 
 	protected function deserializeSubChunk(CompoundTag $subChunk) : SubChunk{
-		return new SubChunk(
-			$subChunk->getByteArray("Blocks"),
-			$subChunk->getByteArray("Data"),
-			$subChunk->getByteArray("SkyLight"),
-			$subChunk->getByteArray("BlockLight")
-		);
+		return new SubChunk($subChunk->getByteArray("Blocks"), $subChunk->getByteArray("Data"), $subChunk->getByteArray("SkyLight"), $subChunk->getByteArray("BlockLight"));
 	}
 
 	protected static function getRegionFileExtension() : string{

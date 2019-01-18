@@ -38,12 +38,7 @@ use function strtoupper;
  */
 abstract class EventPriority{
 	public const ALL = [
-		self::LOWEST,
-		self::LOW,
-		self::NORMAL,
-		self::HIGH,
-		self::HIGHEST,
-		self::MONITOR
+		self::LOWEST, self::LOW, self::NORMAL, self::HIGH, self::HIGHEST, self::MONITOR
 	];
 
 	/**

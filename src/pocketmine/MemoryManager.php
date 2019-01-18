@@ -203,8 +203,7 @@ class MemoryManager{
 	 * @param int  $triggerCount
 	 */
 	public function trigger(int $memory, int $limit, bool $global = false, int $triggerCount = 0){
-		$this->server->getLogger()->debug(sprintf("[Memory Manager] %sLow memory triggered, limit %gMB, using %gMB",
-			$global ? "Global " : "", round(($limit / 1024) / 1024, 2), round(($memory / 1024) / 1024, 2)));
+		$this->server->getLogger()->debug(sprintf("[Memory Manager] %sLow memory triggered, limit %gMB, using %gMB", $global ? "Global " : "", round(($limit / 1024) / 1024, 2), round(($memory / 1024) / 1024, 2)));
 		if($this->lowMemClearWorldCache){
 			foreach($this->server->getLevels() as $level){
 				$level->clearCache(true);
@@ -372,15 +371,8 @@ class MemoryManager{
 			$globalCount = 0;
 
 			$ignoredGlobals = [
-				'GLOBALS' => true,
-				'_SERVER' => true,
-				'_REQUEST' => true,
-				'_POST' => true,
-				'_GET' => true,
-				'_FILES' => true,
-				'_ENV' => true,
-				'_COOKIE' => true,
-				'_SESSION' => true
+				'GLOBALS' => true, '_SERVER' => true, '_REQUEST' => true, '_POST' => true, '_GET' => true,
+				'_FILES' => true, '_ENV' => true, '_COOKIE' => true, '_SESSION' => true
 			];
 
 			foreach($GLOBALS as $varName => $value){
@@ -418,8 +410,7 @@ class MemoryManager{
 				$reflection = new \ReflectionObject($object);
 
 				$info = [
-					"information" => "$hash@$className",
-					"properties" => []
+					"information" => "$hash@$className", "properties" => []
 				];
 
 				if($reflection->getParentClass()){

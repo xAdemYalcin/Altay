@@ -76,24 +76,10 @@ namespace pocketmine {
 		}
 
 		$extensions = [
-			"bcmath" => "BC Math",
-			"curl" => "cURL",
-			"crypto" => "php-crypto",
-			"ctype" => "ctype",
-			"date" => "Date",
-			"gmp" => "GMP",
-			"hash" => "Hash",
-			"json" => "JSON",
-			"mbstring" => "Multibyte String",
-			"openssl" => "OpenSSL",
-			"pcre" => "PCRE",
-			"phar" => "Phar",
-			"pthreads" => "pthreads",
-			"reflection" => "Reflection",
-			"sockets" => "Sockets",
-			"spl" => "SPL",
-			"yaml" => "YAML",
-			"zip" => "Zip",
+			"bcmath" => "BC Math", "curl" => "cURL", "crypto" => "php-crypto", "ctype" => "ctype", "date" => "Date",
+			"gmp" => "GMP", "hash" => "Hash", "json" => "JSON", "mbstring" => "Multibyte String",
+			"openssl" => "OpenSSL", "pcre" => "PCRE", "phar" => "Phar", "pthreads" => "pthreads",
+			"reflection" => "Reflection", "sockets" => "Sockets", "spl" => "SPL", "yaml" => "YAML", "zip" => "Zip",
 			"zlib" => "Zlib"
 		];
 
@@ -165,8 +151,7 @@ namespace pocketmine {
 	}
 
 	set_error_handler([
-		Utils::class,
-		'errorExceptionHandler'
+		Utils::class, 'errorExceptionHandler'
 	]);
 
 	/*
@@ -188,11 +173,7 @@ namespace pocketmine {
 	define('pocketmine\RESOURCE_PATH', \pocketmine\PATH . 'resources' . DIRECTORY_SEPARATOR);
 
 	$opts = getopt("", [
-		"data:",
-		"plugins:",
-		"no-wizard",
-		"enable-ansi",
-		"disable-ansi"
+		"data:", "plugins:", "no-wizard", "enable-ansi", "disable-ansi"
 	]);
 
 	define('pocketmine\DATA', isset($opts["data"]) ? $opts["data"] . DIRECTORY_SEPARATOR : realpath(getcwd()) . DIRECTORY_SEPARATOR);

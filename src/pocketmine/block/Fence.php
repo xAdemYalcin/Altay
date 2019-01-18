@@ -50,14 +50,7 @@ abstract class Fence extends Transparent{
 	protected function recalculateBoundingBox() : ?AxisAlignedBB{
 		$width = 0.5 - $this->getThickness() / 2;
 
-		return new AxisAlignedBB(
-			(isset($this->connections[Facing::WEST]) ? 0 : $width),
-			0,
-			(isset($this->connections[Facing::NORTH]) ? 0 : $width),
-			1 - (isset($this->connections[Facing::EAST]) ? 0 : $width),
-			1.5,
-			1 - (isset($this->connections[Facing::WEST]) ? 0 : $width)
-		);
+		return new AxisAlignedBB((isset($this->connections[Facing::WEST]) ? 0 : $width), 0, (isset($this->connections[Facing::NORTH]) ? 0 : $width), 1 - (isset($this->connections[Facing::EAST]) ? 0 : $width), 1.5, 1 - (isset($this->connections[Facing::WEST]) ? 0 : $width));
 	}
 
 	protected function recalculateCollisionBoxes() : array{
@@ -71,14 +64,7 @@ abstract class Fence extends Transparent{
 
 		if($connectWest or $connectEast){
 			//X axis (west/east)
-			$bbs[] = new AxisAlignedBB(
-				($connectWest ? 0 : $inset),
-				0,
-				$inset,
-				1 - ($connectEast ? 0 : $inset),
-				1.5,
-				1 - $inset
-			);
+			$bbs[] = new AxisAlignedBB(($connectWest ? 0 : $inset), 0, $inset, 1 - ($connectEast ? 0 : $inset), 1.5, 1 - $inset);
 		}
 
 		$connectNorth = isset($this->connections[Facing::NORTH]);
@@ -86,27 +72,13 @@ abstract class Fence extends Transparent{
 
 		if($connectNorth or $connectSouth){
 			//Z axis (north/south)
-			$bbs[] = new AxisAlignedBB(
-				$inset,
-				0,
-				($connectNorth ? 0 : $inset),
-				1 - $inset,
-				1.5,
-				1 - ($connectSouth ? 0 : $inset)
-			);
+			$bbs[] = new AxisAlignedBB($inset, 0, ($connectNorth ? 0 : $inset), 1 - $inset, 1.5, 1 - ($connectSouth ? 0 : $inset));
 		}
 
 		if(empty($bbs)){
 			//centre post AABB (only needed if not connected on any axis - other BBs overlapping will do this if any connections are made)
 			return [
-				new AxisAlignedBB(
-					$inset,
-					0,
-					$inset,
-					1 - $inset,
-					1.5,
-					1 - $inset
-				)
+				new AxisAlignedBB($inset, 0, $inset, 1 - $inset, 1.5, 1 - $inset)
 			];
 		}
 

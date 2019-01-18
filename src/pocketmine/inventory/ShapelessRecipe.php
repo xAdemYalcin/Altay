@@ -43,11 +43,15 @@ class ShapelessRecipe implements CraftingRecipe{
 			$this->addIngredient($item);
 		}
 
-		$this->results = array_map(function(Item $item) : Item{ return clone $item; }, $results);
+		$this->results = array_map(function(Item $item) : Item{
+			return clone $item;
+		}, $results);
 	}
 
 	public function getResults() : array{
-		return array_map(function(Item $item) : Item{ return clone $item; }, $this->results);
+		return array_map(function(Item $item) : Item{
+			return clone $item;
+		}, $this->results);
 	}
 
 	public function getResultsFor(CraftingGrid $grid) : array{
@@ -96,7 +100,9 @@ class ShapelessRecipe implements CraftingRecipe{
 	 * @return Item[]
 	 */
 	public function getIngredientList() : array{
-		return array_map(function(Item $item) : Item{ return clone $item; }, $this->ingredients);
+		return array_map(function(Item $item) : Item{
+			return clone $item;
+		}, $this->ingredients);
 	}
 
 	/**

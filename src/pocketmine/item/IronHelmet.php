@@ -32,13 +32,13 @@ class IronHelmet extends Armor{
 		return 2;
 	}
 
-    public function getArmorSlot() : int{
-        return Armor::SLOT_HELMET;
-    }
+	public function getArmorSlot() : int{
+		return Armor::SLOT_HELMET;
+	}
 
-    public function getMaxDurability() : int{
-        return 166;
-    }
+	public function getMaxDurability() : int{
+		return 166;
+	}
 
 	public function getEnchantability() : int{
 		return 9;

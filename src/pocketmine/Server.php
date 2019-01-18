@@ -233,49 +233,11 @@ class Server{
 	private $nextTick = 0;
 	/** @var float[] */
 	private $tickAverage = [
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20,
-		20
+		20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20
 	];
 	/** @var float[] */
 	private $useAverage = [
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,
-		0
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 	];
 	/** @var float */
 	private $currentTPS = 20;
@@ -900,38 +862,23 @@ class Server{
 		$currentTimeMillis = (int) (microtime(true) * 1000);
 
 		$nbt = new CompoundTag("", [
-			new LongTag("firstPlayed", $currentTimeMillis),
-			new LongTag("lastPlayed", $currentTimeMillis),
+			new LongTag("firstPlayed", $currentTimeMillis), new LongTag("lastPlayed", $currentTimeMillis),
 			new ListTag("Pos", [
-				new DoubleTag("", $spawn->x),
-				new DoubleTag("", $spawn->y),
-				new DoubleTag("", $spawn->z)
-			], NBT::TAG_Double),
-			new StringTag("Level", $this->getDefaultLevel()->getFolderName()),
+				new DoubleTag("", $spawn->x), new DoubleTag("", $spawn->y), new DoubleTag("", $spawn->z)
+			], NBT::TAG_Double), new StringTag("Level", $this->getDefaultLevel()->getFolderName()),
 			//new StringTag("SpawnLevel", $this->getDefaultLevel()->getFolderName()),
 			//new IntTag("SpawnX", $spawn->getFloorX()),
 			//new IntTag("SpawnY", $spawn->getFloorY()),
 			//new IntTag("SpawnZ", $spawn->getFloorZ()),
 			//new ByteTag("SpawnForced", 1), //TODO
-			new ListTag("Inventory", [], NBT::TAG_Compound),
-			new ListTag("EnderChestInventory", [], NBT::TAG_Compound),
-			new CompoundTag("Achievements", []),
-			new IntTag("playerGameType", $this->getGamemode()),
+			new ListTag("Inventory", [], NBT::TAG_Compound), new ListTag("EnderChestInventory", [], NBT::TAG_Compound),
+			new CompoundTag("Achievements", []), new IntTag("playerGameType", $this->getGamemode()),
 			new ListTag("Motion", [
-				new DoubleTag("", 0.0),
-				new DoubleTag("", 0.0),
-				new DoubleTag("", 0.0)
-			], NBT::TAG_Double),
-			new ListTag("Rotation", [
-				new FloatTag("", 0.0),
-				new FloatTag("", 0.0)
-			], NBT::TAG_Float),
-			new FloatTag("FallDistance", 0.0),
-			new ShortTag("Fire", 0),
-			new ShortTag("Air", 300),
-			new ByteTag("OnGround", 1),
-			new ByteTag("Invulnerable", 0),
-			new StringTag("NameTag", $name)
+				new DoubleTag("", 0.0), new DoubleTag("", 0.0), new DoubleTag("", 0.0)
+			], NBT::TAG_Double), new ListTag("Rotation", [
+				new FloatTag("", 0.0), new FloatTag("", 0.0)
+			], NBT::TAG_Float), new FloatTag("FallDistance", 0.0), new ShortTag("Fire", 0), new ShortTag("Air", 300),
+			new ByteTag("OnGround", 1), new ByteTag("Invulnerable", 0), new StringTag("NameTag", $name)
 		]);
 
 		return $nbt;
@@ -953,8 +900,7 @@ class Server{
 				file_put_contents($this->getDataPath() . "players/" . strtolower($name) . ".dat", $nbt->writeCompressed($ev->getSaveData()));
 			}catch(\Throwable $e){
 				$this->logger->critical($this->getLanguage()->translateString("pocketmine.data.saveError", [
-					$name,
-					$e->getMessage()
+					$name, $e->getMessage()
 				]));
 				$this->logger->logException($e);
 			}
@@ -1177,8 +1123,7 @@ class Server{
 			$level = new Level($this, $name, new $providerClass($path));
 		}catch(UnsupportedLevelFormatException $e){
 			$this->logger->error($this->language->translateString("pocketmine.level.loadError", [
-				$name,
-				$e->getMessage()
+				$name, $e->getMessage()
 			]));
 			return false;
 		}
@@ -1591,28 +1536,13 @@ class Server{
 
 			$this->logger->info("Loading server properties...");
 			$this->properties = new Config($this->dataPath . "server.properties", Config::PROPERTIES, [
-				"motd" => \pocketmine\NAME . " Server",
-				"server-port" => 19132,
-				"white-list" => false,
-				"announce-player-achievements" => true,
-				"spawn-protection" => 16,
-				"max-players" => 20,
-				"gamemode" => 0,
-				"force-gamemode" => false,
-				"hardcore" => false,
-				"pvp" => true,
-				"difficulty" => 1,
-				"generator-settings" => "",
-				"level-name" => "world",
-				"level-seed" => "",
-				"level-type" => "DEFAULT",
-				"enable-query" => true,
-				"enable-rcon" => false,
-				"rcon.password" => substr(base64_encode(random_bytes(20)), 3, 10),
-				"auto-save" => true,
-				"view-distance" => 8,
-				"xbox-auth" => true,
-				"language" => "eng"
+				"motd" => \pocketmine\NAME . " Server", "server-port" => 19132, "white-list" => false,
+				"announce-player-achievements" => true, "spawn-protection" => 16, "max-players" => 20, "gamemode" => 0,
+				"force-gamemode" => false, "hardcore" => false, "pvp" => true, "difficulty" => 1,
+				"generator-settings" => "", "level-name" => "world", "level-seed" => "", "level-type" => "DEFAULT",
+				"enable-query" => true, "enable-rcon" => false,
+				"rcon.password" => substr(base64_encode(random_bytes(20)), 3, 10), "auto-save" => true,
+				"view-distance" => 8, "xbox-auth" => true, "language" => "eng"
 			]);
 
 			define('pocketmine\DEBUG', (int) $this->getProperty("debug.level", 1));
@@ -1632,8 +1562,7 @@ class Server{
 			}
 
 			$this->logger->info($this->getLanguage()->translateString("language.selected", [
-				$this->getLanguage()->getName(),
-				$lang = $this->getLanguage()->getLang()
+				$this->getLanguage()->getName(), $lang = $this->getLanguage()->getLang()
 			]));
 
 			if(file_exists(\pocketmine\RESOURCE_PATH . "altay_$lang.yml")){
@@ -1776,8 +1705,7 @@ class Server{
 			}
 
 			$this->logger->info($this->getLanguage()->translateString("pocketmine.server.networkStart", [
-				$this->getIp(),
-				$this->getPort()
+				$this->getIp(), $this->getPort()
 			]));
 			define("BOOTUP_RANDOM", random_bytes(16));
 			$this->serverID = Utils::getMachineUniqueId($this->getIp() . $this->getPort());
@@ -1822,8 +1750,7 @@ class Server{
 			$this->pluginManager->registerInterface(new ScriptPluginLoader());
 
 			register_shutdown_function([
-				$this,
-				"crashDump"
+				$this, "crashDump"
 			]);
 
 			$this->queryRegenerateTask = new QueryRegenerateEvent($this, 5);
@@ -2394,16 +2321,13 @@ class Server{
 
 		if(function_exists("pcntl_signal")){
 			pcntl_signal(SIGTERM, [
-				$this,
-				"handleSignal"
+				$this, "handleSignal"
 			]);
 			pcntl_signal(SIGINT, [
-				$this,
-				"handleSignal"
+				$this, "handleSignal"
 			]);
 			pcntl_signal(SIGHUP, [
-				$this,
-				"handleSignal"
+				$this, "handleSignal"
 			]);
 			$this->dispatchSignals = true;
 		}
@@ -2446,12 +2370,8 @@ class Server{
 		$this->logger->logException($e, $trace);
 
 		$lastError = [
-			"type" => get_class($e),
-			"message" => $errstr,
-			"fullFile" => $e->getFile(),
-			"file" => $errfile,
-			"line" => $errline,
-			"trace" => $trace
+			"type" => get_class($e), "message" => $errstr, "fullFile" => $e->getFile(), "file" => $errfile,
+			"line" => $errline, "trace" => $trace
 		];
 
 		global $lastExceptionError, $lastError;
@@ -2504,18 +2424,15 @@ class Server{
 				if($report){
 					$url = ($this->getProperty("auto-report.use-https", true) ? "https" : "http") . "://" . $this->getProperty("auto-report.host", "crash.pmmp.io") . "/submit/api";
 					$reply = Internet::postURL($url, [
-						"report" => "yes",
-						"name" => $this->getName() . " " . $this->getPocketMineVersion(),
-						"email" => "crash@pocketmine.net",
-						"reportPaste" => base64_encode($dump->getEncodedData())
+						"report" => "yes", "name" => $this->getName() . " " . $this->getPocketMineVersion(),
+						"email" => "crash@pocketmine.net", "reportPaste" => base64_encode($dump->getEncodedData())
 					]);
 
 					if($reply !== false and ($data = json_decode($reply)) !== null and isset($data->crashId) and isset($data->crashUrl)){
 						$reportId = $data->crashId;
 						$reportUrl = $data->crashUrl;
 						$this->logger->emergency($this->getLanguage()->translateString("pocketmine.crash.archive", [
-							$reportUrl,
-							$reportId
+							$reportUrl, $reportId
 						]));
 					}
 				}

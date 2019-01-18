@@ -24,11 +24,8 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
-use pocketmine\entity\Entity;
 use pocketmine\item\Item;
-use pocketmine\level\Level;
 use pocketmine\Player;
-use pocketmine\Server;
 
 class EndPortal extends Transparent{
 

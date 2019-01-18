@@ -551,7 +551,9 @@ class Chunk{
 	 * @return Entity[]
 	 */
 	public function getSavableEntities() : array{
-		return array_filter($this->entities, function(Entity $entity) : bool{ return $entity->canSaveWithChunk() and !$entity->isClosed(); });
+		return array_filter($this->entities, function(Entity $entity) : bool{
+			return $entity->canSaveWithChunk() and !$entity->isClosed();
+		});
 	}
 
 	/**
@@ -769,9 +771,7 @@ class Chunk{
 		for($y = 0; $y < $subChunkCount; ++$y){
 			$result .= $this->subChunks[$y]->networkSerialize();
 		}
-		$result .= pack("v*", ...$this->heightMap)
-			. $this->biomeIds
-			. chr(0); //border block array count
+		$result .= pack("v*", ...$this->heightMap) . $this->biomeIds . chr(0); //border block array count
 		//Border block entry format: 1 byte (4 bits X, 4 bits Z). These are however useless since they crash the regular client.
 
 		foreach($this->tiles as $tile){
@@ -844,8 +844,7 @@ class Chunk{
 		if($terrainGenerated){
 			$count = $stream->getByte();
 			for($y = 0; $y < $count; ++$y){
-				$subChunks[$stream->getByte()] = new SubChunk(
-					$stream->get(4096), //blockids
+				$subChunks[$stream->getByte()] = new SubChunk($stream->get(4096), //blockids
 					$stream->get(2048), //blockdata
 					$lightPopulated ? $stream->get(2048) : "", //skylight
 					$lightPopulated ? $stream->get(2048) : "" //blocklight

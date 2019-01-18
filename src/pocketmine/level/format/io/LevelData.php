@@ -56,7 +56,6 @@ interface LevelData{
 	public function getSeed() : int;
 
 
-
 	/**
 	 * @return int
 	 */
@@ -99,6 +98,7 @@ interface LevelData{
 
 	/**
 	 * Sets the time in ticks to the next rain level change.
+	 *
 	 * @param int $ticks
 	 */
 	public function setRainTime(int $ticks) : void;
@@ -121,6 +121,7 @@ interface LevelData{
 
 	/**
 	 * Sets the time in ticks to the next lightning level change.
+	 *
 	 * @param int $ticks
 	 */
 	public function setLightningTime(int $ticks) : void;

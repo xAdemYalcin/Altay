@@ -51,7 +51,7 @@ class Beacon extends Transparent{
 		return 3;
 	}
 
-	public function getBreakTime(Item $item): float{
+	public function getBreakTime(Item $item) : float{
 		return 4.5;
 	}
 

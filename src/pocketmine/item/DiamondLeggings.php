@@ -32,15 +32,15 @@ class DiamondLeggings extends Armor{
 		return 6;
 	}
 
-    public function getArmorSlot() : int{
-        return Armor::SLOT_LEGGINGS;
-    }
+	public function getArmorSlot() : int{
+		return Armor::SLOT_LEGGINGS;
+	}
 
-    public function getMaxDurability() : int{
-        return 496;
-    }
+	public function getMaxDurability() : int{
+		return 496;
+	}
 
-    public function getEnchantability() : int{
+	public function getEnchantability() : int{
 		return 10;
 	}
 }

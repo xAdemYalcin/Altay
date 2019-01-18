@@ -116,10 +116,7 @@ class Slider extends CustomFormElement{
 
 	public function serializeElementData() : array{
 		return [
-			"min" => $this->min,
-			"max" => $this->max,
-			"default" => $this->default,
-			"step" => $this->step
+			"min" => $this->min, "max" => $this->max, "default" => $this->default, "step" => $this->step
 		];
 	}
 }

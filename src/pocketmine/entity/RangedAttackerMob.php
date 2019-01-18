@@ -26,5 +26,5 @@ namespace pocketmine\entity;
 
 interface RangedAttackerMob{
 
-    public function onRangedAttackToTarget(Entity $target, float $power) : void;
+	public function onRangedAttackToTarget(Entity $target, float $power) : void;
 }

@@ -101,8 +101,8 @@ class End extends Generator{
 
 		$chunk = $this->level->getChunk($chunkX, $chunkZ);
 
-		for ($x = 0; $x < 16; ++$x) {
-			for ($z = 0; $z < 16; ++$z) {
+		for($x = 0; $x < 16; ++$x){
+			for($z = 0; $z < 16; ++$z){
 
 				$biome = Biome::getBiome(Biome::END);
 				$biome->setGroundCover([
@@ -115,7 +115,7 @@ class End extends Generator{
 				$color[1] += ((($bColor >> 8) & 0xff) ** 2);
 				$color[2] += (($bColor & 0xff) ** 2);
 
-				for ($y = 0; $y < 128; ++$y) {
+				for($y = 0; $y < 128; ++$y){
 
 					$noiseValue = (abs($this->emptyHeight - $y) / $this->emptyHeight) * $this->emptyAmplitude - $noise[$x][$z][$y];
 					$noiseValue -= 1 - $this->density;
@@ -123,7 +123,7 @@ class End extends Generator{
 					$distance = new Vector3(0, 64, 0);
 					$distance = $distance->distance(new Vector3($chunkX * 16 + $x, ($y / 1.3), $chunkZ * 16 + $z));
 
-					if ($noiseValue < 0 && $distance < 100 or $noiseValue < -0.2 && $distance > 400) {
+					if($noiseValue < 0 && $distance < 100 or $noiseValue < -0.2 && $distance > 400){
 						$chunk->setBlock($x, $y, $z, Block::END_STONE, 0);
 					}
 				}

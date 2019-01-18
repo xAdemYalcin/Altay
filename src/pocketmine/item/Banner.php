@@ -26,9 +26,9 @@ namespace pocketmine\item;
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\StringTag;
+use pocketmine\nbt\tag\IntTag;
 use pocketmine\tile\Banner as TileBanner;
 use function assert;
 
@@ -85,8 +85,7 @@ class Banner extends Item{
 		assert($patternsTag !== null);
 
 		$patternsTag->push(new CompoundTag("", [
-			new IntTag(self::TAG_PATTERN_COLOR, $color & 0x0f),
-			new StringTag(self::TAG_PATTERN_NAME, $pattern)
+			new IntTag(self::TAG_PATTERN_COLOR, $color & 0x0f), new StringTag(self::TAG_PATTERN_NAME, $pattern)
 		]));
 
 		$this->setNamedTagEntry($patternsTag);
@@ -148,8 +147,7 @@ class Banner extends Item{
 		assert($patternsTag !== null);
 
 		$patternsTag->set($patternId, new CompoundTag("", [
-			new IntTag(self::TAG_PATTERN_COLOR, $color & 0x0f),
-			new StringTag(self::TAG_PATTERN_NAME, $pattern)
+			new IntTag(self::TAG_PATTERN_COLOR, $color & 0x0f), new StringTag(self::TAG_PATTERN_NAME, $pattern)
 		]));
 
 		$this->setNamedTagEntry($patternsTag);

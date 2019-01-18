@@ -80,10 +80,10 @@ class EnchantmentInstance{
 		return $this;
 	}
 
-    /**
-     * @return Enchantment
-     */
-    public function getEnchantment(): Enchantment{
-        return $this->enchantment;
-    }
+	/**
+	 * @return Enchantment
+	 */
+	public function getEnchantment() : Enchantment{
+		return $this->enchantment;
+	}
 }

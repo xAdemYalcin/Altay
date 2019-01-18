@@ -35,8 +35,8 @@ class EntityEffectAddEvent extends EntityEffectEvent{
 	private $oldEffect;
 
 	/**
-	 * @param Entity      $entity
-	 * @param EffectInstance      $effect
+	 * @param Entity         $entity
+	 * @param EffectInstance $effect
 	 * @param EffectInstance $oldEffect
 	 */
 	public function __construct(Entity $entity, EffectInstance $effect, EffectInstance $oldEffect = null){

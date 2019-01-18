@@ -30,23 +30,23 @@ use pocketmine\event\Cancellable;
 /**
  * Called when plants or crops grow.
  */
-class BlockGrowEvent extends BlockEvent implements Cancellable {
-    /** @var Block */
-    private $newState;
+class BlockGrowEvent extends BlockEvent implements Cancellable{
+	/** @var Block */
+	private $newState;
 
-    public function __construct(Block $block, Block $newState){
-        parent::__construct($block);
-        $this->newState = $newState;
-    }
+	public function __construct(Block $block, Block $newState){
+		parent::__construct($block);
+		$this->newState = $newState;
+	}
 
-    /**
-     * @return Block
-     */
-    public function getNewState(): Block{
-        return $this->newState;
-    }
+	/**
+	 * @return Block
+	 */
+	public function getNewState() : Block{
+		return $this->newState;
+	}
 
-    public function setNewState(Block $newstate){
-        $this->newState = $newstate;
-    }
+	public function setNewState(Block $newstate){
+		$this->newState = $newstate;
+	}
 }

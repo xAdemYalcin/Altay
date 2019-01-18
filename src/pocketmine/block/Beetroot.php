@@ -38,8 +38,7 @@ class Beetroot extends Crops{
 	public function getDropsForCompatibleTool(Item $item) : array{
 		if($this->age >= 7){
 			return [
-				ItemFactory::get(Item::BEETROOT),
-				ItemFactory::get(Item::BEETROOT_SEEDS, 0, mt_rand(0, 3))
+				ItemFactory::get(Item::BEETROOT), ItemFactory::get(Item::BEETROOT_SEEDS, 0, mt_rand(0, 3))
 			];
 		}
 

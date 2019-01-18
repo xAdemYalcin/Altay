@@ -34,11 +34,7 @@ use function implode;
 class ListCommand extends VanillaCommand{
 
 	public function __construct(string $name){
-		parent::__construct(
-			$name,
-			"%pocketmine.command.list.description",
-			"%command.players.usage"
-		);
+		parent::__construct($name, "%pocketmine.command.list.description", "%command.players.usage");
 		$this->setPermission("pocketmine.command.list");
 	}
 
@@ -53,7 +49,9 @@ class ListCommand extends VanillaCommand{
 			return $player->isOnline() and (!($sender instanceof Player) or $sender->canSee($player));
 		}));
 
-		$sender->sendMessage(new TranslationContainer("commands.players.list", [count($playerNames), $sender->getServer()->getMaxPlayers()]));
+		$sender->sendMessage(new TranslationContainer("commands.players.list", [
+			count($playerNames), $sender->getServer()->getMaxPlayers()
+		]));
 		$sender->sendMessage(implode(", ", $playerNames));
 
 		return true;

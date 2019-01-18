@@ -214,14 +214,7 @@ class Painting extends Entity{
 				break;
 		}
 
-		return new AxisAlignedBB(
-			$blockIn->x + $minX,
-			$blockIn->y + $minY,
-			$blockIn->z + $minZ,
-			$blockIn->x + $maxX,
-			$blockIn->y + $maxY,
-			$blockIn->z + $maxZ
-		);
+		return new AxisAlignedBB($blockIn->x + $minX, $blockIn->y + $minY, $blockIn->z + $minZ, $blockIn->x + $maxX, $blockIn->y + $maxY, $blockIn->z + $maxZ);
 	}
 
 	/**

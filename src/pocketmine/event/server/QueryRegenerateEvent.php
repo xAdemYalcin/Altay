@@ -239,24 +239,18 @@ class QueryRegenerateEvent extends ServerEvent{
 			$plist .= ":";
 			foreach($this->plugins as $p){
 				$d = $p->getDescription();
-				$plist .= " " . str_replace([";", ":", " "], ["", "", "_"], $d->getName()) . " " . str_replace([";", ":", " "], ["", "", "_"], $d->getVersion()) . ";";
+				$plist .= " " . str_replace([";", ":", " "], ["", "", "_"], $d->getName()) . " " . str_replace([
+						";", ":", " "
+					], ["", "", "_"], $d->getVersion()) . ";";
 			}
 			$plist = substr($plist, 0, -1);
 		}
 
 		$KVdata = [
-			"splitnum" => chr(128),
-			"hostname" => $this->serverName,
-			"gametype" => $this->gametype,
-			"game_id" => self::GAME_ID,
-			"version" => $this->version,
-			"server_engine" => $this->server_engine,
-			"plugins" => $plist,
-			"map" => $this->map,
-			"numplayers" => $this->numPlayers,
-			"maxplayers" => $this->maxPlayers,
-			"whitelist" => $this->whitelist,
-			"hostip" => $this->ip,
+			"splitnum" => chr(128), "hostname" => $this->serverName, "gametype" => $this->gametype,
+			"game_id" => self::GAME_ID, "version" => $this->version, "server_engine" => $this->server_engine,
+			"plugins" => $plist, "map" => $this->map, "numplayers" => $this->numPlayers,
+			"maxplayers" => $this->maxPlayers, "whitelist" => $this->whitelist, "hostip" => $this->ip,
 			"hostport" => $this->port
 		];
 

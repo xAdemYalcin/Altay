@@ -33,7 +33,7 @@ use pocketmine\Player;
 use pocketmine\Server;
 
 class Jukebox extends Spawnable{
-	
+
 	public const TAG_RECORD_ITEM = "RecordItem";
 
 	/** @var Record|null */
@@ -59,16 +59,14 @@ class Jukebox extends Spawnable{
 				$pk->message = "record.nowPlaying";
 				$pk->parameters = [
 					ucwords(str_ireplace([
-						"record",
-						"."
+						"record", "."
 					], [
-						"",
-						""
+						"", ""
 					], $this->getRecordItem()->getSoundId()))
 				];
 				$player->sendDataPacket($pk);
 			}
-			
+
 			$this->scheduleUpdate();
 		}
 	}
@@ -82,7 +80,7 @@ class Jukebox extends Spawnable{
 	public function dropDisc() : void{
 		if($this->getRecordItem() instanceof Record){
 			$this->stopDisc();
-			$this->level->dropItem($this->add(0.5,1,0.5), $this->getRecordItem());
+			$this->level->dropItem($this->add(0.5, 1, 0.5), $this->getRecordItem());
 			$this->setRecordItem(null);
 		}
 	}
@@ -107,14 +105,14 @@ class Jukebox extends Spawnable{
 		}
 	}
 
-	protected  function addAdditionalSpawnData(CompoundTag $nbt) : void{
+	protected function addAdditionalSpawnData(CompoundTag $nbt) : void{
 
 	}
-	
+
 	public function onUpdate() : bool{
 		if($this->hasRecordItem()){
 			if(Server::getInstance()->getTick() % 30 === 0){
-				$this->level->addParticle($this->add(0.5,1.5,0.5), new GenericParticle(Particle::TYPE_NOTE, mt_rand(0, 4) | mt_rand(0, 24)));
+				$this->level->addParticle($this->add(0.5, 1.5, 0.5), new GenericParticle(Particle::TYPE_NOTE, mt_rand(0, 4) | mt_rand(0, 24)));
 			}
 			return true;
 		}

@@ -28,15 +28,18 @@ use pocketmine\entity\Attribute;
 use pocketmine\entity\Entity;
 use pocketmine\entity\EntityIds;
 use pocketmine\math\Vector3;
-use pocketmine\network\mcpe\protocol\{
-    AddEntityPacket, BossEventPacket, RemoveEntityPacket, SetEntityDataPacket, UpdateAttributesPacket
-};
+use pocketmine\network\mcpe\protocol\{AddEntityPacket,
+	BossEventPacket,
+	RemoveEntityPacket,
+	SetEntityDataPacket,
+	UpdateAttributesPacket};
 use pocketmine\Player;
 
 /*
  * This is a Helper class to create a simple Bossbar
  * Note: This is not an entity
  */
+
 class Bossbar extends Vector3{
 
 	/** @var float */
@@ -49,12 +52,9 @@ class Bossbar extends Vector3{
 	protected $viewers = [];
 
 	public function __construct(string $title = "Altay Bossbar API", float $hp = 1, float $maxHp = 1){
-		parent::__construct(0,0,0);
+		parent::__construct(0, 0, 0);
 
-		$flags = (
-			(1 << Entity::DATA_FLAG_INVISIBLE) |
-			(1 << Entity::DATA_FLAG_IMMOBILE)
-		);
+		$flags = ((1 << Entity::DATA_FLAG_INVISIBLE) | (1 << Entity::DATA_FLAG_IMMOBILE));
 		$this->metadata = [
 			Entity::DATA_FLAGS => [Entity::DATA_TYPE_LONG, $flags],
 			Entity::DATA_NAMETAG => [Entity::DATA_TYPE_STRING, $title]
@@ -190,6 +190,7 @@ class Bossbar extends Vector3{
 
 	/**
 	 * @param int $key
+	 *
 	 * @return mixed
 	 */
 	public function getMetadata(int $key){

@@ -31,63 +31,63 @@ use pocketmine\network\mcpe\protocol\types\WindowTypes;
 use pocketmine\Player;
 use pocketmine\tile\ShulkerBox;
 
-class ShulkerBoxInventory extends ContainerInventory {
+class ShulkerBoxInventory extends ContainerInventory{
 
-    protected $holder;
+	protected $holder;
 
-    public function __construct(ShulkerBox $tile){
-        parent::__construct($tile);
-    }
+	public function __construct(ShulkerBox $tile){
+		parent::__construct($tile);
+	}
 
-    public function getName(): string{
-        return "Shulker Box";
-    }
+	public function getName() : string{
+		return "Shulker Box";
+	}
 
-    public function getDefaultSize(): int{
-        return 27;
-    }
+	public function getDefaultSize() : int{
+		return 27;
+	}
 
-    /**
-     * Returns the Minecraft PE inventory type used to show the inventory window to clients.
-     * @return int
-     */
-    public function getNetworkType(): int{
-        return WindowTypes::CONTAINER;
-    }
+	/**
+	 * Returns the Minecraft PE inventory type used to show the inventory window to clients.
+	 * @return int
+	 */
+	public function getNetworkType() : int{
+		return WindowTypes::CONTAINER;
+	}
 
-    public function onClose(Player $who) : void{
-        if(count($this->getViewers()) === 1 && ($level = $this->getHolder()->getLevel()) instanceof Level){
-            $this->broadcastBlockEventPacket(false);
-            $level->broadcastLevelSoundEvent($this->getHolder()->add(0.5, 0.5, 0.5), LevelSoundEventPacket::SOUND_SHULKER_CLOSE);
-        }
-        parent::onClose($who);
-    }
+	public function onClose(Player $who) : void{
+		if(count($this->getViewers()) === 1 && ($level = $this->getHolder()->getLevel()) instanceof Level){
+			$this->broadcastBlockEventPacket(false);
+			$level->broadcastLevelSoundEvent($this->getHolder()->add(0.5, 0.5, 0.5), LevelSoundEventPacket::SOUND_SHULKER_CLOSE);
+		}
+		parent::onClose($who);
+	}
 
-    public function onOpen(Player $who) : void{
-        parent::onOpen($who);
+	public function onOpen(Player $who) : void{
+		parent::onOpen($who);
 
-        if(count($this->getViewers()) === 1 && ($level = $this->getHolder()->getLevel()) instanceof Level){
-            $this->broadcastBlockEventPacket(true);
-            $level->broadcastLevelSoundEvent($this->getHolder()->add(0.5, 0.5, 0.5), LevelSoundEventPacket::SOUND_SHULKER_OPEN);
-        }
-    }
+		if(count($this->getViewers()) === 1 && ($level = $this->getHolder()->getLevel()) instanceof Level){
+			$this->broadcastBlockEventPacket(true);
+			$level->broadcastLevelSoundEvent($this->getHolder()->add(0.5, 0.5, 0.5), LevelSoundEventPacket::SOUND_SHULKER_OPEN);
+		}
+	}
 
-    protected function broadcastBlockEventPacket(bool $isOpen){
-        $holder = $this->getHolder();
+	protected function broadcastBlockEventPacket(bool $isOpen){
+		$holder = $this->getHolder();
 
-        $pk = new BlockEventPacket();
-        $pk->x = (int) $holder->x;
-        $pk->y = (int) $holder->y;
-        $pk->z = (int) $holder->z;
-        $pk->eventType  = 1;
-        $pk->eventData = +$isOpen;
-        $holder->getLevel()->addChunkPacket($holder->getX() >> 4, $holder->getZ() >> 4, $pk);
-    }
+		$pk = new BlockEventPacket();
+		$pk->x = (int) $holder->x;
+		$pk->y = (int) $holder->y;
+		$pk->z = (int) $holder->z;
+		$pk->eventType = 1;
+		$pk->eventData = +$isOpen;
+		$holder->getLevel()->addChunkPacket($holder->getX() >> 4, $holder->getZ() >> 4, $pk);
+	}
 
-    /**
-     * @return ShulkerBox
-     */
-    public function getHolder(){
-        return $this->holder;
-    }
+	/**
+	 * @return ShulkerBox
+	 */
+	public function getHolder(){
+		return $this->holder;
+	}
 }

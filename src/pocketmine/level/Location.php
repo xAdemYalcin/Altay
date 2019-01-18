@@ -51,7 +51,7 @@ class Location extends Position{
 	/**
 	 * @param Vector3    $pos
 	 * @param Level|null $level default null
-	 * @param float      $yaw   default 0.0
+	 * @param float      $yaw default 0.0
 	 * @param float      $pitch default 0.0
 	 *
 	 * @return Location

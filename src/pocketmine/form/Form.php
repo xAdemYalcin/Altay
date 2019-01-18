@@ -25,6 +25,7 @@ declare(strict_types=1);
 /**
  * API for Minecraft: Bedrock custom UI (forms)
  */
+
 namespace pocketmine\form;
 
 use pocketmine\Player;
@@ -80,6 +81,7 @@ abstract class Form implements \JsonSerializable{
 	 * they wish.
 	 *
 	 * @param Player $player
+	 *
 	 * @return Form|null a form which will be opened immediately (before queued forms) as a response to this form, or null if not applicable.
 	 */
 	abstract public function onSubmit(Player $player) : ?Form;
@@ -118,8 +120,7 @@ abstract class Form implements \JsonSerializable{
 	 */
 	final public function jsonSerialize() : array{
 		$jsonBase = [
-			"type" => $this->getType(),
-			"title" => $this->getTitle()
+			"type" => $this->getType(), "title" => $this->getTitle()
 		];
 
 		return array_merge($jsonBase, $this->serializeFormData());

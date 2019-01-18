@@ -32,13 +32,13 @@ class IronChestplate extends Armor{
 		return 6;
 	}
 
-    public function getArmorSlot() : int{
-        return Armor::SLOT_CHESTPLATE;
-    }
+	public function getArmorSlot() : int{
+		return Armor::SLOT_CHESTPLATE;
+	}
 
-    public function getMaxDurability() : int{
-        return 241;
-    }
+	public function getMaxDurability() : int{
+		return 241;
+	}
 
 	public function getEnchantability() : int{
 		return 9;

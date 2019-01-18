@@ -77,6 +77,6 @@ class Mooshroom extends Cow{
 				return true;
 			}
 		}
-        return parent::onInteract($player, $item, $clickPos);
+		return parent::onInteract($player, $item, $clickPos);
 	}
 }

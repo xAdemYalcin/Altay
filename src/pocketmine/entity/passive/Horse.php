@@ -113,6 +113,6 @@ class Horse extends AbstractHorse{
 		if(!$this->isImmobile()){
 			// TODO: Feeding
 		}
-        return parent::onInteract($player, $item, $clickPos);
+		return parent::onInteract($player, $item, $clickPos);
 	}
 }

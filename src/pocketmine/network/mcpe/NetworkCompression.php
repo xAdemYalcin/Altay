@@ -29,24 +29,24 @@ use function zlib_encode;
 use const ZLIB_ENCODING_DEFLATE;
 
 final class NetworkCompression{
-    public static $LEVEL = 7;
-    public static $THRESHOLD = 256;
+	public static $LEVEL = 7;
+	public static $THRESHOLD = 256;
 
-    private function __construct(){
+	private function __construct(){
 
-    }
+	}
 
-    public static function decompress(string $payload) : string{
-        return zlib_decode($payload, 1024 * 1024 * 64); //Max 64MB
-    }
+	public static function decompress(string $payload) : string{
+		return zlib_decode($payload, 1024 * 1024 * 64); //Max 64MB
+	}
 
-    /**
-     * @param string $payload
-     * @param int    $compressionLevel
-     *
-     * @return string
-     */
-    public static function compress(string $payload, ?int $compressionLevel = null) : string{
-        return zlib_encode($payload, ZLIB_ENCODING_DEFLATE, $compressionLevel ?? self::$LEVEL);
-    }
+	/**
+	 * @param string $payload
+	 * @param int    $compressionLevel
+	 *
+	 * @return string
+	 */
+	public static function compress(string $payload, ?int $compressionLevel = null) : string{
+		return zlib_encode($payload, ZLIB_ENCODING_DEFLATE, $compressionLevel ?? self::$LEVEL);
+	}
 }

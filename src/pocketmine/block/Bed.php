@@ -61,9 +61,7 @@ class Bed extends Transparent{
 	}
 
 	protected function writeStateToMeta() : int{
-		return Bearing::fromFacing($this->facing) |
-			($this->occupied ? self::BITFLAG_OCCUPIED : 0) |
-			($this->head ? self::BITFLAG_HEAD : 0);
+		return Bearing::fromFacing($this->facing) | ($this->occupied ? self::BITFLAG_OCCUPIED : 0) | ($this->head ? self::BITFLAG_HEAD : 0);
 	}
 
 	public function readStateFromMeta(int $meta) : void{

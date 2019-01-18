@@ -75,10 +75,7 @@ class PaintingItem extends Item{
 		$motive = $motives[array_rand($motives)];
 
 		static $directions = [
-			Facing::SOUTH => 0,
-			Facing::WEST => 1,
-			Facing::NORTH => 2,
-			Facing::EAST => 3
+			Facing::SOUTH => 0, Facing::WEST => 1, Facing::NORTH => 2, Facing::EAST => 3
 		];
 
 		$direction = $directions[$face] ?? -1;

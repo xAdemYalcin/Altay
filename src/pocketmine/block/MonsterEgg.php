@@ -44,7 +44,7 @@ class MonsterEgg extends Solid{
 		return 0.75;
 	}
 
-	public function getDropsForCompatibleTool(Item $item): array{
+	public function getDropsForCompatibleTool(Item $item) : array{
 		return [];
 	}
 

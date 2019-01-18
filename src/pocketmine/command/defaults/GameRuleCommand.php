@@ -73,26 +73,10 @@ class GameRuleCommand extends VanillaCommand{
 
 	public function getKnownGameRules() : array{
 		return [
-			"commandblockoutput",
-			"dodaylightcycle",
-			"doentitydrops",
-			"dofiretick",
-			"doinsomnia",
-			"domobloot",
-			"domobspawning",
-			"dotiledrops",
-			"doweathercycle",
-			"drowningdamage",
-			"falldamage",
-			"firedamage",
-			"keepinventory",
-			"maxcommandchainlength",
-			"mobgriefing",
-			"naturalregeneration",
-			"pvp",
-			"sendcommandfeedback",
-			"showcoordinates",
-			"tntexplodes"
+			"commandblockoutput", "dodaylightcycle", "doentitydrops", "dofiretick", "doinsomnia", "domobloot",
+			"domobspawning", "dotiledrops", "doweathercycle", "drowningdamage", "falldamage", "firedamage",
+			"keepinventory", "maxcommandchainlength", "mobgriefing", "naturalregeneration", "pvp",
+			"sendcommandfeedback", "showcoordinates", "tntexplodes"
 		];
 	}
 

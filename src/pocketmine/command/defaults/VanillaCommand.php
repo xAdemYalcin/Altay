@@ -56,11 +56,11 @@ abstract class VanillaCommand extends Command{
 	}
 
 	/**
-	 * @param float         $original
+	 * @param float $original
 	 * @param CommandSender $sender
-	 * @param string        $input
-	 * @param float         $min
-	 * @param float         $max
+	 * @param string $input
+	 * @param float $min
+	 * @param float $max
 	 *
 	 * @return float
 	 */
@@ -101,11 +101,15 @@ abstract class VanillaCommand extends Command{
 
 		$v = (int) $input;
 		if($v > $max){
-			$sender->sendMessage(new TranslationContainer(TextFormat::RED . "%commands.generic.num.tooBig", [$input, (string) $max]));
+			$sender->sendMessage(new TranslationContainer(TextFormat::RED . "%commands.generic.num.tooBig", [
+				$input, (string) $max
+			]));
 			return null;
 		}
 		if($v < $min){
-			$sender->sendMessage(new TranslationContainer(TextFormat::RED . "%commands.generic.num.tooSmall", [$input, (string) $min]));
+			$sender->sendMessage(new TranslationContainer(TextFormat::RED . "%commands.generic.num.tooSmall", [
+				$input, (string) $min
+			]));
 			return null;
 		}
 

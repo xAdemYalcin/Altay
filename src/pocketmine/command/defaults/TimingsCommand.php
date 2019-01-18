@@ -57,12 +57,7 @@ class TimingsCommand extends VanillaCommand{
 		parent::__construct($name, "%pocketmine.command.timings.description", "%pocketmine.command.timings.usage", [], [
 			[
 				new CommandParameter("args", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("args", [
-					"on",
-					"off",
-					"paste",
-					"reset",
-					"merged",
-					"report"
+					"on", "off", "paste", "reset", "merged", "report"
 				]))
 			]
 		]);
@@ -139,17 +134,12 @@ class TimingsCommand extends VanillaCommand{
 					public function __construct(CommandSender $sender, string $host, string $agent, array $data){
 						parent::__construct([
 							[
-								"page" => "https://$host?upload=true",
-								"extraOpts" => [
-									CURLOPT_HTTPHEADER => [
-										"User-Agent: $agent",
-										"Content-Type: application/x-www-form-urlencoded"
-									],
-									CURLOPT_POST => true,
-									CURLOPT_POSTFIELDS => http_build_query($data),
-									CURLOPT_AUTOREFERER => false,
-									CURLOPT_FOLLOWLOCATION => false
-								]
+								"page" => "https://$host?upload=true", "extraOpts" => [
+								CURLOPT_HTTPHEADER => [
+									"User-Agent: $agent", "Content-Type: application/x-www-form-urlencoded"
+								], CURLOPT_POST => true, CURLOPT_POSTFIELDS => http_build_query($data),
+								CURLOPT_AUTOREFERER => false, CURLOPT_FOLLOWLOCATION => false
+							]
 							]
 						]);
 						$this->host = $host;

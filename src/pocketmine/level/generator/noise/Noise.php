@@ -24,6 +24,7 @@ declare(strict_types=1);
 /**
  * Different noise generators for level generation
  */
+
 namespace pocketmine\level\generator\noise;
 
 
@@ -41,11 +42,7 @@ abstract class Noise{
 		$dx1 = (($x2 - $x) / ($x2 - $x1));
 		$dx2 = (($x - $x1) / ($x2 - $x1));
 
-		return (($y2 - $y) / ($y2 - $y1)) * (
-			$dx1 * $q00 + $dx2 * $q10
-		) + (($y - $y1) / ($y2 - $y1)) * (
-			$dx1 * $q01 + $dx2 * $q11
-		);
+		return (($y2 - $y) / ($y2 - $y1)) * ($dx1 * $q00 + $dx2 * $q10) + (($y - $y1) / ($y2 - $y1)) * ($dx1 * $q01 + $dx2 * $q11);
 	}
 
 	public static function trilinearLerp($x, $y, $z, $q000, $q001, $q010, $q011, $q100, $q101, $q110, $q111, $x1, $x2, $y1, $y2, $z1, $z2){
@@ -54,19 +51,7 @@ abstract class Noise{
 		$dy1 = (($y2 - $y) / ($y2 - $y1));
 		$dy2 = (($y - $y1) / ($y2 - $y1));
 
-		return (($z2 - $z) / ($z2 - $z1)) * (
-			$dy1 * (
-				$dx1 * $q000 + $dx2 * $q100
-			) + $dy2 * (
-				$dx1 * $q001 + $dx2 * $q101
-			)
-		) + (($z - $z1) / ($z2 - $z1)) * (
-			$dy1 * (
-				$dx1 * $q010 + $dx2 * $q110
-			) + $dy2 * (
-				$dx1 * $q011 + $dx2 * $q111
-			)
-		);
+		return (($z2 - $z) / ($z2 - $z1)) * ($dy1 * ($dx1 * $q000 + $dx2 * $q100) + $dy2 * ($dx1 * $q001 + $dx2 * $q101)) + (($z - $z1) / ($z2 - $z1)) * ($dy1 * ($dx1 * $q010 + $dx2 * $q110) + $dy2 * ($dx1 * $q011 + $dx2 * $q111));
 	}
 
 	/** @var float */
@@ -201,11 +186,7 @@ abstract class Noise{
 				if($xx % $samplingRate !== 0 or $zz % $samplingRate !== 0){
 					$nx = (int) ($xx / $samplingRate) * $samplingRate;
 					$nz = (int) ($zz / $samplingRate) * $samplingRate;
-					$noiseArray[$xx][$zz] = Noise::bilinearLerp(
-						$xx, $zz, $noiseArray[$nx][$nz], $noiseArray[$nx][$nz + $samplingRate],
-						$noiseArray[$nx + $samplingRate][$nz], $noiseArray[$nx + $samplingRate][$nz + $samplingRate],
-						$nx, $nx + $samplingRate, $nz, $nz + $samplingRate
-					);
+					$noiseArray[$xx][$zz] = Noise::bilinearLerp($xx, $zz, $noiseArray[$nx][$nz], $noiseArray[$nx][$nz + $samplingRate], $noiseArray[$nx + $samplingRate][$nz], $noiseArray[$nx + $samplingRate][$nz + $samplingRate], $nx, $nx + $samplingRate, $nz, $nz + $samplingRate);
 				}
 			}
 		}
@@ -267,19 +248,7 @@ abstract class Noise{
 						$dy1 = (($nny - $yy) / ($nny - $ny));
 						$dy2 = (($yy - $ny) / ($nny - $ny));
 
-						$noiseArray[$xx][$zz][$yy] = (($nnz - $zz) / ($nnz - $nz)) * (
-								$dy1 * (
-									$dx1 * $noiseArray[$nx][$nz][$ny] + $dx2 * $noiseArray[$nnx][$nz][$ny]
-								) + $dy2 * (
-									$dx1 * $noiseArray[$nx][$nz][$nny] + $dx2 * $noiseArray[$nnx][$nz][$nny]
-								)
-							) + (($zz - $nz) / ($nnz - $nz)) * (
-								$dy1 * (
-									$dx1 * $noiseArray[$nx][$nnz][$ny] + $dx2 * $noiseArray[$nnx][$nnz][$ny]
-								) + $dy2 * (
-									$dx1 * $noiseArray[$nx][$nnz][$nny] + $dx2 * $noiseArray[$nnx][$nnz][$nny]
-								)
-							);
+						$noiseArray[$xx][$zz][$yy] = (($nnz - $zz) / ($nnz - $nz)) * ($dy1 * ($dx1 * $noiseArray[$nx][$nz][$ny] + $dx2 * $noiseArray[$nnx][$nz][$ny]) + $dy2 * ($dx1 * $noiseArray[$nx][$nz][$nny] + $dx2 * $noiseArray[$nnx][$nz][$nny])) + (($zz - $nz) / ($nnz - $nz)) * ($dy1 * ($dx1 * $noiseArray[$nx][$nnz][$ny] + $dx2 * $noiseArray[$nnx][$nnz][$ny]) + $dy2 * ($dx1 * $noiseArray[$nx][$nnz][$nny] + $dx2 * $noiseArray[$nnx][$nnz][$nny]));
 					}
 				}
 			}

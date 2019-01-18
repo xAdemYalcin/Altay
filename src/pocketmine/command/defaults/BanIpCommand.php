@@ -70,8 +70,7 @@ class BanIpCommand extends VanillaCommand{
 				$this->processIPBan($ip, $sender, $reason);
 
 				Command::broadcastCommandMessage($sender, new TranslationContainer("commands.banip.success.players", [
-					$ip,
-					$player->getName()
+					$ip, $player->getName()
 				]));
 			}else{
 				$sender->sendMessage(new TranslationContainer("commands.banip.invalid"));

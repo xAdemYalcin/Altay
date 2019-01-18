@@ -27,8 +27,6 @@ namespace pocketmine\item;
 use pocketmine\level\Level;
 use pocketmine\maps\MapData;
 use pocketmine\maps\MapManager;
-use pocketmine\nbt\tag\ByteTag;
-use pocketmine\nbt\tag\LongTag;
 use pocketmine\Player;
 use pocketmine\utils\Color;
 

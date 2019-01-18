@@ -266,15 +266,7 @@ class LevelDB extends BaseLevelProvider{
 			}
 		}*/
 
-		$chunk = new Chunk(
-			$chunkX,
-			$chunkZ,
-			$subChunks,
-			$entities,
-			$tiles,
-			$biomeIds,
-			$heightMap
-		);
+		$chunk = new Chunk($chunkX, $chunkZ, $subChunks, $entities, $tiles, $biomeIds, $heightMap);
 
 		//TODO: tile ticks, biome states (?)
 
@@ -295,11 +287,7 @@ class LevelDB extends BaseLevelProvider{
 			if($subChunk->isEmpty(false)){ //MCPE doesn't save light anymore as of 1.1
 				$this->db->delete($key);
 			}else{
-				$this->db->put($key,
-					chr(self::CURRENT_LEVEL_SUBCHUNK_VERSION) .
-					$subChunk->getBlockIdArray() .
-					$subChunk->getBlockDataArray()
-				);
+				$this->db->put($key, chr(self::CURRENT_LEVEL_SUBCHUNK_VERSION) . $subChunk->getBlockIdArray() . $subChunk->getBlockDataArray());
 			}
 		}
 

@@ -39,15 +39,14 @@ class DifficultyCommand extends VanillaCommand{
 
 	public function __construct(string $name){
 		parent::__construct($name, "%pocketmine.command.difficulty.description", "%commands.difficulty.usage", [], [
-				[
-					new CommandParameter("difficulty", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("difficulty", [
-						"normal", "peaceful", "easy", "hard"
-					]))
-				],
-				[
-					new CommandParameter("difficulty", AvailableCommandsPacket::ARG_TYPE_INT, false)
-				]
-			]);
+			[
+				new CommandParameter("difficulty", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("difficulty", [
+					"normal", "peaceful", "easy", "hard"
+				]))
+			], [
+				new CommandParameter("difficulty", AvailableCommandsPacket::ARG_TYPE_INT, false)
+			]
+		]);
 		$this->setPermission("pocketmine.command.difficulty");
 	}
 

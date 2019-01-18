@@ -48,9 +48,7 @@ class PlayerPreLoginEvent extends PlayerEvent{
 
 	public const KICK_REASON_PRIORITY = [
 		self::KICK_REASON_PLUGIN, //Plugin reason should always take priority over anything else
-		self::KICK_REASON_SERVER_FULL,
-		self::KICK_REASON_SERVER_WHITELISTED,
-		self::KICK_REASON_BANNED
+		self::KICK_REASON_SERVER_FULL, self::KICK_REASON_SERVER_WHITELISTED, self::KICK_REASON_BANNED
 	];
 
 	/** @var bool */

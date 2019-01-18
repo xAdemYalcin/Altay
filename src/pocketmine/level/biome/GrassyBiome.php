@@ -32,11 +32,8 @@ abstract class GrassyBiome extends Biome{
 		parent::__construct();
 
 		$this->setGroundCover([
-			BlockFactory::get(Block::GRASS),
-			BlockFactory::get(Block::DIRT),
-			BlockFactory::get(Block::DIRT),
-			BlockFactory::get(Block::DIRT),
-			BlockFactory::get(Block::DIRT)
+			BlockFactory::get(Block::GRASS), BlockFactory::get(Block::DIRT), BlockFactory::get(Block::DIRT),
+			BlockFactory::get(Block::DIRT), BlockFactory::get(Block::DIRT)
 		]);
 	}
 }

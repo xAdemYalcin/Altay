@@ -32,15 +32,15 @@ class GoldChestplate extends Armor{
 		return 5;
 	}
 
-    public function getArmorSlot() : int{
-        return Armor::SLOT_CHESTPLATE;
-    }
+	public function getArmorSlot() : int{
+		return Armor::SLOT_CHESTPLATE;
+	}
 
-    public function getMaxDurability(): int{
-        return 113;
-    }
+	public function getMaxDurability() : int{
+		return 113;
+	}
 
-    public function getEnchantability() : int{
+	public function getEnchantability() : int{
 		return 25;
 	}
 }

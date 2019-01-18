@@ -25,6 +25,7 @@ declare(strict_types=1);
  * Set-up wizard used on the first run
  * Can be disabled with --no-wizard
  */
+
 namespace pocketmine\wizard;
 
 use pocketmine\lang\Language;
@@ -227,7 +228,9 @@ LICENSE;
 		}
 		$internalIP = gethostbyname(trim(`hostname`));
 
-		$this->error($this->lang->translateString("ip_warning", ["EXTERNAL_IP" => $externalIP, "INTERNAL_IP" => $internalIP]));
+		$this->error($this->lang->translateString("ip_warning", [
+			"EXTERNAL_IP" => $externalIP, "INTERNAL_IP" => $internalIP
+		]));
 		$this->error($this->lang->get("ip_confirm"));
 		$this->readLine();
 	}

@@ -231,8 +231,7 @@ class RCONInstance extends Thread{
 
 	private function disconnectClient($client) : void{
 		@socket_set_option($client, SOL_SOCKET, SO_LINGER, [
-			"l_onoff" => 1,
-			"l_linger" => 1
+			"l_onoff" => 1, "l_linger" => 1
 		]);
 		@socket_shutdown($client, 2);
 		@socket_set_block($client);

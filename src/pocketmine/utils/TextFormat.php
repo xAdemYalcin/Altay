@@ -66,37 +66,9 @@ abstract class TextFormat{
 	public const RESET = TextFormat::ESCAPE . "r";
 
 	public const CharWidths = [
-		' ' => 4,
-		'!' => 2,
-		'"' => 5,
-		'\'' => 3,
-		'(' => 5,
-		')' => 5,
-		'*' => 5,
-		',' => 2,
-		'.' => 2,
-		':' => 2,
-		';' => 2,
-		'<' => 5,
-		'>' => 5,
-		'@' => 7,
-		'I' => 4,
-		'[' => 4,
-		']' => 4,
-		'f' => 5,
-		'i' => 2,
-		'k' => 5,
-		'l' => 3,
-		't' => 4,
-		'' => 5,
-		'|' => 2,
-		'~' => 7,
-		'█' => 9,
-		'░' => 8,
-		'▒' => 9,
-		'▓' => 9,
-		'▌' => 5,
-		'─' => 9
+		' ' => 4, '!' => 2, '"' => 5, '\'' => 3, '(' => 5, ')' => 5, '*' => 5, ',' => 2, '.' => 2, ':' => 2, ';' => 2,
+		'<' => 5, '>' => 5, '@' => 7, 'I' => 4, '[' => 4, ']' => 4, 'f' => 5, 'i' => 2, 'k' => 5, 'l' => 3, 't' => 4,
+		'' => 5, '|' => 2, '~' => 7, '█' => 9, '░' => 8, '▒' => 9, '▓' => 9, '▌' => 5, '─' => 9
 		//'-' => 9,
 	];
 
@@ -121,7 +93,9 @@ abstract class TextFormat{
 	 */
 	public static function clean(string $string, bool $removeFormat = true) : string{
 		if($removeFormat){
-			return str_replace(TextFormat::ESCAPE, "", preg_replace(["/" . TextFormat::ESCAPE . "[0-9a-fk-or]/", "/\x1b[\\(\\][[0-9;\\[\\(]+[Bm]/"], "", $string));
+			return str_replace(TextFormat::ESCAPE, "", preg_replace([
+				"/" . TextFormat::ESCAPE . "[0-9a-fk-or]/", "/\x1b[\\(\\][[0-9;\\[\\(]+[Bm]/"
+			], "", $string));
 		}
 		return str_replace("\x1b", "", preg_replace("/\x1b[\\(\\][[0-9;\\[\\(]+[Bm]/", "", $string));
 	}

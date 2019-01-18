@@ -844,20 +844,16 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 		}
 
 		$nbt->setTag(new ListTag("Pos", [
-			new DoubleTag("", $this->x),
-			new DoubleTag("", $this->y),
-			new DoubleTag("", $this->z)
+			new DoubleTag("", $this->x), new DoubleTag("", $this->y), new DoubleTag("", $this->z)
 		]));
 
 		$nbt->setTag(new ListTag("Motion", [
-			new DoubleTag("", $this->motion->x),
-			new DoubleTag("", $this->motion->y),
+			new DoubleTag("", $this->motion->x), new DoubleTag("", $this->motion->y),
 			new DoubleTag("", $this->motion->z)
 		]));
 
 		$nbt->setTag(new ListTag("Rotation", [
-			new FloatTag("", $this->yaw),
-			new FloatTag("", $this->pitch)
+			new FloatTag("", $this->yaw), new FloatTag("", $this->pitch)
 		]));
 
 		$nbt->setFloat("FallDistance", $this->fallDistance);

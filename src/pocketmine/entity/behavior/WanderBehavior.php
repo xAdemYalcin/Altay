@@ -24,13 +24,8 @@ declare(strict_types=1);
 
 namespace pocketmine\entity\behavior;
 
-use pocketmine\block\Block;
-use pocketmine\block\Grass;
-use pocketmine\entity\Animal;
-use pocketmine\entity\Entity;
 use pocketmine\entity\Mob;
 use pocketmine\entity\utils\RandomPositionGenerator;
-use pocketmine\math\Vector3;
 
 class WanderBehavior extends Behavior{
 

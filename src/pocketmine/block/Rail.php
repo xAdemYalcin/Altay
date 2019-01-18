@@ -35,20 +35,13 @@ class Rail extends BaseRail{
 
 	private const CURVE_CONNECTIONS = [
 		self::CURVE_SOUTHEAST => [
-			Facing::SOUTH,
-			Facing::EAST
-		],
-		self::CURVE_SOUTHWEST => [
-			Facing::SOUTH,
-			Facing::WEST
-		],
-		self::CURVE_NORTHWEST => [
-			Facing::NORTH,
-			Facing::WEST
-		],
-		self::CURVE_NORTHEAST => [
-			Facing::NORTH,
-			Facing::EAST
+			Facing::SOUTH, Facing::EAST
+		], self::CURVE_SOUTHWEST => [
+			Facing::SOUTH, Facing::WEST
+		], self::CURVE_NORTHWEST => [
+			Facing::NORTH, Facing::WEST
+		], self::CURVE_NORTHEAST => [
+			Facing::NORTH, Facing::EAST
 		]
 	];
 
@@ -72,10 +65,7 @@ class Rail extends BaseRail{
 
 	protected function getPossibleConnectionDirectionsOneConstraint(int $constraint) : array{
 		static $horizontal = [
-			Facing::NORTH,
-			Facing::SOUTH,
-			Facing::WEST,
-			Facing::EAST
+			Facing::NORTH, Facing::SOUTH, Facing::WEST, Facing::EAST
 		];
 
 		$possible = parent::getPossibleConnectionDirectionsOneConstraint($constraint);

@@ -50,22 +50,16 @@ class Villager extends Mob implements NPC, Ageable{
 			Villager::CAREER_FISHERMAN => "entity.villager.fisherman",
 			Villager::CAREER_STEPHERD => "entity.villager.shepherd",
 			Villager::CAREER_FLETCHER => "entity.villager.fletcher"
-		],
-		Villager::PROFESSION_LIBRARIAN => [
+		], Villager::PROFESSION_LIBRARIAN => [
 			Villager::CAREER_LIBRARIAN => "entity.villager.librarian",
 			Villager::CAREER_CARTOGRAPHER => "entity.villager.cartographer"
-		],
-		Villager::PROFESSION_PRIEST => [
+		], Villager::PROFESSION_PRIEST => [
 			Villager::CAREER_CLERIC => "entity.villager.cleric"
-		],
-		Villager::PROFESSION_BLACKSMITH => [
-			Villager::CAREER_ARMOR => "entity.villager.armor",
-			Villager::CAREER_WEAPON => "entity.villager.weapon",
+		], Villager::PROFESSION_BLACKSMITH => [
+			Villager::CAREER_ARMOR => "entity.villager.armor", Villager::CAREER_WEAPON => "entity.villager.weapon",
 			Villager::CAREER_TOOL => "entity.villager.tool"
-		],
-		Villager::PROFESSION_BUTCHER => [
-			Villager::CAREER_BUTCHER => "entity.villager.butcher",
-			Villager::CAREER_LEATHER => "entity.villager.leather"
+		], Villager::PROFESSION_BUTCHER => [
+			Villager::CAREER_BUTCHER => "entity.villager.butcher", Villager::CAREER_LEATHER => "entity.villager.leather"
 		]
 	];
 

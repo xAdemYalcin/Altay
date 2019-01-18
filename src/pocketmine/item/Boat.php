@@ -30,27 +30,27 @@ use pocketmine\entity\vehicle\Boat as EntityBoat;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 
-class Boat extends Item {
-    public function __construct(){
-        parent::__construct(self::BOAT, 0, "Boat");
-    }
+class Boat extends Item{
+	public function __construct(){
+		parent::__construct(self::BOAT, 0, "Boat");
+	}
 
-    public function getFuelTime(): int{
-        return 1200; //400 in PC
-    }
+	public function getFuelTime() : int{
+		return 1200; //400 in PC
+	}
 
-    public function getMaxStackSize(): int{
-        return 1;
-    }
+	public function getMaxStackSize() : int{
+		return 1;
+	}
 
-    public function onActivate(Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector): bool{
-        $nbt = EntityFactory::createBaseNBT($blockReplace->add(0.5, 0, 0.5));
-        $nbt->setInt("Variant", $this->getDamage());
-        $entity = EntityFactory::create(EntityBoat::class, $player->level, $nbt);
-        $entity->spawnToAll();
+	public function onActivate(Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector) : bool{
+		$nbt = EntityFactory::createBaseNBT($blockReplace->add(0.5, 0, 0.5));
+		$nbt->setInt("Variant", $this->getDamage());
+		$entity = EntityFactory::create(EntityBoat::class, $player->level, $nbt);
+		$entity->spawnToAll();
 
-        $this->count--;
+		$this->count--;
 
-        return true;
-    }
+		return true;
+	}
 }

@@ -94,8 +94,7 @@ class GameRules{
 	public function setRule(string $name, $value, int $valueType) : bool{
 		if($this->checkType($value, $valueType)){
 			$this->rules[$name] = $this->dirtyRules[$name] = [
-				$valueType,
-				$value
+				$valueType, $value
 			];
 			return true;
 		}

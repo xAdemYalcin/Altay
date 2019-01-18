@@ -80,17 +80,13 @@ abstract class Slab extends Transparent{
 	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
 		/* note these conditions can't be merged, since one targets clicked and the other replace */
 
-		if($blockClicked instanceof Slab and $blockClicked->isSameType($this) and (
-			($face === Facing::DOWN and $blockClicked->top) or //Bottom face of top slab
-			($face === Facing::UP and !$blockClicked->top) //Top face of bottom slab
-		)){
+		if($blockClicked instanceof Slab and $blockClicked->isSameType($this) and (($face === Facing::DOWN and $blockClicked->top) or //Bottom face of top slab
+				($face === Facing::UP and !$blockClicked->top) //Top face of bottom slab
+			)){
 			return $this->level->setBlock($blockClicked, $this->getDouble());
 		}
 
-		if($blockReplace instanceof Slab and $blockReplace->isSameType($this) and (
-			($blockReplace->top and $clickVector->y <= 0.5) or
-			(!$blockReplace->top and $clickVector->y >= 0.5)
-		)){
+		if($blockReplace instanceof Slab and $blockReplace->isSameType($this) and (($blockReplace->top and $clickVector->y <= 0.5) or (!$blockReplace->top and $clickVector->y >= 0.5))){
 			//Clicked in empty half of existing slab
 			return $this->level->setBlock($blockReplace, $this->getDouble());
 		}

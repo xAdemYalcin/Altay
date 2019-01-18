@@ -32,13 +32,13 @@ class ChainChestplate extends Armor{
 		return 5;
 	}
 
-    public function getArmorSlot() : int{
-        return Armor::SLOT_CHESTPLATE;
-    }
+	public function getArmorSlot() : int{
+		return Armor::SLOT_CHESTPLATE;
+	}
 
-    public function getMaxDurability(): int{
-        return 241;
-    }
+	public function getMaxDurability() : int{
+		return 241;
+	}
 
 	public function getEnchantability() : int{
 		return 12;

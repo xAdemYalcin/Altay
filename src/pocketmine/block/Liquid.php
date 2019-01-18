@@ -216,16 +216,7 @@ abstract class Liquid extends Transparent{
 		}
 
 		if($this->falling){
-			if(
-				!$this->canFlowInto($this->level->getBlockAt($this->x, $this->y, $this->z - 1)) or
-				!$this->canFlowInto($this->level->getBlockAt($this->x, $this->y, $this->z + 1)) or
-				!$this->canFlowInto($this->level->getBlockAt($this->x - 1, $this->y, $this->z)) or
-				!$this->canFlowInto($this->level->getBlockAt($this->x + 1, $this->y, $this->z)) or
-				!$this->canFlowInto($this->level->getBlockAt($this->x, $this->y + 1, $this->z - 1)) or
-				!$this->canFlowInto($this->level->getBlockAt($this->x, $this->y + 1, $this->z + 1)) or
-				!$this->canFlowInto($this->level->getBlockAt($this->x - 1, $this->y + 1, $this->z)) or
-				!$this->canFlowInto($this->level->getBlockAt($this->x + 1, $this->y + 1, $this->z))
-			){
+			if(!$this->canFlowInto($this->level->getBlockAt($this->x, $this->y, $this->z - 1)) or !$this->canFlowInto($this->level->getBlockAt($this->x, $this->y, $this->z + 1)) or !$this->canFlowInto($this->level->getBlockAt($this->x - 1, $this->y, $this->z)) or !$this->canFlowInto($this->level->getBlockAt($this->x + 1, $this->y, $this->z)) or !$this->canFlowInto($this->level->getBlockAt($this->x, $this->y + 1, $this->z - 1)) or !$this->canFlowInto($this->level->getBlockAt($this->x, $this->y + 1, $this->z + 1)) or !$this->canFlowInto($this->level->getBlockAt($this->x - 1, $this->y + 1, $this->z)) or !$this->canFlowInto($this->level->getBlockAt($this->x + 1, $this->y + 1, $this->z))){
 				$vector = $vector->normalize()->add(0, -6, 0);
 			}
 		}

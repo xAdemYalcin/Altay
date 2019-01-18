@@ -61,13 +61,7 @@ class SubChunk implements SubChunkInterface{
 	}
 
 	public function isEmpty(bool $checkLight = true) : bool{
-		return (
-			substr_count($this->ids, "\x00") === 4096 and
-			(!$checkLight or (
-				substr_count($this->skyLight, "\xff") === 2048 and
-				$this->blockLight === ZERO_NIBBLE_ARRAY
-			))
-		);
+		return (substr_count($this->ids, "\x00") === 4096 and (!$checkLight or (substr_count($this->skyLight, "\xff") === 2048 and $this->blockLight === ZERO_NIBBLE_ARRAY)));
 	}
 
 	public function getBlockId(int $x, int $y, int $z) : int{

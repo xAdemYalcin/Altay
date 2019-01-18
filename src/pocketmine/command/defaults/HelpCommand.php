@@ -42,12 +42,7 @@ use const SORT_NATURAL;
 class HelpCommand extends VanillaCommand{
 
 	public function __construct(string $name){
-		parent::__construct(
-			$name,
-			"%pocketmine.command.help.description",
-			"%commands.help.usage",
-			["?"]
-		);
+		parent::__construct($name, "%pocketmine.command.help.description", "%commands.help.usage", ["?"]);
 		$this->setPermission("pocketmine.command.help");
 	}
 

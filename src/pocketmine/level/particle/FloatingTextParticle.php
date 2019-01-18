@@ -105,9 +105,7 @@ class FloatingTextParticle extends Particle{
 			$pk->position = $pos; //TODO: check offset
 			$pk->item = ItemFactory::get(Item::AIR, 0, 0);
 
-			$flags = (
-				1 << Entity::DATA_FLAG_IMMOBILE
-			);
+			$flags = (1 << Entity::DATA_FLAG_IMMOBILE);
 			$pk->metadata = [
 				Entity::DATA_FLAGS => [Entity::DATA_TYPE_LONG, $flags],
 				Entity::DATA_SCALE => [Entity::DATA_TYPE_FLOAT, 0.01] //zero causes problems on debug builds

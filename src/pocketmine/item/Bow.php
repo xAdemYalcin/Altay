@@ -53,12 +53,7 @@ class Bow extends Tool{
 			return false;
 		}
 
-		$nbt = EntityFactory::createBaseNBT(
-			$player->add(0, $player->getEyeHeight(), 0),
-			$player->getDirectionVector(),
-			($player->yaw > 180 ? 360 : 0) - $player->yaw,
-			-$player->pitch
-		);
+		$nbt = EntityFactory::createBaseNBT($player->add(0, $player->getEyeHeight(), 0), $player->getDirectionVector(), ($player->yaw > 180 ? 360 : 0) - $player->yaw, -$player->pitch);
 		$nbt->setShort("Fire", $player->isOnFire() ? 45 * 60 : 0);
 
 		$diff = $player->getItemUseDuration();

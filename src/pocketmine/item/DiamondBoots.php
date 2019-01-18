@@ -32,15 +32,15 @@ class DiamondBoots extends Armor{
 		return 3;
 	}
 
-    public function getArmorSlot() : int{
-        return Armor::SLOT_BOOTS;
-    }
+	public function getArmorSlot() : int{
+		return Armor::SLOT_BOOTS;
+	}
 
-    public function getMaxDurability(): int{
-        return 430;
-    }
+	public function getMaxDurability() : int{
+		return 430;
+	}
 
-    public function getEnchantability() : int{
+	public function getEnchantability() : int{
 		return 10;
 	}
 }

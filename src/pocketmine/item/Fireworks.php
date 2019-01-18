@@ -114,11 +114,7 @@ class Fireworks extends Item{
 
 	public function onClickAir(Player $player, Vector3 $directionVector) : bool{
 		if($player->isGliding()){
-			$motion = new Vector3(
-				(-sin($player->yaw / 180 * M_PI) * cos($player->pitch / 180 * M_PI) * self::BOOST_POWER),
-				(-sin($player->pitch / 180 * M_PI) * self::BOOST_POWER),
-				(cos($player->yaw / 180 * M_PI) * cos($player->pitch / 180 * M_PI) * self::BOOST_POWER)
-			);
+			$motion = new Vector3((-sin($player->yaw / 180 * M_PI) * cos($player->pitch / 180 * M_PI) * self::BOOST_POWER), (-sin($player->pitch / 180 * M_PI) * self::BOOST_POWER), (cos($player->yaw / 180 * M_PI) * cos($player->pitch / 180 * M_PI) * self::BOOST_POWER));
 
 			$nbt = EntityFactory::createBaseNBT($player, $motion->subtract(0, 0.1, 0), lcg_value() * 360, 90);
 			$entity = EntityFactory::create(FireworksRocket::class, $player->getLevel(), $nbt, $this);

@@ -50,30 +50,20 @@ abstract class BaseRail extends Flowable{
 	protected const CONNECTIONS = [
 		//straights
 		self::STRAIGHT_NORTH_SOUTH => [
-			Facing::NORTH,
-			Facing::SOUTH
-		],
-		self::STRAIGHT_EAST_WEST => [
-			Facing::EAST,
-			Facing::WEST
+			Facing::NORTH, Facing::SOUTH
+		], self::STRAIGHT_EAST_WEST => [
+			Facing::EAST, Facing::WEST
 		],
 
 		//ascending
 		self::ASCENDING_EAST => [
-			Facing::WEST,
-			Facing::EAST | self::FLAG_ASCEND
-		],
-		self::ASCENDING_WEST => [
-			Facing::EAST,
-			Facing::WEST | self::FLAG_ASCEND
-		],
-		self::ASCENDING_NORTH => [
-			Facing::SOUTH,
-			Facing::NORTH | self::FLAG_ASCEND
-		],
-		self::ASCENDING_SOUTH => [
-			Facing::NORTH,
-			Facing::SOUTH | self::FLAG_ASCEND
+			Facing::WEST, Facing::EAST | self::FLAG_ASCEND
+		], self::ASCENDING_WEST => [
+			Facing::EAST, Facing::WEST | self::FLAG_ASCEND
+		], self::ASCENDING_NORTH => [
+			Facing::SOUTH, Facing::NORTH | self::FLAG_ASCEND
+		], self::ASCENDING_SOUTH => [
+			Facing::NORTH, Facing::SOUTH | self::FLAG_ASCEND
 		]
 	];
 
@@ -172,10 +162,7 @@ abstract class BaseRail extends Flowable{
 				$otherConnection |= self::FLAG_ASCEND;
 			}
 
-			if(
-				$other instanceof BaseRail and
-				in_array($otherConnection, $other->connections, true)
-			){
+			if($other instanceof BaseRail and in_array($otherConnection, $other->connections, true)){
 				$connections[] = $connection;
 			}
 		}
@@ -188,10 +175,7 @@ abstract class BaseRail extends Flowable{
 			case 0:
 				//No constraints, can connect in any direction
 				$possible = [
-					Facing::NORTH => true,
-					Facing::SOUTH => true,
-					Facing::WEST => true,
-					Facing::EAST => true
+					Facing::NORTH => true, Facing::SOUTH => true, Facing::WEST => true, Facing::EAST => true
 				];
 				foreach($possible as $p => $_){
 					$possible[$p | self::FLAG_ASCEND] = true;

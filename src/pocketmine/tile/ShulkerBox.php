@@ -28,15 +28,14 @@ use pocketmine\block\Block;
 use pocketmine\inventory\ShulkerBoxInventory;
 use pocketmine\inventory\InventoryHolder;
 use pocketmine\item\Item;
+use pocketmine\level\Level;
 use pocketmine\math\Facing;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\Player;
-use pocketmine\level\Level;
 
-class ShulkerBox extends Spawnable implements InventoryHolder, Container, Nameable {
-	use NameableTrait{
+class ShulkerBox extends Spawnable implements InventoryHolder, Container, Nameable{
+	use NameableTrait {
 		addAdditionalSpawnData as addNameSpawnData;
 	}
 	use ContainerTrait;
@@ -51,10 +50,10 @@ class ShulkerBox extends Spawnable implements InventoryHolder, Container, Nameab
 
 	/** @var ShulkerBoxInventory */
 	protected $inventory;
-	
+
 	public function __construct(Level $level, Vector3 $pos){
 		parent::__construct($level, $pos);
-		
+
 		$this->inventory = new ShulkerBoxInventory($this);
 	}
 
@@ -87,7 +86,7 @@ class ShulkerBox extends Spawnable implements InventoryHolder, Container, Nameab
 	/**
 	 * @return string
 	 */
-	public function getDefaultName(): string{
+	public function getDefaultName() : string{
 		return "Shulker Box";
 	}
 

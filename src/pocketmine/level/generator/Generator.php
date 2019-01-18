@@ -19,12 +19,13 @@
  * @link https://github.com/TuranicTeam/Altay
  *
  */
- 
+
 declare(strict_types=1);
 
 /**
  * Noise classes used in Levels
  */
+
 namespace pocketmine\level\generator;
 
 use pocketmine\entity\CreatureType;

@@ -125,8 +125,7 @@ class Dropdown extends CustomFormElement{
 
 	public function serializeElementData() : array{
 		return [
-			"options" => $this->options,
-			"default" => $this->defaultOptionIndex
+			"options" => $this->options, "default" => $this->defaultOptionIndex
 		];
 	}
 }

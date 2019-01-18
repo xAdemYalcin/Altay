@@ -24,9 +24,9 @@ declare(strict_types=1);
 namespace pocketmine\block;
 
 use pocketmine\block\utils\Color;
-use pocketmine\block\utils\InvalidBlockStateException;
 use pocketmine\block\utils\PillarRotationTrait;
 use pocketmine\block\utils\WoodType;
+use pocketmine\block\utils\InvalidBlockStateException;
 use pocketmine\item\Item;
 use pocketmine\level\Position;
 use function array_fill;
@@ -126,9 +126,7 @@ class BlockFactory{
 		//TODO: DISPENSER
 
 		static $sandstoneTypes = [
-			Sandstone::NORMAL => "",
-			Sandstone::CHISELED => "Chiseled ",
-			Sandstone::SMOOTH => "Smooth "
+			Sandstone::NORMAL => "", Sandstone::CHISELED => "Chiseled ", Sandstone::SMOOTH => "Smooth "
 		];
 		foreach($sandstoneTypes as $variant => $prefix){
 			self::registerBlock(new Sandstone(Block::SANDSTONE, $variant, $prefix . "Sandstone"));
@@ -516,8 +514,8 @@ class BlockFactory{
 	/**
 	 * Returns a new Block instance with the specified ID, meta and position.
 	 *
-	 * @param int $id
-	 * @param int $meta
+	 * @param int      $id
+	 * @param int      $meta
 	 * @param Position $pos
 	 *
 	 * @return Block
@@ -605,8 +603,7 @@ class BlockFactory{
 	public static function fromStaticRuntimeId(int $runtimeId) : array{
 		$v = self::$legacyIdMap[$runtimeId];
 		return [
-			$v >> 4,
-			$v & 0xf
+			$v >> 4, $v & 0xf
 		];
 	}
 

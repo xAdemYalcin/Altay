@@ -30,11 +30,7 @@ use pocketmine\lang\TranslationContainer;
 class SaveOnCommand extends VanillaCommand{
 
 	public function __construct(string $name){
-		parent::__construct(
-			$name,
-			"%pocketmine.command.saveon.description",
-			"%commands.save-on.usage"
-		);
+		parent::__construct($name, "%pocketmine.command.saveon.description", "%commands.save-on.usage");
 		$this->setPermission("pocketmine.command.save.enable");
 	}
 

@@ -32,20 +32,11 @@ class WoodType{
 	public const DARK_OAK = 5;
 
 	public const ALL = [
-		self::OAK,
-		self::SPRUCE,
-		self::BIRCH,
-		self::JUNGLE,
-		self::ACACIA,
-		self::DARK_OAK
+		self::OAK, self::SPRUCE, self::BIRCH, self::JUNGLE, self::ACACIA, self::DARK_OAK
 	];
 
 	public const NAMES = [
-		self::OAK => "Oak",
-		self::SPRUCE => "Spruce",
-		self::BIRCH => "Birch",
-		self::JUNGLE => "Jungle",
-		self::ACACIA => "Acacia",
-		self::DARK_OAK => "Dark Oak"
+		self::OAK => "Oak", self::SPRUCE => "Spruce", self::BIRCH => "Birch", self::JUNGLE => "Jungle",
+		self::ACACIA => "Acacia", self::DARK_OAK => "Dark Oak"
 	];
 }

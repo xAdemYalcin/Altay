@@ -40,7 +40,7 @@ class AltayEntityEquipment extends BaseInventory{
 		parent::__construct();
 	}
 
-	public function getName(): string{
+	public function getName() : string{
 		return "Altay Entity Equipment";
 	}
 

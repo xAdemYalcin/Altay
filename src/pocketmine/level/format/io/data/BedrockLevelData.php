@@ -64,35 +64,21 @@ class BedrockLevelData extends BaseNbtLevelData{
 			//Vanilla fields
 			new IntTag("DayCycleStopTime", -1),
 			new IntTag("Difficulty", Level::getDifficultyFromString((string) ($options["difficulty"] ?? "normal"))),
-			new ByteTag("ForceGameType", 0),
-			new IntTag("GameType", 0),
-			new IntTag("Generator", $generatorType),
-			new LongTag("LastPlayed", time()),
-			new StringTag("LevelName", $name),
+			new ByteTag("ForceGameType", 0), new IntTag("GameType", 0), new IntTag("Generator", $generatorType),
+			new LongTag("LastPlayed", time()), new StringTag("LevelName", $name),
 			new IntTag("NetworkVersion", ProtocolInfo::CURRENT_PROTOCOL),
 			//new IntTag("Platform", 2), //TODO: find out what the possible values are for
-			new LongTag("RandomSeed", $seed),
-			new IntTag("SpawnX", 0),
-			new IntTag("SpawnY", 32767),
-			new IntTag("SpawnZ", 0),
-			new IntTag("StorageVersion", self::CURRENT_STORAGE_VERSION),
-			new LongTag("Time", 0),
-			new ByteTag("eduLevel", 0),
-			new ByteTag("falldamage", 1),
-			new ByteTag("firedamage", 1),
-			new ByteTag("hasBeenLoadedInCreative", 1), //badly named, this actually determines whether achievements can be earned in this world...
-			new ByteTag("immutableWorld", 0),
-			new FloatTag("lightningLevel", 0.0),
-			new IntTag("lightningTime", 0),
-			new ByteTag("pvp", 1),
-			new FloatTag("rainLevel", 0.0),
-			new IntTag("rainTime", 0),
-			new ByteTag("spawnMobs", 1),
-			new ByteTag("texturePacksRequired", 0), //TODO
+			new LongTag("RandomSeed", $seed), new IntTag("SpawnX", 0), new IntTag("SpawnY", 32767),
+			new IntTag("SpawnZ", 0), new IntTag("StorageVersion", self::CURRENT_STORAGE_VERSION),
+			new LongTag("Time", 0), new ByteTag("eduLevel", 0), new ByteTag("falldamage", 1),
+			new ByteTag("firedamage", 1), new ByteTag("hasBeenLoadedInCreative", 1),
+			//badly named, this actually determines whether achievements can be earned in this world...
+			new ByteTag("immutableWorld", 0), new FloatTag("lightningLevel", 0.0), new IntTag("lightningTime", 0),
+			new ByteTag("pvp", 1), new FloatTag("rainLevel", 0.0), new IntTag("rainTime", 0),
+			new ByteTag("spawnMobs", 1), new ByteTag("texturePacksRequired", 0), //TODO
 
 			//Additional PocketMine-MP fields
-			new CompoundTag("GameRules", []),
-			new ByteTag("hardcore", ($options["hardcore"] ?? false) === true ? 1 : 0),
+			new CompoundTag("GameRules", []), new ByteTag("hardcore", ($options["hardcore"] ?? false) === true ? 1 : 0),
 			new StringTag("generatorName", GeneratorManager::getGeneratorName($generator)),
 			new StringTag("generatorOptions", $options["preset"] ?? "")
 		]);

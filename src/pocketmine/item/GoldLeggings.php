@@ -32,15 +32,15 @@ class GoldLeggings extends Armor{
 		return 3;
 	}
 
-    public function getArmorSlot() : int{
-        return Armor::SLOT_LEGGINGS;
-    }
+	public function getArmorSlot() : int{
+		return Armor::SLOT_LEGGINGS;
+	}
 
-    public function getMaxDurability() : int{
-        return 106;
-    }
+	public function getMaxDurability() : int{
+		return 106;
+	}
 
-    public function getEnchantability() : int{
+	public function getEnchantability() : int{
 		return 25;
 	}
 }

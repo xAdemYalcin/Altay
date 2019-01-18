@@ -163,15 +163,7 @@ class McRegion extends RegionLevelProvider{
 			$heightMap = $chunk->getIntArray("HeightMap"); #blameshoghicp
 		}
 
-		$result = new Chunk(
-			$chunk->getInt("xPos"),
-			$chunk->getInt("zPos"),
-			$subChunks,
-			$chunk->hasTag("Entities", ListTag::class) ? $chunk->getListTag("Entities")->getValue() : [],
-			$chunk->hasTag("TileEntities", ListTag::class) ? $chunk->getListTag("TileEntities")->getValue() : [],
-			$biomeIds,
-			$heightMap
-		);
+		$result = new Chunk($chunk->getInt("xPos"), $chunk->getInt("zPos"), $subChunks, $chunk->hasTag("Entities", ListTag::class) ? $chunk->getListTag("Entities")->getValue() : [], $chunk->hasTag("TileEntities", ListTag::class) ? $chunk->getListTag("TileEntities")->getValue() : [], $biomeIds, $heightMap);
 		$result->setLightPopulated($chunk->getByte("LightPopulated", 0) !== 0);
 		$result->setPopulated($chunk->getByte("TerrainPopulated", 0) !== 0);
 		$result->setGenerated(true);

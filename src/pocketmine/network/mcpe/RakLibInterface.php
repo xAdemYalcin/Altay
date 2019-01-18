@@ -79,20 +79,13 @@ class RakLibInterface implements ServerInstance, AdvancedNetworkInterface{
 
 		$this->sleeper = new SleeperNotifier();
 
-		$this->rakLib = new RakLibServer(
-			$this->server->getLogger(),
-			\pocketmine\COMPOSER_AUTOLOADER_PATH,
-			new InternetAddress($this->server->getIp(), $this->server->getPort(), 4),
-			(int) $this->server->getProperty("network.max-mtu-size", 1492),
-			self::MCPE_RAKNET_PROTOCOL_VERSION,
-			$this->sleeper
-		);
+		$this->rakLib = new RakLibServer($this->server->getLogger(), \pocketmine\COMPOSER_AUTOLOADER_PATH, new InternetAddress($this->server->getIp(), $this->server->getPort(), 4), (int) $this->server->getProperty("network.max-mtu-size", 1492), self::MCPE_RAKNET_PROTOCOL_VERSION, $this->sleeper);
 		$this->interface = new ServerHandler($this->rakLib, $this);
 	}
 
 	public function start() : void{
 		$this->server->getTickSleeper()->addNotifier($this->sleeper, function() : void{
-			while($this->interface->handlePacket());
+			while($this->interface->handlePacket()) ;
 		});
 		$this->rakLib->start(PTHREADS_INHERIT_CONSTANTS); //HACK: MainLogger needs constants for exception logging
 	}
@@ -186,19 +179,12 @@ class RakLibInterface implements ServerInstance, AdvancedNetworkInterface{
 	public function setName(string $name) : void{
 		$info = $this->server->getQueryInformation();
 
-		$this->interface->sendOption("name", implode(";",
-			[
-				"MCPE",
-				rtrim(addcslashes($name, ";"), '\\'),
-				ProtocolInfo::CURRENT_PROTOCOL,
-				ProtocolInfo::MINECRAFT_VERSION_NETWORK,
-				$info->getPlayerCount(),
-				$info->getMaxPlayerCount(),
-				$this->rakLib->getServerId(),
-				$this->server->getName(),
-				Server::getGamemodeName($this->server->getGamemode())
-			]) . ";"
-		);
+		$this->interface->sendOption("name", implode(";", [
+					"MCPE", rtrim(addcslashes($name, ";"), '\\'), ProtocolInfo::CURRENT_PROTOCOL,
+					ProtocolInfo::MINECRAFT_VERSION_NETWORK, $info->getPlayerCount(), $info->getMaxPlayerCount(),
+					$this->rakLib->getServerId(), $this->server->getName(),
+					Server::getGamemodeName($this->server->getGamemode())
+				]) . ";");
 	}
 
 	public function setPortCheck(bool $name) : void{

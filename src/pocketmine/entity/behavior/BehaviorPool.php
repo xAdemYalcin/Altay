@@ -42,8 +42,7 @@ class BehaviorPool{
 
 	public function setBehavior(int $priority, Behavior $behavior) : void{
 		$this->behaviors[spl_object_hash($behavior)] = [
-			$priority,
-			$behavior
+			$priority, $behavior
 		];
 	}
 

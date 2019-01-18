@@ -37,19 +37,15 @@ use pocketmine\Player;
 class PlaySoundCommand extends VanillaCommand{
 
 	public function __construct(string $name){
-		parent::__construct(
-			$name,
-			"Plays a sound",
-			"/playsound <sound: string> [player: target] [position: x y z] [volume: float] [pitch: float]",
-			[],
-			[[
-				new CommandParameter("sound", AvailableCommandsPacket::ARG_TYPE_STRING, false),
-				new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET),
-				new CommandParameter("pos", AvailableCommandsPacket::ARG_TYPE_POSITION),
-				new CommandParameter("volume", AvailableCommandsPacket::ARG_TYPE_FLOAT),
-				new CommandParameter("pitch", AvailableCommandsPacket::ARG_TYPE_FLOAT)
-			]]
-		);
+		parent::__construct($name, "Plays a sound", "/playsound <sound: string> [player: target] [position: x y z] [volume: float] [pitch: float]", [], [
+				[
+					new CommandParameter("sound", AvailableCommandsPacket::ARG_TYPE_STRING, false),
+					new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET),
+					new CommandParameter("pos", AvailableCommandsPacket::ARG_TYPE_POSITION),
+					new CommandParameter("volume", AvailableCommandsPacket::ARG_TYPE_FLOAT),
+					new CommandParameter("pitch", AvailableCommandsPacket::ARG_TYPE_FLOAT)
+				]
+			]);
 
 		$this->setPermission("altay.command.playsound");
 	}

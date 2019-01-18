@@ -108,59 +108,26 @@ class SimpleCommandMap implements CommandMap{
 
 	private function setDefaultCommands(){
 		$this->registerAll("pocketmine", [
-			new BanCommand("ban"),
-			new BanIpCommand("ban-ip"),
-			new BanListCommand("banlist"),
-			new ClearCommand("clear"),
-			new DefaultGamemodeCommand("defaultgamemode"),
-			new DeopCommand("deop"),
-			new DifficultyCommand("difficulty"),
-			new DumpMemoryCommand("dumpmemory"),
-			new EffectCommand("effect"),
-			new EnchantCommand("enchant"),
-			new GamemodeCommand("gamemode"),
-			new GarbageCollectorCommand("gc"),
-			new GiveCommand("give"),
-			new HelpCommand("help"),
-			new KickCommand("kick"),
-			new KillCommand("kill"),
-			new ListCommand("list"),
-			new OpCommand("op"),
-			new PlaySoundCommand("playsound"),
-			new StopSoundCommand("stopsound"),
-			new PardonCommand("pardon"),
-			new PardonIpCommand("pardon-ip"),
-			new ParticleCommand("particle"),
-			new PingCommand("ping"),
-			new PluginsCommand("plugins"),
-			new ReloadCommand("reload"),
-			new SaveCommand("save-all"),
-			new SaveOffCommand("save-off"),
-			new SaveOnCommand("save-on"),
-			new SayCommand("say"),
-			new SeedCommand("seed"),
-			new SetBlockCommand("setblock"),
-			new SetWorldSpawnCommand("setworldspawn"),
-			new SpawnpointCommand("spawnpoint"),
-			new StatusCommand("status"),
-			new StopCommand("stop"),
-			new TeleportCommand("tp"),
-			new TellCommand("tell"),
-			new TimeCommand("time"),
-			new TimingsCommand("timings"),
-			new TitleCommand("title"),
-			new TransferServerCommand("transferserver"),
-			new VersionCommand("version"),
-			new WhitelistCommand("whitelist"),
-			new WorldCommand("world"),
-			new XpCommand("xp"),
-			new GameRuleCommand("gamerule")
+			new BanCommand("ban"), new BanIpCommand("ban-ip"), new BanListCommand("banlist"), new ClearCommand("clear"),
+			new DefaultGamemodeCommand("defaultgamemode"), new DeopCommand("deop"), new DifficultyCommand("difficulty"),
+			new DumpMemoryCommand("dumpmemory"), new EffectCommand("effect"), new EnchantCommand("enchant"),
+			new GamemodeCommand("gamemode"), new GarbageCollectorCommand("gc"), new GiveCommand("give"),
+			new HelpCommand("help"), new KickCommand("kick"), new KillCommand("kill"), new ListCommand("list"),
+			new OpCommand("op"), new PlaySoundCommand("playsound"), new StopSoundCommand("stopsound"),
+			new PardonCommand("pardon"), new PardonIpCommand("pardon-ip"), new ParticleCommand("particle"),
+			new PingCommand("ping"), new PluginsCommand("plugins"), new ReloadCommand("reload"),
+			new SaveCommand("save-all"), new SaveOffCommand("save-off"), new SaveOnCommand("save-on"),
+			new SayCommand("say"), new SeedCommand("seed"), new SetBlockCommand("setblock"),
+			new SetWorldSpawnCommand("setworldspawn"), new SpawnpointCommand("spawnpoint"), new StatusCommand("status"),
+			new StopCommand("stop"), new TeleportCommand("tp"), new TellCommand("tell"), new TimeCommand("time"),
+			new TimingsCommand("timings"), new TitleCommand("title"), new TransferServerCommand("transferserver"),
+			new VersionCommand("version"), new WhitelistCommand("whitelist"), new WorldCommand("world"),
+			new XpCommand("xp"), new GameRuleCommand("gamerule")
 		]);
 
 		if($this->server->getAltayProperty("developer.commands", true)){
 			$this->registerAll("altay", [
-				new ExtractPluginCommand("extractplugin"),
-				new MakePluginCommand("makeplugin"),
+				new ExtractPluginCommand("extractplugin"), new MakePluginCommand("makeplugin"),
 				new MakeServerCommand("makeserver")
 			]);
 		}
@@ -351,16 +318,14 @@ class SimpleCommandMap implements CommandMap{
 
 			if(!empty($recursive)){
 				$this->server->getLogger()->warning($this->server->getLanguage()->translateString("pocketmine.command.alias.recursive", [
-					$alias,
-					implode(", ", $recursive)
+					$alias, implode(", ", $recursive)
 				]));
 				continue;
 			}
 
 			if(!empty($bad)){
 				$this->server->getLogger()->warning($this->server->getLanguage()->translateString("pocketmine.command.alias.notFound", [
-					$alias,
-					implode(", ", $bad)
+					$alias, implode(", ", $bad)
 				]));
 				continue;
 			}

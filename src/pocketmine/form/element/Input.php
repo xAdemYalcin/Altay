@@ -91,8 +91,7 @@ class Input extends CustomFormElement{
 
 	public function serializeElementData() : array{
 		return [
-			"placeholder" => $this->hint,
-			"default" => $this->default
+			"placeholder" => $this->hint, "default" => $this->default
 		];
 	}
 

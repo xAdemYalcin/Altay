@@ -58,11 +58,12 @@ class ClearCommand extends VanillaCommand{
 			}
 			go_to_next:
 		}
-		parent::__construct($name, "%altay.command.clear.description", "%altay.command.clear.usage", [], [[// 3 parameter for Altay (normal 4)
-			new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET),
-			new CommandParameter("itemName", AvailableCommandsPacket::ARG_TYPE_STRING, true, new CommandEnum("clear_item_names", array_values($itemNames))),
-			new CommandParameter("maxCount", AvailableCommandsPacket::ARG_TYPE_INT)
-		]
+		parent::__construct($name, "%altay.command.clear.description", "%altay.command.clear.usage", [], [
+			[// 3 parameter for Altay (normal 4)
+				new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET),
+				new CommandParameter("itemName", AvailableCommandsPacket::ARG_TYPE_STRING, true, new CommandEnum("clear_item_names", array_values($itemNames))),
+				new CommandParameter("maxCount", AvailableCommandsPacket::ARG_TYPE_INT)
+			]
 		]);
 
 		$this->setPermission("altay.command.clear.self;altay.command.clear.other");
@@ -131,7 +132,9 @@ class ClearCommand extends VanillaCommand{
 					$removedCount = $all;
 				}
 
-				$sender->sendMessage(new TranslationContainer("%commands.clear.success", [$player->getName(), $removedCount]));
+				$sender->sendMessage(new TranslationContainer("%commands.clear.success", [
+					$player->getName(), $removedCount
+				]));
 			}
 
 			return true;
@@ -143,7 +146,9 @@ class ClearCommand extends VanillaCommand{
 			$player->getInventory()->clearAll();
 			$player->getArmorInventory()->clearAll();
 
-			$sender->sendMessage(new TranslationContainer("%commands.clear.success", [$player->getName(), $removedCount]));
+			$sender->sendMessage(new TranslationContainer("%commands.clear.success", [
+				$player->getName(), $removedCount
+			]));
 		}
 
 		return true;

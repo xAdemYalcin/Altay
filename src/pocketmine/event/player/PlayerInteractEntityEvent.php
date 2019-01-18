@@ -42,11 +42,11 @@ class PlayerInteractEntityEvent extends PlayerEvent implements Cancellable{
 	protected $clickPos;
 
 	/**
-	 * @param Player       $player
-	 * @param Entity       $entity
-	 * @param Item         $item
-	 * @param Vector3      $clickPos
-	 * @param int          $slot
+	 * @param Player  $player
+	 * @param Entity  $entity
+	 * @param Item    $item
+	 * @param Vector3 $clickPos
+	 * @param int     $slot
 	 */
 	public function __construct(Player $player, Entity $entity, Item $item, Vector3 $clickPos){
 		$this->player = $player;

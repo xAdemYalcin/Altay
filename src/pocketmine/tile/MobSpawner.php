@@ -269,8 +269,6 @@ class MobSpawner extends Spawnable{
 	}
 
 	public function isValidSpawnPosition(Vector3 $pos) : bool{
-		return $this->level->getBlock($pos) instanceof Air and
-			$this->level->getBlock($pos->up()) instanceof Air and
-			$this->level->getBlock($pos->down())->isSolid();
+		return $this->level->getBlock($pos) instanceof Air and $this->level->getBlock($pos->up()) instanceof Air and $this->level->getBlock($pos->down())->isSolid();
 	}
 }

@@ -34,12 +34,7 @@ use function implode;
 class PluginsCommand extends VanillaCommand{
 
 	public function __construct(string $name){
-		parent::__construct(
-			$name,
-			"%pocketmine.command.plugins.description",
-			"%pocketmine.command.plugins.usage",
-			["pl"]
-		);
+		parent::__construct($name, "%pocketmine.command.plugins.description", "%pocketmine.command.plugins.usage", ["pl"]);
 		$this->setPermission("pocketmine.command.plugins");
 	}
 
@@ -52,7 +47,9 @@ class PluginsCommand extends VanillaCommand{
 			return ($plugin->isEnabled() ? TextFormat::GREEN : TextFormat::RED) . $plugin->getDescription()->getFullName();
 		}, $sender->getServer()->getPluginManager()->getPlugins());
 
-		$sender->sendMessage(new TranslationContainer("pocketmine.command.plugins.success", [count($list), implode(TextFormat::WHITE . ", ", $list)]));
+		$sender->sendMessage(new TranslationContainer("pocketmine.command.plugins.success", [
+			count($list), implode(TextFormat::WHITE . ", ", $list)
+		]));
 		return true;
 	}
 }

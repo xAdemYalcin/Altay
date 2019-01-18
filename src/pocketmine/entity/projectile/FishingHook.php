@@ -281,10 +281,7 @@ class FishingHook extends Projectile{
 			}elseif($this->ticksCatchable > 0){
 				// TODO: Random weighted items
 				$items = [
-					Item::RAW_FISH,
-					Item::PUFFERFISH,
-					Item::RAW_SALMON,
-					Item::CLOWNFISH
+					Item::RAW_FISH, Item::PUFFERFISH, Item::RAW_SALMON, Item::CLOWNFISH
 				];
 				$randomFish = $items[mt_rand(0, count($items) - 1)];
 

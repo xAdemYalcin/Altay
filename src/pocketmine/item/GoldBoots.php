@@ -32,15 +32,15 @@ class GoldBoots extends Armor{
 		return 1;
 	}
 
-    public function getArmorSlot() : int{
-        return Armor::SLOT_BOOTS;
-    }
+	public function getArmorSlot() : int{
+		return Armor::SLOT_BOOTS;
+	}
 
-    public function getMaxDurability() : int{
-        return 92;
-    }
+	public function getMaxDurability() : int{
+		return 92;
+	}
 
-    public function getEnchantability() : int{
+	public function getEnchantability() : int{
 		return 25;
 	}
 }

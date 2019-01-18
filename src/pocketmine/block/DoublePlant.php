@@ -69,11 +69,7 @@ class DoublePlant extends Flowable{
 	public function isValidHalfPlant() : bool{
 		$other = $this->getSide($this->top ? Facing::DOWN : Facing::UP);
 
-		return (
-			$other instanceof DoublePlant and
-			$other->isSameType($this) and
-			$other->top !== $this->top
-		);
+		return ($other instanceof DoublePlant and $other->isSameType($this) and $other->top !== $this->top);
 	}
 
 	public function onNearbyBlockChange() : void{

@@ -92,8 +92,7 @@ class Flat extends Generator{
 			$cnt = $matches[2][$i] === "" ? 1 : (int) $matches[2][$i];
 			for($cY = $y, $y += $cnt; $cY < $y; ++$cY){
 				$result[$cY] = [
-					$b->getId(),
-					$b->getDamage()
+					$b->getId(), $b->getDamage()
 				];
 			}
 		}

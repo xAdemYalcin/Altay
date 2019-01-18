@@ -32,13 +32,13 @@ class ChainLeggings extends Armor{
 		return 4;
 	}
 
-    public function getArmorSlot() : int{
-        return Armor::SLOT_LEGGINGS;
-    }
+	public function getArmorSlot() : int{
+		return Armor::SLOT_LEGGINGS;
+	}
 
-    public function getMaxDurability() : int{
-        return 226;
-    }
+	public function getMaxDurability() : int{
+		return 226;
+	}
 
 	public function getEnchantability() : int{
 		return 12;

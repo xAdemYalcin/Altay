@@ -24,6 +24,7 @@ declare(strict_types=1);
 /**
  * Plugin related classes
  */
+
 namespace pocketmine\plugin;
 
 use pocketmine\scheduler\TaskScheduler;

@@ -39,8 +39,8 @@ class NoteBlockSound extends GenericSound{
 	/**
 	 * NoteBlockSound constructor.
 	 *
-	 * @param int     $instrument
-	 * @param int     $note
+	 * @param int $instrument
+	 * @param int $note
 	 */
 	public function __construct(int $instrument = self::INSTRUMENT_PIANO, int $note = 0){
 		parent::__construct($instrument, $note);

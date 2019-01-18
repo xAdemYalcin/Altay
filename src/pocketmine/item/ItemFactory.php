@@ -389,11 +389,9 @@ class ItemFactory{
 	 */
 	public static function fromString(string $str) : Item{
 		$b = explode(":", str_replace([
-			" ",
-			"minecraft:"
+			" ", "minecraft:"
 		], [
-			"_",
-			""
+			"_", ""
 		], trim($str)));
 		if(!isset($b[1])){
 			$meta = 0;

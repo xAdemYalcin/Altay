@@ -35,14 +35,11 @@ use pocketmine\utils\TextFormat;
 class PingCommand extends VanillaCommand{
 
 	public function __construct(string $name){
-		parent::__construct(
-			$name,
-			"%pocketmine.command.ping.description",
-			"%commands.ping.usage",
-			[], [[
-				new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET)
-            ]]
-		);
+		parent::__construct($name, "%pocketmine.command.ping.description", "%commands.ping.usage", [], [
+				[
+					new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET)
+				]
+			]);
 		$this->setPermission("altay.command.ping");
 	}
 
@@ -74,7 +71,7 @@ class PingCommand extends VanillaCommand{
 
 		$ping = $target->getPing();
 		$color = ($ping < 150 ? TextFormat::GREEN : ($ping < 250 ? TextFormat::GOLD : TextFormat::RED));
-		$sender->sendMessage($target->getName()."'s Ping: ".$color.$ping."ms");
+		$sender->sendMessage($target->getName() . "'s Ping: " . $color . $ping . "ms");
 
 		return true;
 	}

@@ -49,7 +49,7 @@ class Hopper extends Spawnable implements Container, Nameable, InventoryHolder{
 
 	public function __construct(Level $level, Vector3 $pos){
 		parent::__construct($level, $pos);
-		
+
 		$this->inventory = new HopperInventory($this);
 		$this->scheduleUpdate();
 	}
@@ -68,7 +68,7 @@ class Hopper extends Spawnable implements Container, Nameable, InventoryHolder{
 		$this->saveName($nbt);
 	}
 
-	public function close(): void{
+	public function close() : void{
 		if(!$this->closed){
 			$this->inventory->removeAllViewers(true);
 			$this->inventory = null;
@@ -84,15 +84,15 @@ class Hopper extends Spawnable implements Container, Nameable, InventoryHolder{
 		return $this->inventory;
 	}
 
-	public function getDefaultName(): string{
+	public function getDefaultName() : string{
 		return "Hopper";
 	}
 
-	protected  function addAdditionalSpawnData(CompoundTag $nbt): void{
+	protected function addAdditionalSpawnData(CompoundTag $nbt) : void{
 		$this->addNameSpawnData($nbt);
 	}
 
-	public function onUpdate(): bool{
+	public function onUpdate() : bool{
 		$block = $this->getBlock();
 		if(!($block instanceof BlockHopper)){
 			return false;
@@ -101,10 +101,9 @@ class Hopper extends Spawnable implements Container, Nameable, InventoryHolder{
 		$area = clone $block->getBoundingBox(); //Area above hopper to draw items from
 		$area->maxY = ceil($area->maxY) + 1; //Account for full block above, not just 1 + 5/8
 
-		$chunkEntities = array_filter($this->getLevel()->getChunkEntities($this->x >> 4, $this->z >> 4),
-			function(Entity $entity):bool{
-				return $entity instanceof ItemEntity and !$entity->isFlaggedForDespawn();
-			});
+		$chunkEntities = array_filter($this->getLevel()->getChunkEntities($this->x >> 4, $this->z >> 4), function(Entity $entity) : bool{
+			return $entity instanceof ItemEntity and !$entity->isFlaggedForDespawn();
+		});
 
 		/** @var ItemEntity $entity */
 		foreach($chunkEntities as $entity){

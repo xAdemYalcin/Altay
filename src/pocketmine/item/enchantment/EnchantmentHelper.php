@@ -59,10 +59,8 @@ class EnchantmentHelper{
 			default:
 				if($item instanceof Armor){
 					$slots = [
-						Armor::SLOT_HELMET => Enchantment::SLOT_HEAD,
-						Armor::SLOT_CHESTPLATE => Enchantment::SLOT_TORSO,
-						Armor::SLOT_LEGGINGS => Enchantment::SLOT_LEGS,
-						Armor::SLOT_BOOTS => Enchantment::SLOT_FEET
+						Armor::SLOT_HELMET => Enchantment::SLOT_HEAD, Armor::SLOT_CHESTPLATE => Enchantment::SLOT_TORSO,
+						Armor::SLOT_LEGGINGS => Enchantment::SLOT_LEGS, Armor::SLOT_BOOTS => Enchantment::SLOT_FEET
 					];
 					return ($slot === Enchantment::SLOT_ARMOR) ? true : ($slots[$item->getArmorSlot()] === $slot) ?? false;
 				}elseif($item instanceof Book){
@@ -73,20 +71,21 @@ class EnchantmentHelper{
 	}
 
 	/**
-	 * @param Random $random
+	 * @param Random                $random
 	 * @param EnchantmentInstance[] $enchs
+	 *
 	 * @return EnchantmentInstance
 	 */
-	public static function getRandomEnchantment(Random $random, array $enchs): EnchantmentInstance{
+	public static function getRandomEnchantment(Random $random, array $enchs) : EnchantmentInstance{
 		$i = 0;
-		foreach ($enchs as $ench){
+		foreach($enchs as $ench){
 			$i += $ench->getEnchantment()->getRarity();
 		}
 		$i = $random->nextBoundedInt($i);
 
 		foreach($enchs as $ench){
 			$i -= $ench->getEnchantment()->getRarity();
-			if ($i < 0) return $ench;
+			if($i < 0) return $ench;
 		}
 
 		return null;
@@ -121,10 +120,9 @@ class EnchantmentHelper{
 			$itemEnchantability = 1 + $random->nextBoundedInt(($itemEnchantability >> 1) + 1) + $random->nextBoundedInt(($itemEnchantability >> 1) + 1);
 			$newEnchantability = $itemEnchantability + $enchantabilityLevel;
 			$f = ($random->nextFloat() + $random->nextFloat() - 1.0) * 0.15;
-			$k = (int)($newEnchantability * (1.0 + $f) + 0.5);
+			$k = (int) ($newEnchantability * (1.0 + $f) + 0.5);
 
-			if($k < 1)
-				$k = 1;
+			if($k < 1) $k = 1;
 
 			$list = [];
 			$map = self::mapEnchantmentData($k, $item);
@@ -146,12 +144,10 @@ class EnchantmentHelper{
 								}
 							}
 
-							if(!$flag)
-								unset($map[$index]);
+							if(!$flag) unset($map[$index]);
 						}
 
-						if(!empty($map))
-							$list[] = self::getRandomEnchantment($random, $map);
+						if(!empty($map)) $list[] = self::getRandomEnchantment($random, $map);
 					}
 				}
 			}

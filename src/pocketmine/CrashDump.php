@@ -161,14 +161,9 @@ class CrashDump{
 			foreach($this->server->getPluginManager()->getPlugins() as $p){
 				$d = $p->getDescription();
 				$this->data["plugins"][$d->getName()] = [
-					"name" => $d->getName(),
-					"version" => $d->getVersion(),
-					"authors" => $d->getAuthors(),
-					"api" => $d->getCompatibleApis(),
-					"enabled" => $p->isEnabled(),
-					"depends" => $d->getDepend(),
-					"softDepends" => $d->getSoftDepend(),
-					"main" => $d->getMain(),
+					"name" => $d->getName(), "version" => $d->getVersion(), "authors" => $d->getAuthors(),
+					"api" => $d->getCompatibleApis(), "enabled" => $p->isEnabled(), "depends" => $d->getDepend(),
+					"softDepends" => $d->getSoftDepend(), "main" => $d->getMain(),
 					"load" => $d->getOrder() === PluginLoadOrder::POSTWORLD ? "POSTWORLD" : "STARTUP",
 					"website" => $d->getWebsite()
 				];
@@ -213,20 +208,11 @@ class CrashDump{
 			$error = (array) error_get_last();
 			$error["trace"] = Utils::currentTrace(3); //Skipping CrashDump->baseCrash, CrashDump->construct, Server->crashDump
 			$errorConversion = [
-				E_ERROR => "E_ERROR",
-				E_WARNING => "E_WARNING",
-				E_PARSE => "E_PARSE",
-				E_NOTICE => "E_NOTICE",
-				E_CORE_ERROR => "E_CORE_ERROR",
-				E_CORE_WARNING => "E_CORE_WARNING",
-				E_COMPILE_ERROR => "E_COMPILE_ERROR",
-				E_COMPILE_WARNING => "E_COMPILE_WARNING",
-				E_USER_ERROR => "E_USER_ERROR",
-				E_USER_WARNING => "E_USER_WARNING",
-				E_USER_NOTICE => "E_USER_NOTICE",
-				E_STRICT => "E_STRICT",
-				E_RECOVERABLE_ERROR => "E_RECOVERABLE_ERROR",
-				E_DEPRECATED => "E_DEPRECATED",
+				E_ERROR => "E_ERROR", E_WARNING => "E_WARNING", E_PARSE => "E_PARSE", E_NOTICE => "E_NOTICE",
+				E_CORE_ERROR => "E_CORE_ERROR", E_CORE_WARNING => "E_CORE_WARNING",
+				E_COMPILE_ERROR => "E_COMPILE_ERROR", E_COMPILE_WARNING => "E_COMPILE_WARNING",
+				E_USER_ERROR => "E_USER_ERROR", E_USER_WARNING => "E_USER_WARNING", E_USER_NOTICE => "E_USER_NOTICE",
+				E_STRICT => "E_STRICT", E_RECOVERABLE_ERROR => "E_RECOVERABLE_ERROR", E_DEPRECATED => "E_DEPRECATED",
 				E_USER_DEPRECATED => "E_USER_DEPRECATED"
 			];
 			$error["fullFile"] = $error["file"];

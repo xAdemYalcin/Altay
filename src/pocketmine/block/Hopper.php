@@ -51,7 +51,7 @@ class Hopper extends Transparent{
 
 	public function writeStateToMeta() : int{
 		return $this->facing | ($this->enabled ? 0 : 8);
-    }
+	}
 
 	public function getStateBitmask() : int{
 		return 15;

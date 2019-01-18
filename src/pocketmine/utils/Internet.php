@@ -36,8 +36,6 @@ use function strip_tags;
 use function strtolower;
 use function substr;
 use function trim;
-use const CURLINFO_HEADER_SIZE;
-use const CURLINFO_HTTP_CODE;
 use const CURLOPT_AUTOREFERER;
 use const CURLOPT_CONNECTTIMEOUT_MS;
 use const CURLOPT_FOLLOWLOCATION;
@@ -51,6 +49,8 @@ use const CURLOPT_RETURNTRANSFER;
 use const CURLOPT_SSL_VERIFYHOST;
 use const CURLOPT_SSL_VERIFYPEER;
 use const CURLOPT_TIMEOUT_MS;
+use const CURLINFO_HEADER_SIZE;
+use const CURLINFO_HTTP_CODE;
 
 class Internet{
 	public static $ip = false;
@@ -138,8 +138,7 @@ class Internet{
 	public static function postURL(string $page, $args, int $timeout = 10, array $extraHeaders = [], &$err = null, &$headers = null, &$httpCode = null){
 		try{
 			list($ret, $headers, $httpCode) = self::simpleCurl($page, $timeout, $extraHeaders, [
-				CURLOPT_POST => 1,
-				CURLOPT_POSTFIELDS => $args
+				CURLOPT_POST => 1, CURLOPT_POSTFIELDS => $args
 			]);
 			return $ret;
 		}catch(InternetException $ex){
@@ -153,10 +152,10 @@ class Internet{
 	 * NOTE: This is a blocking operation and can take a significant amount of time. It is inadvisable to use this method on the main thread.
 	 *
 	 * @param string        $page
-	 * @param float|int     $timeout      The maximum connect timeout and timeout in seconds, correct to ms.
+	 * @param float|int     $timeout The maximum connect timeout and timeout in seconds, correct to ms.
 	 * @param string[]      $extraHeaders extra headers to send as a plain string array
-	 * @param array         $extraOpts    extra CURLOPT_* to set as an [opt => value] map
-	 * @param callable|null $onSuccess    function to be called if there is no error. Accepts a resource argument as the cURL handle.
+	 * @param array         $extraOpts extra CURLOPT_* to set as an [opt => value] map
+	 * @param callable|null $onSuccess function to be called if there is no error. Accepts a resource argument as the cURL handle.
 	 *
 	 * @return array a plain array of three [result body : string, headers : array[], HTTP response code : int]. Headers are grouped by requests with strtolower(header name) as keys and header value as values
 	 *
@@ -170,18 +169,13 @@ class Internet{
 		$ch = curl_init($page);
 
 		curl_setopt_array($ch, $extraOpts + [
-			CURLOPT_SSL_VERIFYPEER => false,
-			CURLOPT_SSL_VERIFYHOST => 2,
-			CURLOPT_FORBID_REUSE => 1,
-			CURLOPT_FRESH_CONNECT => 1,
-			CURLOPT_AUTOREFERER => true,
-			CURLOPT_FOLLOWLOCATION => true,
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_CONNECTTIMEOUT_MS => (int) ($timeout * 1000),
-			CURLOPT_TIMEOUT_MS => (int) ($timeout * 1000),
-			CURLOPT_HTTPHEADER => array_merge(["User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:12.0) Gecko/20100101 Firefox/12.0 " . \pocketmine\NAME], $extraHeaders),
-			CURLOPT_HEADER => true
-		]);
+				CURLOPT_SSL_VERIFYPEER => false, CURLOPT_SSL_VERIFYHOST => 2, CURLOPT_FORBID_REUSE => 1,
+				CURLOPT_FRESH_CONNECT => 1, CURLOPT_AUTOREFERER => true, CURLOPT_FOLLOWLOCATION => true,
+				CURLOPT_RETURNTRANSFER => true, CURLOPT_CONNECTTIMEOUT_MS => (int) ($timeout * 1000),
+				CURLOPT_TIMEOUT_MS => (int) ($timeout * 1000),
+				CURLOPT_HTTPHEADER => array_merge(["User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:12.0) Gecko/20100101 Firefox/12.0 " . \pocketmine\NAME], $extraHeaders),
+				CURLOPT_HEADER => true
+			]);
 		try{
 			$raw = curl_exec($ch);
 			$error = curl_error($ch);

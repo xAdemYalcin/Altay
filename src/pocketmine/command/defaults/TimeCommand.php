@@ -51,8 +51,7 @@ class TimeCommand extends VanillaCommand{
 			$amount
 		], 0);
 		$this->setParameters([
-			$set,
-			$amount
+			$set, $amount
 		], 1);
 		$this->setParameters([
 			$set,

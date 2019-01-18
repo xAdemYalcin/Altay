@@ -171,8 +171,7 @@ class Banner extends Spawnable implements Nameable{
 	 */
 	public function addPattern(string $pattern, int $color) : int{
 		$this->patterns->push(new CompoundTag("", [
-			new IntTag(self::TAG_PATTERN_COLOR, $color & 0x0f),
-			new StringTag(self::TAG_PATTERN_NAME, $pattern)
+			new IntTag(self::TAG_PATTERN_COLOR, $color & 0x0f), new StringTag(self::TAG_PATTERN_NAME, $pattern)
 		]));
 
 		$this->onChanged();
@@ -226,8 +225,7 @@ class Banner extends Spawnable implements Nameable{
 		}
 
 		$this->patterns->set($patternId, new CompoundTag("", [
-			new IntTag(self::TAG_PATTERN_COLOR, $color & 0x0f),
-			new StringTag(self::TAG_PATTERN_NAME, $pattern)
+			new IntTag(self::TAG_PATTERN_COLOR, $color & 0x0f), new StringTag(self::TAG_PATTERN_NAME, $pattern)
 		]));
 
 		$this->onChanged();

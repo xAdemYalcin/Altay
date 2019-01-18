@@ -27,19 +27,19 @@ use pocketmine\tile\Beacon;
 
 class BeaconInventory extends ContainerInventory{
 
-    public function __construct(Beacon $tile){
-        parent::__construct($tile);
-    }
+	public function __construct(Beacon $tile){
+		parent::__construct($tile);
+	}
 
-    public function getName() : string{
-        return "Beacon";
-    }
+	public function getName() : string{
+		return "Beacon";
+	}
 
-    public function getDefaultSize() : int{
-        return 1;
-    }
+	public function getDefaultSize() : int{
+		return 1;
+	}
 
-    public function getNetworkType() : int{
-        return WindowTypes::BEACON;
-    }
+	public function getNetworkType() : int{
+		return WindowTypes::BEACON;
+	}
 }

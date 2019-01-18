@@ -32,13 +32,13 @@ class DiamondChestplate extends Armor{
 		return 8;
 	}
 
-    public function getArmorSlot() : int{
-        return Armor::SLOT_CHESTPLATE;
-    }
+	public function getArmorSlot() : int{
+		return Armor::SLOT_CHESTPLATE;
+	}
 
-    public function getMaxDurability() : int{
-        return 529;
-    }
+	public function getMaxDurability() : int{
+		return 529;
+	}
 
 	public function getEnchantability() : int{
 		return 10;

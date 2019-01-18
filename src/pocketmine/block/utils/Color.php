@@ -42,40 +42,14 @@ class Color{
 	public const BLACK = 15;
 
 	public const ALL = [
-		self::WHITE,
-		self::ORANGE,
-		self::MAGENTA,
-		self::LIGHT_BLUE,
-		self::YELLOW,
-		self::LIME,
-		self::PINK,
-		self::GRAY,
-		self::LIGHT_GRAY,
-		self::CYAN,
-		self::PURPLE,
-		self::BLUE,
-		self::BROWN,
-		self::GREEN,
-		self::RED,
-		self::BLACK
+		self::WHITE, self::ORANGE, self::MAGENTA, self::LIGHT_BLUE, self::YELLOW, self::LIME, self::PINK, self::GRAY,
+		self::LIGHT_GRAY, self::CYAN, self::PURPLE, self::BLUE, self::BROWN, self::GREEN, self::RED, self::BLACK
 	];
 
 	public const NAMES = [
-		self::WHITE => "White",
-		self::ORANGE => "Orange",
-		self::MAGENTA => "Magenta",
-		self::LIGHT_BLUE => "Light Blue",
-		self::YELLOW => "Yellow",
-		self::LIME => "Lime",
-		self::PINK => "Pink",
-		self::GRAY => "Gray",
-		self::LIGHT_GRAY => "Light Gray",
-		self::CYAN => "Cyan",
-		self::PURPLE => "Purple",
-		self::BLUE => "Blue",
-		self::BROWN => "Brown",
-		self::GREEN => "Green",
-		self::RED => "Red",
-		self::BLACK => "Black"
+		self::WHITE => "White", self::ORANGE => "Orange", self::MAGENTA => "Magenta", self::LIGHT_BLUE => "Light Blue",
+		self::YELLOW => "Yellow", self::LIME => "Lime", self::PINK => "Pink", self::GRAY => "Gray",
+		self::LIGHT_GRAY => "Light Gray", self::CYAN => "Cyan", self::PURPLE => "Purple", self::BLUE => "Blue",
+		self::BROWN => "Brown", self::GREEN => "Green", self::RED => "Red", self::BLACK => "Black"
 	];
 }

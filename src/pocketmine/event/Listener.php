@@ -50,7 +50,7 @@ use pocketmine\plugin\PluginManager;
  * - `@ignoreCancelled`: Cancelled events WILL NOT be passed to this handler.
  * - `@priority <PRIORITY>`: Sets the priority at which this event handler will receive events.
  *     Example: `@priority HIGHEST`
- *     @see EventPriority for a list of possible options.
+ * @see EventPriority for a list of possible options.
  *
  * Event handlers will receive any instanceof the Event class they have chosen to receive. For example, an
  * EntityDamageEvent handler will also receive any subclass of EntityDamageEvent.

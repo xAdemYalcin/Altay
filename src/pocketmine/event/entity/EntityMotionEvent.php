@@ -43,5 +43,5 @@ class EntityMotionEvent extends EntityEvent implements Cancellable{
 	public function getVector() : Vector3{
 		return $this->mot;
 	}
-	
+
 }

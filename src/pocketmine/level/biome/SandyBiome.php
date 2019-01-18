@@ -32,11 +32,8 @@ abstract class SandyBiome extends Biome{
 		parent::__construct();
 
 		$this->setGroundCover([
-			BlockFactory::get(Block::SAND),
-			BlockFactory::get(Block::SAND),
-			BlockFactory::get(Block::SANDSTONE),
-			BlockFactory::get(Block::SANDSTONE),
-			BlockFactory::get(Block::SANDSTONE)
+			BlockFactory::get(Block::SAND), BlockFactory::get(Block::SAND), BlockFactory::get(Block::SANDSTONE),
+			BlockFactory::get(Block::SANDSTONE), BlockFactory::get(Block::SANDSTONE)
 		]);
 	}
 }

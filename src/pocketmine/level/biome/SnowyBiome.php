@@ -32,11 +32,8 @@ abstract class SnowyBiome extends Biome{
 		parent::__construct();
 
 		$this->setGroundCover([
-			BlockFactory::get(Block::SNOW_LAYER),
-			BlockFactory::get(Block::GRASS),
-			BlockFactory::get(Block::DIRT),
-			BlockFactory::get(Block::DIRT),
-			BlockFactory::get(Block::DIRT)
+			BlockFactory::get(Block::SNOW_LAYER), BlockFactory::get(Block::GRASS), BlockFactory::get(Block::DIRT),
+			BlockFactory::get(Block::DIRT), BlockFactory::get(Block::DIRT)
 		]);
 
 		$this->spawnableCreatureList = [];

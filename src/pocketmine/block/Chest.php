@@ -80,9 +80,9 @@ class Chest extends Transparent{
 		}
 
 		foreach([
-			Facing::rotateY($player->getHorizontalFacing(), false),
-			Facing::rotateY($player->getHorizontalFacing(), true)
-		] as $side){
+			        Facing::rotateY($player->getHorizontalFacing(), false),
+			        Facing::rotateY($player->getHorizontalFacing(), true)
+		        ] as $side){
 			$c = $this->getSide($side);
 			if($c instanceof Chest and $c->isSameType($this) and $c->facing === $this->facing){
 				$tile = $this->getLevel()->getTile($c);
@@ -114,11 +114,7 @@ class Chest extends Transparent{
 
 			$chest = $this->getLevel()->getTile($this);
 			if($chest instanceof TileChest){
-				if(
-					!$this->getSide(Facing::UP)->isTransparent() or
-					($chest->isPaired() and !$chest->getPair()->getBlock()->getSide(Facing::UP)->isTransparent()) or
-					!$chest->canOpenWith($item->getCustomName())
-				){
+				if(!$this->getSide(Facing::UP)->isTransparent() or ($chest->isPaired() and !$chest->getPair()->getBlock()->getSide(Facing::UP)->isTransparent()) or !$chest->canOpenWith($item->getCustomName())){
 					return true;
 				}
 

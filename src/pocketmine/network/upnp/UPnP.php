@@ -24,10 +24,11 @@ declare(strict_types=1);
 /**
  * UPnP port forwarding support. Only for Windows
  */
+
 namespace pocketmine\network\upnp;
 
-use pocketmine\utils\Internet;
 use pocketmine\utils\Utils;
+use pocketmine\utils\Internet;
 use function class_exists;
 use function gethostbyname;
 use function is_object;

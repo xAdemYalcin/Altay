@@ -49,12 +49,6 @@ class DumpWorkerMemoryTask extends AsyncTask{
 	}
 
 	public function onRun() : void{
-		MemoryManager::dumpMemory(
-			$this->worker,
-			$this->outputFolder . DIRECTORY_SEPARATOR . "AsyncWorker#" . $this->worker->getAsyncWorkerId(),
-			$this->maxNesting,
-			$this->maxStringSize,
-			$this->worker->getLogger()
-		);
+		MemoryManager::dumpMemory($this->worker, $this->outputFolder . DIRECTORY_SEPARATOR . "AsyncWorker#" . $this->worker->getAsyncWorkerId(), $this->maxNesting, $this->maxStringSize, $this->worker->getLogger());
 	}
 }

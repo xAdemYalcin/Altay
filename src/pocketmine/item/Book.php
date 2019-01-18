@@ -28,7 +28,7 @@ class Book extends Item{
 		parent::__construct(self::BOOK, 0, "Book");
 	}
 
-	public function getEnchantability(): int{
+	public function getEnchantability() : int{
 		return 1;
 	}
 

@@ -60,6 +60,7 @@ abstract class CustomFormElement implements \JsonSerializable{
 	 * whatever errors necessary if the type of value is not as expected.
 	 *
 	 * @param mixed $value
+	 *
 	 * @throws \TypeError
 	 */
 	abstract public function setValue($value) : void;
@@ -71,8 +72,7 @@ abstract class CustomFormElement implements \JsonSerializable{
 	 */
 	final public function jsonSerialize() : array{
 		$data = [
-			"type" => $this->getType(),
-			"text" => $this->getText()
+			"type" => $this->getType(), "text" => $this->getText()
 		];
 
 		return array_merge($data, $this->serializeElementData());

@@ -87,8 +87,7 @@ abstract class Stair extends Transparent{
 		}elseif($this->shape === self::SHAPE_INNER_LEFT or $this->shape === self::SHAPE_INNER_RIGHT){
 			//add an extra cube
 			$extraCube = new AxisAlignedBB(0, $minY, 0, 1, $minY + 0.5, 1);
-			$bbs[] = $extraCube
-				->trim($this->facing, 0.5) //avoid overlapping with main step
+			$bbs[] = $extraCube->trim($this->facing, 0.5)//avoid overlapping with main step
 				->trim(Facing::rotateY($this->facing, $this->shape === self::SHAPE_INNER_LEFT), 0.5);
 		}
 
@@ -99,10 +98,7 @@ abstract class Stair extends Transparent{
 
 	private function getPossibleCornerFacing(bool $oppositeFacing) : ?int{
 		$side = $this->getSide($oppositeFacing ? Facing::opposite($this->facing) : $this->facing);
-		return (
-			$side instanceof Stair and
-			$side->upsideDown === $this->upsideDown and
-			Facing::axis($side->facing) !== Facing::axis($this->facing) //perpendicular
+		return ($side instanceof Stair and $side->upsideDown === $this->upsideDown and Facing::axis($side->facing) !== Facing::axis($this->facing) //perpendicular
 		) ? $side->facing : null;
 	}
 

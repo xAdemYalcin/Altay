@@ -24,6 +24,7 @@ declare(strict_types=1);
 /**
  * Saves extra data on runtime for different items
  */
+
 namespace pocketmine\metadata;
 
 use pocketmine\plugin\Plugin;

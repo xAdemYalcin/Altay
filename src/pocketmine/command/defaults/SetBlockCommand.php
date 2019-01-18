@@ -57,15 +57,15 @@ class SetBlockCommand extends VanillaCommand{
 			go_to_next:
 		}
 		parent::__construct($name, "Changes a block to another block.", "/setblock <position: x y z> <tileName: string> [tileData: int] [oldBlockHandling: string]", [], [
-				[
-					new CommandParameter("position", AvailableCommandsPacket::ARG_TYPE_POSITION, false),
-					new CommandParameter("tileName", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("blockNames", array_values($blockNames))),
-					new CommandParameter("tileData", AvailableCommandsPacket::ARG_TYPE_INT),
-					new CommandParameter("mode", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("mode", [
-						"replace", "destroy", "keep"
-					]))
-				]
-			]);
+			[
+				new CommandParameter("position", AvailableCommandsPacket::ARG_TYPE_POSITION, false),
+				new CommandParameter("tileName", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("blockNames", array_values($blockNames))),
+				new CommandParameter("tileData", AvailableCommandsPacket::ARG_TYPE_INT),
+				new CommandParameter("mode", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("mode", [
+					"replace", "destroy", "keep"
+				]))
+			]
+		]);
 		$this->setPermission("altay.command.setblock");
 	}
 
@@ -80,9 +80,7 @@ class SetBlockCommand extends VanillaCommand{
 
 		$level = $sender->level;
 		$pos = [
-			(int) $args[0],
-			(int) $args[1],
-			(int) $args[2]
+			(int) $args[0], (int) $args[1], (int) $args[2]
 		];
 		if(!$level->isInWorld(...$pos)){
 			$sender->sendMessage(new TranslationContainer(TextFormat::RED . "%commands.setblock.outOfWorld"));

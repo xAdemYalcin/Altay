@@ -35,12 +35,8 @@ class TallGrass{
 	public static function growGrass(ChunkManager $level, Vector3 $pos, Random $random, int $count = 15, int $radius = 10) : void{
 		/** @var Block[] $arr */
 		$arr = [
-			BlockFactory::get(Block::DANDELION),
-			BlockFactory::get(Block::POPPY),
-			$tallGrass = BlockFactory::get(Block::TALL_GRASS, 1),
-			$tallGrass,
-			$tallGrass,
-			$tallGrass
+			BlockFactory::get(Block::DANDELION), BlockFactory::get(Block::POPPY),
+			$tallGrass = BlockFactory::get(Block::TALL_GRASS, 1), $tallGrass, $tallGrass, $tallGrass
 		];
 		$arrC = count($arr) - 1;
 		for($c = 0; $c < $count; ++$c){

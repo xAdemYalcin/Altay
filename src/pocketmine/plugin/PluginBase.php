@@ -175,7 +175,9 @@ abstract class PluginBase implements Plugin, CommandExecutor{
 
 		foreach($this->getDescription()->getCommands() as $key => $data){
 			if(strpos($key, ":") !== false){
-				$this->logger->error($this->server->getLanguage()->translateString("pocketmine.plugin.commandError", [$key, $this->getDescription()->getFullName()]));
+				$this->logger->error($this->server->getLanguage()->translateString("pocketmine.plugin.commandError", [
+					$key, $this->getDescription()->getFullName()
+				]));
 				continue;
 			}
 			if(is_array($data)){ //TODO: error out if it isn't
@@ -192,7 +194,9 @@ abstract class PluginBase implements Plugin, CommandExecutor{
 					$aliasList = [];
 					foreach($data["aliases"] as $alias){
 						if(strpos($alias, ":") !== false){
-							$this->logger->error($this->server->getLanguage()->translateString("pocketmine.plugin.aliasError", [$alias, $this->getDescription()->getFullName()]));
+							$this->logger->error($this->server->getLanguage()->translateString("pocketmine.plugin.aliasError", [
+								$alias, $this->getDescription()->getFullName()
+							]));
 							continue;
 						}
 						$aliasList[] = $alias;

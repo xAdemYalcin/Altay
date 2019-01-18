@@ -1997,8 +1997,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 			$spawnLocation = $level->getSafeSpawn();
 			$namedtag->setTag(new ListTag("Pos", [
-				new DoubleTag("", $spawnLocation->x),
-				new DoubleTag("", $spawnLocation->y),
+				new DoubleTag("", $spawnLocation->x), new DoubleTag("", $spawnLocation->y),
 				new DoubleTag("", $spawnLocation->z)
 			]));
 		}
@@ -2017,14 +2016,9 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		}
 
 		$this->server->getLogger()->info($this->getServer()->getLanguage()->translateString("pocketmine.player.logIn", [
-			TextFormat::AQUA . $this->username . TextFormat::WHITE,
-			$this->networkSession->getIp(),
-			$this->networkSession->getPort(),
-			$this->id,
-			$this->level->getName(),
-			round($this->x, 4),
-			round($this->y, 4),
-			round($this->z, 4)
+			TextFormat::AQUA . $this->username . TextFormat::WHITE, $this->networkSession->getIp(),
+			$this->networkSession->getPort(), $this->id, $this->level->getName(), round($this->x, 4),
+			round($this->y, 4), round($this->z, 4)
 		]));
 
 		$this->server->addOnlinePlayer($this);
@@ -2090,8 +2084,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				$ev->call();
 				if(!$ev->isCancelled()){
 					$this->server->broadcastMessage($this->getServer()->getLanguage()->translateString($ev->getFormat(), [
-						$ev->getPlayer()->getDisplayName(),
-						$ev->getMessage()
+						$ev->getPlayer()->getDisplayName(), $ev->getMessage()
 					]), $ev->getRecipients());
 				}
 			}
@@ -2802,8 +2795,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			case BookEditPacket::TYPE_SWAP_PAGES:
 				$newBook->swapPages($packet->pageNumber, $packet->secondaryPageNumber);
 				$modifiedPages = [
-					$packet->pageNumber,
-					$packet->secondaryPageNumber
+					$packet->pageNumber, $packet->secondaryPageNumber
 				];
 				break;
 			case BookEditPacket::TYPE_SIGN_BOOK:
@@ -3282,9 +3274,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			$this->server->removePlayer($this);
 
 			$this->server->getLogger()->info($this->getServer()->getLanguage()->translateString("pocketmine.player.logOut", [
-				TextFormat::AQUA . $this->getName() . TextFormat::WHITE,
-				$ip,
-				$port,
+				TextFormat::AQUA . $this->getName() . TextFormat::WHITE, $ip, $port,
 				$this->getServer()->getLanguage()->translateString($reason)
 			]));
 
@@ -3334,8 +3324,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 			if(!$this->isAlive()){
 				//hack for respawn after quit
 				$nbt->setTag(new ListTag("Pos", [
-					new DoubleTag("", $this->spawnPosition->x),
-					new DoubleTag("", $this->spawnPosition->y),
+					new DoubleTag("", $this->spawnPosition->x), new DoubleTag("", $this->spawnPosition->y),
 					new DoubleTag("", $this->spawnPosition->z)
 				]));
 			}
@@ -3584,8 +3573,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	public function doCloseInventory() : void{
 		/** @var Inventory[] $inventories */
 		$inventories = [
-			$this->craftingGrid,
-			$this->cursorInventory
+			$this->craftingGrid, $this->cursorInventory
 		];
 		foreach($inventories as $inventory){
 			$contents = $inventory->getContents();

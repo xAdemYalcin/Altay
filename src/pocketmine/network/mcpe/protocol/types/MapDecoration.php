@@ -46,11 +46,8 @@ class MapDecoration{
 
 	public function toNBT(string $name) : ListTag{
 		return new ListTag($name, [
-			new IntTag("icon", $this->icon),
-			new IntTag("rot", $this->rot),
-			new IntTag("xOffset", $this->xOffset),
-			new IntTag("yOffset", $this->yOffset),
-			new StringTag("label", $this->label),
+			new IntTag("icon", $this->icon), new IntTag("rot", $this->rot), new IntTag("xOffset", $this->xOffset),
+			new IntTag("yOffset", $this->yOffset), new StringTag("label", $this->label),
 			new IntTag("color", $this->color->toABGR())
 		]);
 	}

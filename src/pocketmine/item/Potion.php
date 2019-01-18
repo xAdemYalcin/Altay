@@ -68,43 +68,13 @@ class Potion extends Item implements Consumable{
 	public const WITHER = 36;
 
 	public const ALL = [
-		self::WATER,
-		self::MUNDANE,
-		self::LONG_MUNDANE,
-		self::THICK,
-		self::AWKWARD,
-		self::NIGHT_VISION,
-		self::LONG_NIGHT_VISION,
-		self::INVISIBILITY,
-		self::LONG_INVISIBILITY,
-		self::LEAPING,
-		self::LONG_LEAPING,
-		self::STRONG_LEAPING,
-		self::FIRE_RESISTANCE,
-		self::LONG_FIRE_RESISTANCE,
-		self::SWIFTNESS,
-		self::LONG_SWIFTNESS,
-		self::STRONG_SWIFTNESS,
-		self::SLOWNESS,
-		self::LONG_SLOWNESS,
-		self::WATER_BREATHING,
-		self::LONG_WATER_BREATHING,
-		self::HEALING,
-		self::STRONG_HEALING,
-		self::HARMING,
-		self::STRONG_HARMING,
-		self::POISON,
-		self::LONG_POISON,
-		self::STRONG_POISON,
-		self::REGENERATION,
-		self::LONG_REGENERATION,
-		self::STRONG_REGENERATION,
-		self::STRENGTH,
-		self::LONG_STRENGTH,
-		self::STRONG_STRENGTH,
-		self::WEAKNESS,
-		self::LONG_WEAKNESS,
-		self::WITHER
+		self::WATER, self::MUNDANE, self::LONG_MUNDANE, self::THICK, self::AWKWARD, self::NIGHT_VISION,
+		self::LONG_NIGHT_VISION, self::INVISIBILITY, self::LONG_INVISIBILITY, self::LEAPING, self::LONG_LEAPING,
+		self::STRONG_LEAPING, self::FIRE_RESISTANCE, self::LONG_FIRE_RESISTANCE, self::SWIFTNESS, self::LONG_SWIFTNESS,
+		self::STRONG_SWIFTNESS, self::SLOWNESS, self::LONG_SLOWNESS, self::WATER_BREATHING, self::LONG_WATER_BREATHING,
+		self::HEALING, self::STRONG_HEALING, self::HARMING, self::STRONG_HARMING, self::POISON, self::LONG_POISON,
+		self::STRONG_POISON, self::REGENERATION, self::LONG_REGENERATION, self::STRONG_REGENERATION, self::STRENGTH,
+		self::LONG_STRENGTH, self::STRONG_STRENGTH, self::WEAKNESS, self::LONG_WEAKNESS, self::WITHER
 	];
 
 	/**
@@ -115,142 +85,142 @@ class Potion extends Item implements Consumable{
 	 * @return EffectInstance[]
 	 */
 	public static function getPotionEffectsById(int $id) : array{
-        switch($id){
-            case self::WATER:
-            case self::MUNDANE:
-            case self::LONG_MUNDANE:
-            case self::THICK:
-            case self::AWKWARD:
-                return [];
-            case self::NIGHT_VISION:
-                return [
-                    new EffectInstance(Effect::getEffect(Effect::NIGHT_VISION), 3600)
-                ];
-            case self::LONG_NIGHT_VISION:
-                return [
-                    new EffectInstance(Effect::getEffect(Effect::NIGHT_VISION), 9600)
-                ];
-            case self::INVISIBILITY:
-                return [
-                    new EffectInstance(Effect::getEffect(Effect::INVISIBILITY), 3600)
-                ];
-            case self::LONG_INVISIBILITY:
-                return [
-                    new EffectInstance(Effect::getEffect(Effect::INVISIBILITY), 9600)
-                ];
-            case self::LEAPING:
-                return [
-                    new EffectInstance(Effect::getEffect(Effect::JUMP_BOOST), 3600)
-                ];
-            case self::LONG_LEAPING:
-                return [
-                    new EffectInstance(Effect::getEffect(Effect::JUMP_BOOST), 9600)
-                ];
-            case self::STRONG_LEAPING:
-                return [
-                    new EffectInstance(Effect::getEffect(Effect::JUMP_BOOST), 1800, 1)
-                ];
-            case self::FIRE_RESISTANCE:
-                return [
-                    new EffectInstance(Effect::getEffect(Effect::FIRE_RESISTANCE), 3600)
-                ];
-            case self::LONG_FIRE_RESISTANCE:
-                return [
-                    new EffectInstance(Effect::getEffect(Effect::FIRE_RESISTANCE), 9600)
-                ];
-            case self::SWIFTNESS:
-                return [
-                    new EffectInstance(Effect::getEffect(Effect::SPEED), 3600)
-                ];
-            case self::LONG_SWIFTNESS:
-                return [
-                    new EffectInstance(Effect::getEffect(Effect::SPEED), 9600)
-                ];
-            case self::STRONG_SWIFTNESS:
-                return [
-                    new EffectInstance(Effect::getEffect(Effect::SPEED), 1800, 1)
-                ];
-            case self::SLOWNESS:
-                return [
-                    new EffectInstance(Effect::getEffect(Effect::SLOWNESS), 1800)
-                ];
-            case self::LONG_SLOWNESS:
-                return [
-                    new EffectInstance(Effect::getEffect(Effect::SLOWNESS), 4800)
-                ];
-            case self::WATER_BREATHING:
-                return [
-                    new EffectInstance(Effect::getEffect(Effect::WATER_BREATHING), 3600)
-                ];
-            case self::LONG_WATER_BREATHING:
-                return [
-                    new EffectInstance(Effect::getEffect(Effect::WATER_BREATHING), 9600)
-                ];
-            case self::HEALING:
-                return [
-                    new EffectInstance(Effect::getEffect(Effect::INSTANT_HEALTH))
-                ];
-            case self::STRONG_HEALING:
-                return [
-                    new EffectInstance(Effect::getEffect(Effect::INSTANT_HEALTH), null, 1)
-                ];
-            case self::HARMING:
-                return [
-                    new EffectInstance(Effect::getEffect(Effect::INSTANT_DAMAGE))
-                ];
-            case self::STRONG_HARMING:
-                return [
-                    new EffectInstance(Effect::getEffect(Effect::INSTANT_DAMAGE), null, 1)
-                ];
-            case self::POISON:
-                return [
-                    new EffectInstance(Effect::getEffect(Effect::POISON), 900)
-                ];
-            case self::LONG_POISON:
-                return [
-                    new EffectInstance(Effect::getEffect(Effect::POISON), 2400)
-                ];
-            case self::STRONG_POISON:
-                return [
-                    new EffectInstance(Effect::getEffect(Effect::POISON), 440, 1)
-                ];
-            case self::REGENERATION:
-                return [
-                    new EffectInstance(Effect::getEffect(Effect::REGENERATION), 900)
-                ];
-            case self::LONG_REGENERATION:
-                return [
-                    new EffectInstance(Effect::getEffect(Effect::REGENERATION), 2400)
-                ];
-            case self::STRONG_REGENERATION:
-                return [
-                    new EffectInstance(Effect::getEffect(Effect::REGENERATION), 440, 1)
-                ];
-            case self::STRENGTH:
-                return [
-                    new EffectInstance(Effect::getEffect(Effect::STRENGTH), 3600)
-                ];
-            case self::LONG_STRENGTH:
-                return [
-                    new EffectInstance(Effect::getEffect(Effect::STRENGTH), 9600)
-                ];
-            case self::STRONG_STRENGTH:
-                return [
-                    new EffectInstance(Effect::getEffect(Effect::STRENGTH), 1800, 1)
-                ];
-            case self::WEAKNESS:
-                return [
-                    new EffectInstance(Effect::getEffect(Effect::WEAKNESS), 1800)
-                ];
-            case self::LONG_WEAKNESS:
-                return [
-                    new EffectInstance(Effect::getEffect(Effect::WEAKNESS), 4800)
-                ];
-            case self::WITHER:
-                return [
-                    new EffectInstance(Effect::getEffect(Effect::WITHER), 800, 1)
-                ];
-        }
+		switch($id){
+			case self::WATER:
+			case self::MUNDANE:
+			case self::LONG_MUNDANE:
+			case self::THICK:
+			case self::AWKWARD:
+				return [];
+			case self::NIGHT_VISION:
+				return [
+					new EffectInstance(Effect::getEffect(Effect::NIGHT_VISION), 3600)
+				];
+			case self::LONG_NIGHT_VISION:
+				return [
+					new EffectInstance(Effect::getEffect(Effect::NIGHT_VISION), 9600)
+				];
+			case self::INVISIBILITY:
+				return [
+					new EffectInstance(Effect::getEffect(Effect::INVISIBILITY), 3600)
+				];
+			case self::LONG_INVISIBILITY:
+				return [
+					new EffectInstance(Effect::getEffect(Effect::INVISIBILITY), 9600)
+				];
+			case self::LEAPING:
+				return [
+					new EffectInstance(Effect::getEffect(Effect::JUMP_BOOST), 3600)
+				];
+			case self::LONG_LEAPING:
+				return [
+					new EffectInstance(Effect::getEffect(Effect::JUMP_BOOST), 9600)
+				];
+			case self::STRONG_LEAPING:
+				return [
+					new EffectInstance(Effect::getEffect(Effect::JUMP_BOOST), 1800, 1)
+				];
+			case self::FIRE_RESISTANCE:
+				return [
+					new EffectInstance(Effect::getEffect(Effect::FIRE_RESISTANCE), 3600)
+				];
+			case self::LONG_FIRE_RESISTANCE:
+				return [
+					new EffectInstance(Effect::getEffect(Effect::FIRE_RESISTANCE), 9600)
+				];
+			case self::SWIFTNESS:
+				return [
+					new EffectInstance(Effect::getEffect(Effect::SPEED), 3600)
+				];
+			case self::LONG_SWIFTNESS:
+				return [
+					new EffectInstance(Effect::getEffect(Effect::SPEED), 9600)
+				];
+			case self::STRONG_SWIFTNESS:
+				return [
+					new EffectInstance(Effect::getEffect(Effect::SPEED), 1800, 1)
+				];
+			case self::SLOWNESS:
+				return [
+					new EffectInstance(Effect::getEffect(Effect::SLOWNESS), 1800)
+				];
+			case self::LONG_SLOWNESS:
+				return [
+					new EffectInstance(Effect::getEffect(Effect::SLOWNESS), 4800)
+				];
+			case self::WATER_BREATHING:
+				return [
+					new EffectInstance(Effect::getEffect(Effect::WATER_BREATHING), 3600)
+				];
+			case self::LONG_WATER_BREATHING:
+				return [
+					new EffectInstance(Effect::getEffect(Effect::WATER_BREATHING), 9600)
+				];
+			case self::HEALING:
+				return [
+					new EffectInstance(Effect::getEffect(Effect::INSTANT_HEALTH))
+				];
+			case self::STRONG_HEALING:
+				return [
+					new EffectInstance(Effect::getEffect(Effect::INSTANT_HEALTH), null, 1)
+				];
+			case self::HARMING:
+				return [
+					new EffectInstance(Effect::getEffect(Effect::INSTANT_DAMAGE))
+				];
+			case self::STRONG_HARMING:
+				return [
+					new EffectInstance(Effect::getEffect(Effect::INSTANT_DAMAGE), null, 1)
+				];
+			case self::POISON:
+				return [
+					new EffectInstance(Effect::getEffect(Effect::POISON), 900)
+				];
+			case self::LONG_POISON:
+				return [
+					new EffectInstance(Effect::getEffect(Effect::POISON), 2400)
+				];
+			case self::STRONG_POISON:
+				return [
+					new EffectInstance(Effect::getEffect(Effect::POISON), 440, 1)
+				];
+			case self::REGENERATION:
+				return [
+					new EffectInstance(Effect::getEffect(Effect::REGENERATION), 900)
+				];
+			case self::LONG_REGENERATION:
+				return [
+					new EffectInstance(Effect::getEffect(Effect::REGENERATION), 2400)
+				];
+			case self::STRONG_REGENERATION:
+				return [
+					new EffectInstance(Effect::getEffect(Effect::REGENERATION), 440, 1)
+				];
+			case self::STRENGTH:
+				return [
+					new EffectInstance(Effect::getEffect(Effect::STRENGTH), 3600)
+				];
+			case self::LONG_STRENGTH:
+				return [
+					new EffectInstance(Effect::getEffect(Effect::STRENGTH), 9600)
+				];
+			case self::STRONG_STRENGTH:
+				return [
+					new EffectInstance(Effect::getEffect(Effect::STRENGTH), 1800, 1)
+				];
+			case self::WEAKNESS:
+				return [
+					new EffectInstance(Effect::getEffect(Effect::WEAKNESS), 1800)
+				];
+			case self::LONG_WEAKNESS:
+				return [
+					new EffectInstance(Effect::getEffect(Effect::WEAKNESS), 4800)
+				];
+			case self::WITHER:
+				return [
+					new EffectInstance(Effect::getEffect(Effect::WITHER), 800, 1)
+				];
+		}
 
 		return [];
 	}

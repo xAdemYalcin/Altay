@@ -49,12 +49,9 @@ class MakeServerCommand extends VanillaCommand{
 		$sender->sendMessage($server->getName() . " Phar has begun to be created. This will take 2 minutes (may vary depending on your system).");
 		$phar = new \Phar($pharPath);
 		$phar->setMetadata([
-			"name" => $server->getName(),
-			"version" => $server->getPocketMineVersion(),
-			"api" => $server->getApiVersion(),
-			"minecraft" => $server->getVersion(),
-			"protocol" => ProtocolInfo::CURRENT_PROTOCOL,
-			"creationDate" => time()
+			"name" => $server->getName(), "version" => $server->getPocketMineVersion(),
+			"api" => $server->getApiVersion(), "minecraft" => $server->getVersion(),
+			"protocol" => ProtocolInfo::CURRENT_PROTOCOL, "creationDate" => time()
 		]);
 		$phar->setStub('<?php require_once("phar://". __FILE__ ."/src/pocketmine/PocketMine.php");  __HALT_COMPILER();');
 		$phar->setSignatureAlgorithm(\Phar::SHA1);
@@ -66,11 +63,9 @@ class MakeServerCommand extends VanillaCommand{
 		if(file_exists($filePath . "vendor")){
 			foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($filePath . "vendor")) as $file){
 				$path = ltrim(str_replace([
-					"\\",
-					$filePath
+					"\\", $filePath
 				], [
-					"/",
-					""
+					"/", ""
 				], $file), "/");
 				if($path{0} === "." or strpos($path, "/.") !== false or substr($path, 0, 7) !== "vendor/"){
 					continue;
@@ -82,11 +77,9 @@ class MakeServerCommand extends VanillaCommand{
 		if(file_exists($filePath . "resources")){
 			foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($filePath . "resources")) as $file){
 				$path = ltrim(str_replace([
-					"\\",
-					$filePath
+					"\\", $filePath
 				], [
-					"/",
-					""
+					"/", ""
 				], $file), "/");
 				if($path{0} === "." or strpos($path, "/.") !== false or substr($path, 0, 10) !== "resources/"){
 					continue;
@@ -98,11 +91,9 @@ class MakeServerCommand extends VanillaCommand{
 		/** @var \SplFileInfo $file */
 		foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($filePath . "src")) as $file){
 			$path = ltrim(str_replace([
-				"\\",
-				$filePath
+				"\\", $filePath
 			], [
-				"/",
-				""
+				"/", ""
 			], $file), "/");
 			if($path{0} === "." or strpos($path, "/.") !== false or substr($path, 0, 4) !== "src/"){
 				continue;

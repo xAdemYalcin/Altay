@@ -24,6 +24,7 @@ declare(strict_types=1);
 /**
  * Event related classes
  */
+
 namespace pocketmine\event;
 
 use function assert;

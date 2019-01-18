@@ -35,16 +35,12 @@ use pocketmine\utils\TextFormat;
 class StopSoundCommand extends VanillaCommand{
 
 	public function __construct(string $name){
-		parent::__construct(
-			$name,
-			"Stops a sound or all sounds",
-			"/stopsound <player: target> [sound: string]",
-			[],
-			[[
-				new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET, false),
-				new CommandParameter("sound", AvailableCommandsPacket::ARG_TYPE_STRING)
-			]]
-		);
+		parent::__construct($name, "Stops a sound or all sounds", "/stopsound <player: target> [sound: string]", [], [
+				[
+					new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET, false),
+					new CommandParameter("sound", AvailableCommandsPacket::ARG_TYPE_STRING)
+				]
+			]);
 
 		$this->setPermission("altay.command.stopsound");
 	}
@@ -73,7 +69,9 @@ class StopSoundCommand extends VanillaCommand{
 		$pk->stopAll = $stopAll;
 		$player->sendDataPacket($pk);
 
-		$message = $stopAll ? new TranslationContainer("commands.stopsound.success.all", [$player->getName()]) : new TranslationContainer("commands.stopsound.success", [$soundName, $player->getName()]);
+		$message = $stopAll ? new TranslationContainer("commands.stopsound.success.all", [$player->getName()]) : new TranslationContainer("commands.stopsound.success", [
+			$soundName, $player->getName()
+		]);
 		$player->sendMessage($message);
 
 		return true;

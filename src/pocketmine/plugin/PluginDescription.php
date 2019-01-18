@@ -221,7 +221,9 @@ class PluginDescription{
 				if($constr === ""){
 					throw new PluginException("One of the extension version constraints of $name is empty. Consider quoting the version string in plugin.yml");
 				}
-				foreach(["<=", "le", "<>", "!=", "ne", "<", "lt", "==", "=", "eq", ">=", "ge", ">", "gt"] as $comparator){
+				foreach([
+					        "<=", "le", "<>", "!=", "ne", "<", "lt", "==", "=", "eq", ">=", "ge", ">", "gt"
+				        ] as $comparator){
 					// warning: the > character should be quoted in YAML
 					if(substr($constr, 0, strlen($comparator)) === $comparator){
 						$version = substr($constr, strlen($comparator));

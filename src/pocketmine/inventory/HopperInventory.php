@@ -29,39 +29,39 @@ use pocketmine\network\mcpe\protocol\types\WindowTypes;
 use pocketmine\tile\Hopper;
 
 class HopperInventory extends ContainerInventory{
-    /** @var Hopper */
-    protected $holder;
+	/** @var Hopper */
+	protected $holder;
 
-    public function __construct(Hopper $holder){
-        parent::__construct($holder);
-    }
+	public function __construct(Hopper $holder){
+		parent::__construct($holder);
+	}
 
-    public function getName(): string{
-        return "Hopper";
-    }
+	public function getName() : string{
+		return "Hopper";
+	}
 
-    public function getDefaultSize(): int{
-        return 5;
-    }
+	public function getDefaultSize() : int{
+		return 5;
+	}
 
-    public function getNetworkType(): int{
-        return WindowTypes::HOPPER;
-    }
+	public function getNetworkType() : int{
+		return WindowTypes::HOPPER;
+	}
 
-    /**
-     * @return Hopper
-     */
-    public function getHolder(){
-        return $this->holder;
-    }
+	/**
+	 * @return Hopper
+	 */
+	public function getHolder(){
+		return $this->holder;
+	}
 
-    public function firstItem() : ?Item{
-        foreach($this->slots as $slot){
-            if($slot !== null and !$slot->isNull()){
-                return $slot;
-            }
-        }
+	public function firstItem() : ?Item{
+		foreach($this->slots as $slot){
+			if($slot !== null and !$slot->isNull()){
+				return $slot;
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 }

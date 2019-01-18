@@ -25,6 +25,7 @@ declare(strict_types=1);
 /**
  * Events related Plugin enable / disable events
  */
+
 namespace pocketmine\event\plugin;
 
 use pocketmine\event\Event;

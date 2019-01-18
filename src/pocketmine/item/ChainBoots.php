@@ -32,13 +32,13 @@ class ChainBoots extends Armor{
 		return 1;
 	}
 
-    public function getArmorSlot() : int{
-        return Armor::SLOT_BOOTS;
-    }
+	public function getArmorSlot() : int{
+		return Armor::SLOT_BOOTS;
+	}
 
-    public function getMaxDurability() : int{
-        return 196;
-    }
+	public function getMaxDurability() : int{
+		return 196;
+	}
 
 	public function getEnchantability() : int{
 		return 12;

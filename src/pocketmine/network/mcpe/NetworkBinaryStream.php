@@ -383,11 +383,7 @@ class NetworkBinaryStream extends BinaryStream{
 	 * @return Vector3
 	 */
 	public function getVector3() : Vector3{
-		return new Vector3(
-			$this->getRoundedLFloat(4),
-			$this->getRoundedLFloat(4),
-			$this->getRoundedLFloat(4)
-		);
+		return new Vector3($this->getRoundedLFloat(4), $this->getRoundedLFloat(4), $this->getRoundedLFloat(4));
 	}
 
 	/**

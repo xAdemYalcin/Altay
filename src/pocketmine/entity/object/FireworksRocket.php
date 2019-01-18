@@ -43,7 +43,7 @@ class FireworksRocket extends Entity{
 	public function __construct(Level $level, CompoundTag $nbt, ?Fireworks $fireworks = null){
 		parent::__construct($level, $nbt);
 
-		if($fireworks !== null && $fireworks->getNamedTagEntry("Fireworks") instanceof CompoundTag) {
+		if($fireworks !== null && $fireworks->getNamedTagEntry("Fireworks") instanceof CompoundTag){
 			$this->propertyManager->setItem(self::DATA_DISPLAY_ITEM, $fireworks);
 			$this->setLifeTime($fireworks->getRandomizedFlightDuration());
 		}
@@ -58,12 +58,12 @@ class FireworksRocket extends Entity{
 	}
 
 	public function entityBaseTick(int $tickDiff = 1) : bool{
-		if($this->closed) {
+		if($this->closed){
 			return false;
 		}
 
 		$hasUpdate = parent::entityBaseTick($tickDiff);
-		if($this->doLifeTimeTick()) {
+		if($this->doLifeTimeTick()){
 			$hasUpdate = true;
 		}
 
@@ -75,7 +75,7 @@ class FireworksRocket extends Entity{
 	}
 
 	protected function doLifeTimeTick() : bool{
-		if(!$this->isFlaggedForDespawn() and --$this->lifeTime < 0) {
+		if(!$this->isFlaggedForDespawn() and --$this->lifeTime < 0){
 			$this->doExplosionAnimation();
 			$this->flagForDespawn();
 			return true;

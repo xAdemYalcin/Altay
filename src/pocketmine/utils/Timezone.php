@@ -33,7 +33,6 @@ use function implode;
 use function ini_get;
 use function ini_set;
 use function is_link;
-use function json_decode;
 use function parse_ini_file;
 use function preg_match;
 use function readlink;

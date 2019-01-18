@@ -79,11 +79,7 @@ class Torch extends Flowable{
 			return parent::place($item, $blockReplace, $blockClicked, $face, $clickVector, $player);
 		}else{
 			static $faces = [
-				Facing::SOUTH,
-				Facing::WEST,
-				Facing::NORTH,
-				Facing::EAST,
-				Facing::DOWN
+				Facing::SOUTH, Facing::WEST, Facing::NORTH, Facing::EAST, Facing::DOWN
 			];
 			foreach($faces as $side){
 				$block = $this->getSide($side);

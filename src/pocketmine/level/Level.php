@@ -1522,12 +1522,9 @@ class Level implements ChunkManager, Metadatable{
 	 */
 	public function getHighestAdjacentBlockSkyLight(int $x, int $y, int $z) : int{
 		return max([
-			$this->getBlockSkyLightAt($x + 1, $y, $z),
-			$this->getBlockSkyLightAt($x - 1, $y, $z),
-			$this->getBlockSkyLightAt($x, $y + 1, $z),
-			$this->getBlockSkyLightAt($x, $y - 1, $z),
-			$this->getBlockSkyLightAt($x, $y, $z + 1),
-			$this->getBlockSkyLightAt($x, $y, $z - 1)
+			$this->getBlockSkyLightAt($x + 1, $y, $z), $this->getBlockSkyLightAt($x - 1, $y, $z),
+			$this->getBlockSkyLightAt($x, $y + 1, $z), $this->getBlockSkyLightAt($x, $y - 1, $z),
+			$this->getBlockSkyLightAt($x, $y, $z + 1), $this->getBlockSkyLightAt($x, $y, $z - 1)
 		]);
 	}
 
@@ -1582,12 +1579,9 @@ class Level implements ChunkManager, Metadatable{
 	 */
 	public function getHighestAdjacentBlockLight(int $x, int $y, int $z) : int{
 		return max([
-			$this->getBlockLightAt($x + 1, $y, $z),
-			$this->getBlockLightAt($x - 1, $y, $z),
-			$this->getBlockLightAt($x, $y + 1, $z),
-			$this->getBlockLightAt($x, $y - 1, $z),
-			$this->getBlockLightAt($x, $y, $z + 1),
-			$this->getBlockLightAt($x, $y, $z - 1)
+			$this->getBlockLightAt($x + 1, $y, $z), $this->getBlockLightAt($x - 1, $y, $z),
+			$this->getBlockLightAt($x, $y + 1, $z), $this->getBlockLightAt($x, $y - 1, $z),
+			$this->getBlockLightAt($x, $y, $z + 1), $this->getBlockLightAt($x, $y, $z - 1)
 		]);
 	}
 
@@ -1738,12 +1732,7 @@ class Level implements ChunkManager, Metadatable{
 		$orbs = [];
 
 		foreach(ExperienceOrb::splitIntoOrbSizes($amount) as $split){
-			$nbt = EntityFactory::createBaseNBT(
-				$pos,
-				$this->temporalVector->setComponents((lcg_value() * 0.2 - 0.1) * 2, lcg_value() * 0.4, (lcg_value() * 0.2 - 0.1) * 2),
-				lcg_value() * 360,
-				0
-			);
+			$nbt = EntityFactory::createBaseNBT($pos, $this->temporalVector->setComponents((lcg_value() * 0.2 - 0.1) * 2, lcg_value() * 0.4, (lcg_value() * 0.2 - 0.1) * 2), lcg_value() * 360, 0);
 			$nbt->setShort(ExperienceOrb::TAG_VALUE_PC, $split);
 
 			/** @var ExperienceOrb $orb */

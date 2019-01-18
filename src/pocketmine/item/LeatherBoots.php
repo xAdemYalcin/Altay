@@ -32,13 +32,13 @@ class LeatherBoots extends Armor{
 		return 1;
 	}
 
-    public function getArmorSlot() : int{
-        return Armor::SLOT_BOOTS;
-    }
+	public function getArmorSlot() : int{
+		return Armor::SLOT_BOOTS;
+	}
 
-    public function getMaxDurability() : int{
-        return 66;
-    }
+	public function getMaxDurability() : int{
+		return 66;
+	}
 
 	public function getEnchantability() : int{
 		return 15;

@@ -26,23 +26,23 @@ namespace pocketmine\network\mcpe\protocol\types;
 
 class EntityLink{
 
-    public const TYPE_REMOVE = 0;
-    public const TYPE_RIDER = 1;
-    public const TYPE_PASSENGER = 0;
+	public const TYPE_REMOVE = 0;
+	public const TYPE_RIDER = 1;
+	public const TYPE_PASSENGER = 0;
 
-    /** @var int */
-    public $riddenId;
-    /** @var int */
-    public $riderId;
-    /** @var int */
-    public $type;
-    /** @var bool */
-    public $immediate; //for dismounting on mount death
+	/** @var int */
+	public $riddenId;
+	/** @var int */
+	public $riderId;
+	/** @var int */
+	public $type;
+	/** @var bool */
+	public $immediate; //for dismounting on mount death
 
-    public function __construct(?int $riddenId = null, ?int $riderId = null, ?int $type = null, bool $immediate = false){
-        $this->riddenId = $riddenId;
-        $this->riderId = $riderId;
-        $this->type = $type;
-        $this->immediate = $immediate;
-    }
+	public function __construct(?int $riddenId = null, ?int $riderId = null, ?int $type = null, bool $immediate = false){
+		$this->riddenId = $riddenId;
+		$this->riderId = $riderId;
+		$this->type = $type;
+		$this->immediate = $immediate;
+	}
 }

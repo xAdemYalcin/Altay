@@ -185,12 +185,12 @@ class Enchantment{
 	private $maxLevel;
 
 	/**
-	 * @param int $id
+	 * @param int    $id
 	 * @param string $name
-	 * @param int $rarity
-	 * @param int $primaryItemFlags
-	 * @param int $secondaryItemFlags
-	 * @param int $maxLevel
+	 * @param int    $rarity
+	 * @param int    $primaryItemFlags
+	 * @param int    $secondaryItemFlags
+	 * @param int    $maxLevel
 	 */
 	public function __construct(int $id, string $name, int $rarity, int $primaryItemFlags, int $secondaryItemFlags, int $maxLevel){
 		$this->id = $id;

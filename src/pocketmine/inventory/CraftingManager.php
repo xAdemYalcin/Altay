@@ -58,17 +58,18 @@ class CraftingManager{
 		foreach($recipes as $recipe){
 			switch($recipe["type"]){
 				case 0:
-					$this->registerShapelessRecipe(new ShapelessRecipe(
-						array_map(function(array $data) : Item{ return Item::jsonDeserialize($data); }, $recipe["input"]),
-						array_map(function(array $data) : Item{ return Item::jsonDeserialize($data); }, $recipe["output"])
-					));
+					$this->registerShapelessRecipe(new ShapelessRecipe(array_map(function(array $data) : Item{
+						return Item::jsonDeserialize($data);
+					}, $recipe["input"]), array_map(function(array $data) : Item{
+							return Item::jsonDeserialize($data);
+						}, $recipe["output"])));
 					break;
 				case 1:
-					$this->registerShapedRecipe(new ShapedRecipe(
-						$recipe["shape"],
-						array_map(function(array $data) : Item{ return Item::jsonDeserialize($data); }, $recipe["input"]),
-						array_map(function(array $data) : Item{ return Item::jsonDeserialize($data); }, $recipe["output"])
-					));
+					$this->registerShapedRecipe(new ShapedRecipe($recipe["shape"], array_map(function(array $data) : Item{
+							return Item::jsonDeserialize($data);
+						}, $recipe["input"]), array_map(function(array $data) : Item{
+							return Item::jsonDeserialize($data);
+						}, $recipe["output"])));
 					break;
 				case 2:
 				case 3:

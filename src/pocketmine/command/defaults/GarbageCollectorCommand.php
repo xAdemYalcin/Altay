@@ -33,11 +33,7 @@ use function round;
 class GarbageCollectorCommand extends VanillaCommand{
 
 	public function __construct(string $name){
-		parent::__construct(
-			$name,
-			"%pocketmine.command.gc.description",
-			"%pocketmine.command.gc.usage"
-		);
+		parent::__construct($name, "%pocketmine.command.gc.description", "%pocketmine.command.gc.usage");
 		$this->setPermission("pocketmine.command.gc");
 	}
 

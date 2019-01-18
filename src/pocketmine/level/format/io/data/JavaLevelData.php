@@ -44,21 +44,13 @@ class JavaLevelData extends BaseNbtLevelData{
 		$levelData = new CompoundTag("Data", [
 			new ByteTag("hardcore", ($options["hardcore"] ?? false) === true ? 1 : 0),
 			new ByteTag("Difficulty", Level::getDifficultyFromString((string) ($options["difficulty"] ?? "normal"))),
-			new ByteTag("initialized", 1),
-			new IntTag("GameType", 0),
-			new IntTag("generatorVersion", 1), //2 in MCPE
-			new IntTag("SpawnX", 256),
-			new IntTag("SpawnY", 70),
-			new IntTag("SpawnZ", 256),
-			new IntTag("version", $version),
-			new IntTag("DayTime", 0),
-			new LongTag("LastPlayed", (int) (microtime(true) * 1000)),
-			new LongTag("RandomSeed", $seed),
-			new LongTag("SizeOnDisk", 0),
-			new LongTag("Time", 0),
+			new ByteTag("initialized", 1), new IntTag("GameType", 0), new IntTag("generatorVersion", 1), //2 in MCPE
+			new IntTag("SpawnX", 256), new IntTag("SpawnY", 70), new IntTag("SpawnZ", 256),
+			new IntTag("version", $version), new IntTag("DayTime", 0),
+			new LongTag("LastPlayed", (int) (microtime(true) * 1000)), new LongTag("RandomSeed", $seed),
+			new LongTag("SizeOnDisk", 0), new LongTag("Time", 0),
 			new StringTag("generatorName", GeneratorManager::getGeneratorName($generator)),
-			new StringTag("generatorOptions", $options["preset"] ?? ""),
-			new StringTag("LevelName", $name),
+			new StringTag("generatorOptions", $options["preset"] ?? ""), new StringTag("LevelName", $name),
 			new CompoundTag("GameRules", [])
 		]);
 		$nbt = new BigEndianNbtSerializer();

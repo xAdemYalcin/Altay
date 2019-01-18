@@ -352,8 +352,7 @@ class Item implements ItemIds, \JsonSerializable{
 			foreach($ench as $k => $entry){
 				if($entry->getShort("id") === $enchantment->getId()){
 					$ench->set($k, new CompoundTag("", [
-						new ShortTag("id", $enchantment->getId()),
-						new ShortTag("lvl", $enchantment->getLevel())
+						new ShortTag("id", $enchantment->getId()), new ShortTag("lvl", $enchantment->getLevel())
 					]));
 					$found = true;
 					break;
@@ -363,8 +362,7 @@ class Item implements ItemIds, \JsonSerializable{
 
 		if(!$found){
 			$ench->push(new CompoundTag("", [
-				new ShortTag("id", $enchantment->getId()),
-				new ShortTag("lvl", $enchantment->getLevel())
+				new ShortTag("id", $enchantment->getId()), new ShortTag("lvl", $enchantment->getLevel())
 			]));
 		}
 
@@ -916,8 +914,7 @@ class Item implements ItemIds, \JsonSerializable{
 	 */
 	public function nbtSerialize(int $slot = -1, string $tagName = "") : CompoundTag{
 		$result = new CompoundTag($tagName, [
-			new ShortTag("id", $this->id),
-			new ByteTag("Count", Binary::signByte($this->count)),
+			new ShortTag("id", $this->id), new ByteTag("Count", Binary::signByte($this->count)),
 			new ShortTag("Damage", $this->getDamage())
 		]);
 

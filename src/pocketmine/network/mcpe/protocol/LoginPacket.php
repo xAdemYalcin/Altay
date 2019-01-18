@@ -188,13 +188,7 @@ class LoginPacket extends DataPacket{
 		$this->serverAddress = $this->clientData[self::I_SERVER_ADDRESS];
 		$this->locale = $this->clientData[self::I_LANGUAGE_CODE];
 
-		$this->skin = new Skin(
-			$this->clientData[self::I_SKIN_ID],
-			base64_decode($this->clientData[self::I_SKIN_DATA]),
-			base64_decode($this->clientData[self::I_CAPE_DATA]),
-			$this->clientData[self::I_GEOMETRY_NAME],
-			base64_decode($this->clientData[self::I_GEOMETRY_DATA])
-		);
+		$this->skin = new Skin($this->clientData[self::I_SKIN_ID], base64_decode($this->clientData[self::I_SKIN_DATA]), base64_decode($this->clientData[self::I_CAPE_DATA]), $this->clientData[self::I_GEOMETRY_NAME], base64_decode($this->clientData[self::I_GEOMETRY_DATA]));
 	}
 
 	protected function encodePayload() : void{

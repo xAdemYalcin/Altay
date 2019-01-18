@@ -33,11 +33,8 @@ class OceanBiome extends Biome{
 		parent::__construct();
 
 		$this->setGroundCover([
-			BlockFactory::get(Block::GRAVEL),
-			BlockFactory::get(Block::GRAVEL),
-			BlockFactory::get(Block::GRAVEL),
-			BlockFactory::get(Block::GRAVEL),
-			BlockFactory::get(Block::GRAVEL)
+			BlockFactory::get(Block::GRAVEL), BlockFactory::get(Block::GRAVEL), BlockFactory::get(Block::GRAVEL),
+			BlockFactory::get(Block::GRAVEL), BlockFactory::get(Block::GRAVEL)
 		]);
 
 		$tallGrass = new TallGrass();

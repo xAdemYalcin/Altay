@@ -44,6 +44,7 @@ trait PillarRotationTrait{
 
 	/**
 	 * @see Block::readStateFromMeta()
+	 *
 	 * @param int $meta
 	 */
 	public function readStateFromMeta(int $meta) : void{
@@ -60,9 +61,7 @@ trait PillarRotationTrait{
 
 	protected function readAxisFromMeta(int $meta) : void{
 		static $map = [
-			0 => Facing::AXIS_Y,
-			1 => Facing::AXIS_X,
-			2 => Facing::AXIS_Z
+			0 => Facing::AXIS_Y, 1 => Facing::AXIS_X, 2 => Facing::AXIS_Z
 		];
 		$axis = $meta >> 2;
 		if(!isset($map[$axis])){
@@ -73,9 +72,7 @@ trait PillarRotationTrait{
 
 	protected function writeAxisToMeta() : int{
 		static $bits = [
-			Facing::AXIS_Y => 0,
-			Facing::AXIS_Z => 2,
-			Facing::AXIS_X => 1
+			Facing::AXIS_Y => 0, Facing::AXIS_Z => 2, Facing::AXIS_X => 1
 		];
 		return $bits[$this->axis] << 2;
 	}

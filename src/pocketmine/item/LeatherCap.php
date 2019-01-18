@@ -33,13 +33,13 @@ class LeatherCap extends Armor{
 		return 1;
 	}
 
-    public function getArmorSlot() : int{
-        return Armor::SLOT_HELMET;
-    }
+	public function getArmorSlot() : int{
+		return Armor::SLOT_HELMET;
+	}
 
-    public function getMaxDurability() : int{
-        return 56;
-    }
+	public function getMaxDurability() : int{
+		return 56;
+	}
 
 	public function getEnchantability() : int{
 		return 15;

@@ -25,6 +25,7 @@ declare(strict_types=1);
 /**
  * All Block classes are in here
  */
+
 namespace pocketmine\block;
 
 use pocketmine\block\utils\InvalidBlockStateException;
@@ -81,10 +82,10 @@ class Block extends Position implements BlockIds, Metadatable{
 	protected $collisionBoxes = null;
 
 	/**
-	 * @param int         $id      The block type's ID, 0-255
+	 * @param int         $id The block type's ID, 0-255
 	 * @param int         $variant Meta value of the block type
-	 * @param string|null $name    English name of the block type (TODO: implement translations)
-	 * @param int         $itemId  The item ID of the block type, used for block picking and dropping items.
+	 * @param string|null $name English name of the block type (TODO: implement translations)
+	 * @param int         $itemId The item ID of the block type, used for block picking and dropping items.
 	 */
 	public function __construct(int $id, int $variant = 0, string $name = null, int $itemId = null){
 		$this->id = $id;
@@ -154,6 +155,7 @@ class Block extends Position implements BlockIds, Metadatable{
 
 	/**
 	 * @param int $meta
+	 *
 	 * @throws InvalidBlockStateException
 	 */
 	public function readStateFromMeta(int $meta) : void{
@@ -302,8 +304,7 @@ class Block extends Position implements BlockIds, Metadatable{
 
 		$toolType = $this->getToolType();
 		$harvestLevel = $this->getToolHarvestLevel();
-		return $toolType === BlockToolType::TYPE_NONE or $harvestLevel === 0 or (
-			($toolType & $tool->getBlockToolType()) !== 0 and $tool->getBlockToolHarvestLevel() >= $harvestLevel);
+		return $toolType === BlockToolType::TYPE_NONE or $harvestLevel === 0 or (($toolType & $tool->getBlockToolType()) !== 0 and $tool->getBlockToolHarvestLevel() >= $harvestLevel);
 	}
 
 	/**
@@ -475,7 +476,7 @@ class Block extends Position implements BlockIds, Metadatable{
 	 * Returns whether entity can jump this block
 	 *
 	 * @param Entity $entity
-	 * @param float  $maxY  Maximum jump height
+	 * @param float  $maxY Maximum jump height
 	 *
 	 * @return bool
 	 */
@@ -661,9 +662,7 @@ class Block extends Position implements BlockIds, Metadatable{
 	 */
 	public function getHorizontalSides() : array{
 		return [
-			$this->getSide(Facing::NORTH),
-			$this->getSide(Facing::SOUTH),
-			$this->getSide(Facing::WEST),
+			$this->getSide(Facing::NORTH), $this->getSide(Facing::SOUTH), $this->getSide(Facing::WEST),
 			$this->getSide(Facing::EAST)
 		];
 	}
@@ -674,13 +673,9 @@ class Block extends Position implements BlockIds, Metadatable{
 	 * @return Block[]
 	 */
 	public function getAllSides() : array{
-		return array_merge(
-			[
-				$this->getSide(Facing::DOWN),
-				$this->getSide(Facing::UP)
-			],
-			$this->getHorizontalSides()
-		);
+		return array_merge([
+			$this->getSide(Facing::DOWN), $this->getSide(Facing::UP)
+		], $this->getHorizontalSides());
 	}
 
 	/**

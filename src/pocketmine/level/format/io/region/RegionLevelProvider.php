@@ -202,14 +202,7 @@ abstract class RegionLevelProvider extends BaseLevelProvider{
 	}
 
 	public function getAllChunks() : \Generator{
-		$iterator = new \RegexIterator(
-			new \FilesystemIterator(
-				$this->path . '/region/',
-				\FilesystemIterator::CURRENT_AS_PATHNAME | \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::UNIX_PATHS
-			),
-			'/\/r\.(-?\d+)\.(-?\d+)\.' . static::getRegionFileExtension() . '$/',
-			\RegexIterator::GET_MATCH
-		);
+		$iterator = new \RegexIterator(new \FilesystemIterator($this->path . '/region/', \FilesystemIterator::CURRENT_AS_PATHNAME | \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::UNIX_PATHS), '/\/r\.(-?\d+)\.(-?\d+)\.' . static::getRegionFileExtension() . '$/', \RegexIterator::GET_MATCH);
 
 		foreach($iterator as $region){
 			$rX = ((int) $region[1]) << 5;

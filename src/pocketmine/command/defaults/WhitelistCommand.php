@@ -35,12 +35,7 @@ use function strtolower;
 class WhitelistCommand extends VanillaCommand{
 
 	public function __construct(string $name){
-		parent::__construct(
-			$name,
-			"%pocketmine.command.whitelist.description",
-			"%commands.whitelist.usage",
-            ["wl"]
-		);
+		parent::__construct($name, "%pocketmine.command.whitelist.description", "%commands.whitelist.usage", ["wl"]);
 		$this->setPermission("pocketmine.command.whitelist.reload;pocketmine.command.whitelist.enable;pocketmine.command.whitelist.disable;pocketmine.command.whitelist.list;pocketmine.command.whitelist.add;pocketmine.command.whitelist.remove");
 	}
 

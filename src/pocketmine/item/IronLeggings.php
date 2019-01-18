@@ -33,13 +33,13 @@ class IronLeggings extends Armor{
 		return 5;
 	}
 
-    public function getArmorSlot() : int{
-        return Armor::SLOT_LEGGINGS;
-    }
+	public function getArmorSlot() : int{
+		return Armor::SLOT_LEGGINGS;
+	}
 
-    public function getMaxDurability() : int{
-        return 226;
-    }
+	public function getMaxDurability() : int{
+		return 226;
+	}
 
 	public function getEnchantability() : int{
 		return 9;

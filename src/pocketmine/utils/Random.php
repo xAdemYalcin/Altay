@@ -104,8 +104,7 @@ class Random{
 		$this->x = $this->y;
 		$this->y = $this->z;
 		$this->z = $this->w;
-		$this->w = ($this->w ^ (($this->w >> 19) & 0x7fffffff)
-		                     ^ ($t ^ (($t >> 8) & 0x7fffffff))) & 0xffffffff;
+		$this->w = ($this->w ^ (($this->w >> 19) & 0x7fffffff) ^ ($t ^ (($t >> 8) & 0x7fffffff))) & 0xffffffff;
 
 		return $this->w;
 	}
@@ -153,7 +152,7 @@ class Random{
 		return $this->nextInt() % $bound;
 	}
 
-    public function nextMinMax(int $min, int $max) : int{
-	    return (int) ($min + $this->nextInt()) % $max;
+	public function nextMinMax(int $min, int $max) : int{
+		return (int) ($min + $this->nextInt()) % $max;
 	}
 }

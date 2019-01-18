@@ -53,12 +53,7 @@ class ZippedResourcePack implements ResourcePack{
 		}
 
 		//Right now we don't care about anything else, only the stuff we're sending to clients.
-		return
-			isset($manifest->header->description) and
-			isset($manifest->header->name) and
-			isset($manifest->header->uuid) and
-			isset($manifest->header->version) and
-			count($manifest->header->version) === 3;
+		return isset($manifest->header->description) and isset($manifest->header->name) and isset($manifest->header->uuid) and isset($manifest->header->version) and count($manifest->header->version) === 3;
 	}
 
 	/** @var string */

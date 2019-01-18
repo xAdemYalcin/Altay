@@ -79,8 +79,7 @@ class Skeleton extends Monster implements RangedAttackerMob{
 
 	public function getDrops() : array{
 		return [
-			ItemFactory::get(Item::BONE, 0, rand(0,2)),
-			ItemFactory::get(Item::ARROW, 0, rand(0,2))
+			ItemFactory::get(Item::BONE, 0, rand(0, 2)), ItemFactory::get(Item::ARROW, 0, rand(0, 2))
 		];
 	}
 
@@ -105,7 +104,7 @@ class Skeleton extends Monster implements RangedAttackerMob{
 		/** @var Arrow $arrow */
 		$arrow = EntityFactory::create(Arrow::class, $this->level, EntityFactory::createBaseNBT($this->add($dir->add(0, $this->getEyeHeight(), 0))));
 		// TODO: Enchants
-		$arrow->setMotion($dir->multiply($power * 2.5)->add($this->level->random->nextFloat() * 0.02, $this->level->random->nextFloat() * 0.01 , $this->level->random->nextFloat() * 0.02));
+		$arrow->setMotion($dir->multiply($power * 2.5)->add($this->level->random->nextFloat() * 0.02, $this->level->random->nextFloat() * 0.01, $this->level->random->nextFloat() * 0.02));
 		$arrow->setPickupMode(Arrow::PICKUP_NONE);
 		$arrow->setBaseDamage(2);
 

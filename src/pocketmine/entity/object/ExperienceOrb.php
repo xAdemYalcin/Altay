@@ -27,8 +27,8 @@ namespace pocketmine\entity\object;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Human;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\ShortTag;
+use pocketmine\nbt\tag\IntTag;
 use pocketmine\Player;
 
 class ExperienceOrb extends Entity{
@@ -46,17 +46,7 @@ class ExperienceOrb extends Entity{
 	 * Split sizes used for dropping experience orbs.
 	 */
 	public const ORB_SPLIT_SIZES = [
-		2477,
-		1237,
-		617,
-		307,
-		149,
-		73,
-		37,
-		17,
-		7,
-		3,
-		1
+		2477, 1237, 617, 307, 149, 73, 37, 17, 7, 3, 1
 	]; //This is indexed biggest to smallest so that we can return as soon as we found the biggest value.
 
 	/**

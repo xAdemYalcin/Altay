@@ -65,8 +65,7 @@ class FormIcon implements \JsonSerializable{
 
 	public function jsonSerialize(){
 		return [
-			"type" => $this->type,
-			"data" => $this->data
+			"type" => $this->type, "data" => $this->data
 		];
 	}
 

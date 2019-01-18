@@ -44,8 +44,8 @@ use function socket_set_block;
 use function socket_strerror;
 use function socket_write;
 use function trim;
-use const AF_INET;
 use const AF_UNIX;
+use const AF_INET;
 use const SOCK_STREAM;
 use const SOCKET_ENOPROTOOPT;
 use const SOCKET_EPROTONOSUPPORT;
@@ -89,8 +89,7 @@ class RCON{
 		}
 
 		[
-			$this->ipcMainSocket,
-			$this->ipcThreadSocket
+			$this->ipcMainSocket, $this->ipcThreadSocket
 		] = $ipc;
 
 		$notifier = new SleeperNotifier();

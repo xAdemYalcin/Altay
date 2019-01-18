@@ -72,24 +72,12 @@ class CobblestoneWall extends Transparent{
 		$east = isset($this->connections[Facing::EAST]);
 
 		$inset = 0.25;
-		if(
-			!$this->up and //if there is a block on top, it stays as a post
-			(
-				($north and $south and !$west and !$east) or
-				(!$north and !$south and $west and $east)
-			)
-		){
+		if(!$this->up and //if there is a block on top, it stays as a post
+			(($north and $south and !$west and !$east) or (!$north and !$south and $west and $east))){
 			//If connected to two sides on the same axis but not any others, AND there is not a block on top, there is no post and the wall is thinner
 			$inset = 0.3125;
 		}
 
-		return new AxisAlignedBB(
-			($west ? 0 : $inset),
-			0,
-			($north ? 0 : $inset),
-			1 - ($east ? 0 : $inset),
-			1.5,
-			1 - ($south ? 0 : $inset)
-		);
+		return new AxisAlignedBB(($west ? 0 : $inset), 0, ($north ? 0 : $inset), 1 - ($east ? 0 : $inset), 1.5, 1 - ($south ? 0 : $inset));
 	}
 }

@@ -89,9 +89,9 @@ use function sys_get_temp_dir;
 use function trim;
 use function xdebug_get_function_stack;
 use const PHP_EOL;
+use const PHP_MAXPATHLEN;
 use const PHP_INT_MAX;
 use const PHP_INT_SIZE;
-use const PHP_MAXPATHLEN;
 use const STR_PAD_LEFT;
 use const STR_PAD_RIGHT;
 
@@ -134,10 +134,7 @@ class Utils{
 
 			$scope = $func->getClosureScopeClass();
 			if($scope !== null){ //class method
-				return
-					$scope->getName() .
-					($func->getClosureThis() !== null ? "->" : "::") .
-					$func->getName(); //name doesn't include class in this case
+				return $scope->getName() . ($func->getClosureThis() !== null ? "->" : "::") . $func->getName(); //name doesn't include class in this case
 			}
 
 			//non-class function
@@ -459,9 +456,7 @@ class Utils{
 	 */
 	public static function execute(string $command, string &$stdout = null, string &$stderr = null) : int{
 		$process = proc_open($command, [
-			["pipe", "r"],
-			["pipe", "w"],
-			["pipe", "w"]
+			["pipe", "r"], ["pipe", "w"], ["pipe", "w"]
 		], $pipes);
 
 		if($process === false){
@@ -603,7 +598,8 @@ class Utils{
 		//remove relative paths
 		//TODO: make these paths dynamic so they can be unit-tested against
 		static $cleanPaths = [
-			\pocketmine\PLUGIN_PATH => "plugins", //this has to come BEFORE \pocketmine\PATH because it's inside that by default on src installations
+			\pocketmine\PLUGIN_PATH => "plugins",
+			//this has to come BEFORE \pocketmine\PATH because it's inside that by default on src installations
 			\pocketmine\PATH => ""
 		];
 		foreach($cleanPaths as $cleanPath => $replacement){

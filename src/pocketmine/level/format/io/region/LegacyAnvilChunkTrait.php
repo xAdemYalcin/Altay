@@ -30,8 +30,8 @@ use pocketmine\level\format\SubChunk;
 use pocketmine\nbt\BigEndianNbtSerializer;
 use pocketmine\nbt\NBT;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\nbt\tag\IntArrayTag;
 use pocketmine\nbt\tag\ListTag;
+use pocketmine\nbt\tag\IntArrayTag;
 
 /**
  * Trait containing I/O methods for handling legacy Anvil-style chunks.
@@ -118,15 +118,7 @@ trait LegacyAnvilChunkTrait{
 			$biomeIds = $chunk->getByteArray("Biomes", "", true);
 		}
 
-		$result = new Chunk(
-			$chunk->getInt("xPos"),
-			$chunk->getInt("zPos"),
-			$subChunks,
-			$chunk->hasTag("Entities", ListTag::class) ? $chunk->getListTag("Entities")->getValue() : [],
-			$chunk->hasTag("TileEntities", ListTag::class) ? $chunk->getListTag("TileEntities")->getValue() : [],
-			$biomeIds,
-			$chunk->getIntArray("HeightMap", [])
-		);
+		$result = new Chunk($chunk->getInt("xPos"), $chunk->getInt("zPos"), $subChunks, $chunk->hasTag("Entities", ListTag::class) ? $chunk->getListTag("Entities")->getValue() : [], $chunk->hasTag("TileEntities", ListTag::class) ? $chunk->getListTag("TileEntities")->getValue() : [], $biomeIds, $chunk->getIntArray("HeightMap", []));
 		$result->setLightPopulated($chunk->getByte("LightPopulated", 0) !== 0);
 		$result->setPopulated($chunk->getByte("TerrainPopulated", 0) !== 0);
 		$result->setGenerated();

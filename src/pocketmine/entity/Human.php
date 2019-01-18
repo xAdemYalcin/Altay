@@ -27,13 +27,13 @@ namespace pocketmine\entity;
 use pocketmine\entity\projectile\ProjectileSource;
 use pocketmine\entity\utils\ExperienceUtils;
 use pocketmine\event\entity\EntityDamageEvent;
-use pocketmine\event\entity\EntityInventoryChangeEvent;
 use pocketmine\event\entity\EntityRegainHealthEvent;
+use pocketmine\event\entity\EntityInventoryChangeEvent;
 use pocketmine\event\player\PlayerExhaustEvent;
 use pocketmine\event\player\PlayerExperienceChangeEvent;
 use pocketmine\inventory\EnderChestInventory;
-use pocketmine\inventory\Inventory;
 use pocketmine\inventory\PlayerInventory;
+use pocketmine\inventory\Inventory;
 use pocketmine\inventory\InventoryHolder;
 use pocketmine\item\Consumable;
 use pocketmine\item\Durable;
@@ -58,7 +58,6 @@ use pocketmine\network\mcpe\protocol\PlayerListPacket;
 use pocketmine\network\mcpe\protocol\PlayerSkinPacket;
 use pocketmine\network\mcpe\protocol\types\PlayerListEntry;
 use pocketmine\Player;
-use pocketmine\utils\UUID;
 use function array_filter;
 use function array_merge;
 use function array_rand;
@@ -199,9 +198,7 @@ class Human extends Creature implements ProjectileSource, InventoryHolder{
 		$reset = false;
 		// ranges: 18-20 (regen), 7-17 (none), 1-6 (no sprint), 0 (health depletion)
 		foreach([
-			        17,
-			        6,
-			        0
+			        17, 6, 0
 		        ] as $bound){
 			if(($old > $bound) !== ($new > $bound)){
 				$reset = true;
@@ -828,8 +825,7 @@ class Human extends Creature implements ProjectileSource, InventoryHolder{
 
 		if($this->skin !== null){
 			$nbt->setTag(new CompoundTag("Skin", [
-				new StringTag("Name", $this->skin->getSkinId()),
-				new ByteArrayTag("Data", $this->skin->getSkinData()),
+				new StringTag("Name", $this->skin->getSkinId()), new ByteArrayTag("Data", $this->skin->getSkinData()),
 				new ByteArrayTag("CapeData", $this->skin->getCapeData()),
 				new StringTag("GeometryName", $this->skin->getGeometryName()),
 				new ByteArrayTag("GeometryData", $this->skin->getGeometryData())
@@ -873,8 +869,7 @@ class Human extends Creature implements ProjectileSource, InventoryHolder{
 		//TODO: Hack for MCPE 1.2.13: DATA_NAMETAG is useless in AddPlayerPacket, so it has to be sent separately
 		$this->sendData($player, [
 			self::DATA_NAMETAG => [
-				self::DATA_TYPE_STRING,
-				$this->getNameTag()
+				self::DATA_TYPE_STRING, $this->getNameTag()
 			]
 		]);
 
