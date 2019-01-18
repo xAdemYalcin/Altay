@@ -152,13 +152,6 @@ class Enchantment{
 	}
 
 	/**
-	 * @return array
-	 */
-	public static function getEnchantments() : array{
-		return self::$enchantments;
-	}
-
-	/**
 	 * @param string $name
 	 *
 	 * @return Enchantment|null

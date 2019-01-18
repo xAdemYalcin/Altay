@@ -24,7 +24,6 @@ declare(strict_types=1);
 
 namespace pocketmine\command\defaults;
 
-use pocketmine\command\CommandEnumValues;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\item\enchantment\Enchantment;
@@ -40,9 +39,13 @@ use function is_numeric;
 class EnchantCommand extends VanillaCommand{
 
 	public function __construct(string $name){
-		$enchantNames = array_map(function(Enchantment $enchantment){
-			return str_replace(["%enchantment.", "."], ["", "_"], $enchantment->getName());
-		}, Enchantment::getEnchantments());
+		$enchantNames = [];
+		for($i = 0; $i <= 32; $i++){
+			$enchant = Enchantment::getEnchantment($i);
+			if($enchant !== null){
+				$enchantNames[] = str_replace(["%enchantment.", "."], ["", "_"], $enchant->getName());
+			}
+		}
 		parent::__construct($name, "%pocketmine.command.enchant.description", "%commands.enchant.usage", [], [
 			[
 				new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET),
