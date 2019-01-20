@@ -34,6 +34,7 @@ use pocketmine\entity\hostile\Zombie;
 use pocketmine\entity\object\ArmorStand;
 use pocketmine\entity\object\ExperienceOrb;
 use pocketmine\entity\object\FallingBlock;
+use pocketmine\entity\object\FireworksRocket;
 use pocketmine\entity\object\LeashKnot;
 use pocketmine\entity\object\Painting;
 use pocketmine\entity\object\PaintingMotive;
@@ -125,7 +126,8 @@ final class EntityFactory{
 		self::register(Blaze::class, false, ['Blaze', 'minecraft:blaze']);
 		self::register(SmallFireball::class, false, ['SmallFireball', 'minecraft:small_fireball']);
 		self::register(ArmorStand::class, false, ['armor_stand", "minecraft:armor_stand']);
-		self::register(Boat::class, false, ['boat', 'minecraft:boat']);
+		self::register(Boat::class, false, ['Boat', 'minecraft:boat']);
+		self::register(FireworksRocket::class, false, ['FireworksRocket', 'minecraft:fireworks_rocket']);
 
 		self::register(Human::class, true);
 
