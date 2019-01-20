@@ -94,7 +94,7 @@ class Enchantment{
 	public const SLOT_ELYTRA = 0x4000;
 	public const SLOT_TRIDENT = 0x8000;
 
-	/** @var Enchantment[] */
+	/** @var Enchantment[]|\SplFixedArray */
 	protected static $enchantments;
 
 	public static function init() : void{
@@ -149,6 +149,15 @@ class Enchantment{
 	 */
 	public static function getEnchantment(int $id) : ?Enchantment{
 		return self::$enchantments[$id] ?? null;
+	}
+
+	/**
+	 * @return Enchantment[]
+	 */
+	public static function getEnchantments() : array{
+		return array_filter(self::$enchantments->toArray(), function($ench){
+			return $ench instanceof Enchantment;
+		});
 	}
 
 	/**
