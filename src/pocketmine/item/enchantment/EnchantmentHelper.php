@@ -160,7 +160,7 @@ class EnchantmentHelper{
 		$map = [];
 
 		foreach(Enchantment::getEnchantments() as $enchantment){
-			if($enchantment != null && self::canEnchantItem($item, $enchantment)){
+			if(self::canEnchantItem($item, $enchantment)){
 				for($i = 0; $i <= $enchantment->getMaxLevel(); ++$i){
 
 					if($enchantability >= $enchantment->getMinEnchantability($i) && $enchantability <= $enchantment->getMaxEnchantability($i)){
