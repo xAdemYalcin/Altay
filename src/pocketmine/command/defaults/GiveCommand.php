@@ -50,7 +50,7 @@ class GiveCommand extends VanillaCommand{
 			if(ItemFactory::isRegistered($id)){
 				for($i = 0; $i < 15; $i++){
 					if(ItemFactory::isRegistered($id, $i)){
-						$itemName = strtolower((ItemFactory::get($id, $i))->getName());
+						$itemName = strtolower(str_replace(" ", "_", (ItemFactory::get($id, $i))->getName()));
 						$itemNames[$itemName] = $itemName;
 					}else{
 						goto go_to_next;
