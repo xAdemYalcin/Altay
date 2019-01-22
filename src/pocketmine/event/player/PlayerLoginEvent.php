@@ -25,6 +25,7 @@ declare(strict_types=1);
 namespace pocketmine\event\player;
 
 use pocketmine\event\Cancellable;
+use pocketmine\event\CancellableTrait;
 use pocketmine\Player;
 
 /**
@@ -33,6 +34,8 @@ use pocketmine\Player;
  * Cancelling this event will cause the player to be disconnected with the kick message set.
  */
 class PlayerLoginEvent extends PlayerEvent implements Cancellable{
+	use CancellableTrait;
+
 	/** @var string */
 	protected $kickMessage;
 

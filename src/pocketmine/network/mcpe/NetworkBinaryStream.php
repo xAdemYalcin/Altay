@@ -33,8 +33,11 @@ use pocketmine\item\ItemFactory;
 use pocketmine\level\GameRules;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\LittleEndianNbtSerializer;
+use pocketmine\nbt\NbtDataException;
+use pocketmine\network\BadPacketException;
 use pocketmine\network\mcpe\protocol\types\CommandOriginData;
 use pocketmine\network\mcpe\protocol\types\EntityLink;
+use pocketmine\utils\BinaryDataException;
 use pocketmine\utils\BinaryStream;
 use pocketmine\utils\UUID;
 use function count;
@@ -44,6 +47,10 @@ class NetworkBinaryStream extends BinaryStream{
 	/** @var LittleEndianNbtSerializer */
 	private static $itemNbtSerializer = null;
 
+	/**
+	 * @return string
+	 * @throws BinaryDataException
+	 */
 	public function getString() : string{
 		return $this->get($this->getUnsignedVarInt());
 	}
@@ -53,6 +60,10 @@ class NetworkBinaryStream extends BinaryStream{
 		$this->put($v);
 	}
 
+	/**
+	 * @return UUID
+	 * @throws BinaryDataException
+	 */
 	public function getUUID() : UUID{
 		//This is actually two little-endian longs: UUID Most followed by UUID Least
 		$part1 = $this->getLInt();
@@ -70,6 +81,12 @@ class NetworkBinaryStream extends BinaryStream{
 		$this->putLInt($uuid->getPart(2));
 	}
 
+	/**
+	 * @return Item
+	 *
+	 * @throws BadPacketException
+	 * @throws BinaryDataException
+	 */
 	public function getSlot() : Item{
 		$id = $this->getVarInt();
 		if($id === 0){
@@ -89,7 +106,11 @@ class NetworkBinaryStream extends BinaryStream{
 			if(self::$itemNbtSerializer === null){
 				self::$itemNbtSerializer = new LittleEndianNbtSerializer();
 			}
-			$compound = self::$itemNbtSerializer->read($this->get($nbtLen));
+			try{
+				$compound = self::$itemNbtSerializer->read($this->get($nbtLen));
+			}catch(NbtDataException $e){
+				throw new BadPacketException($e->getMessage(), 0, $e);
+			}
 		}
 
 		//TODO
@@ -102,7 +123,11 @@ class NetworkBinaryStream extends BinaryStream{
 			$this->getString();
 		}
 
-		return ItemFactory::get($id, $data, $cnt, $compound);
+		try{
+			return ItemFactory::get($id, $data, $cnt, $compound);
+		}catch(\InvalidArgumentException $e){
+			throw new BadPacketException($e->getMessage(), 0, $e);
+		}
 	}
 
 
@@ -126,7 +151,17 @@ class NetworkBinaryStream extends BinaryStream{
 			$nbt = self::$itemNbtSerializer->write($item->getNamedTag());
 			$nbtLen = strlen($nbt);
 			if($nbtLen > 32767){
-				throw new \InvalidArgumentException("NBT encoded length must be < 32768, got $nbtLen bytes");
+				/*
+				 * TODO: Workaround bug in the protocol (overflow)
+				 * Encoded tags larger than 32KB overflow the length field, so we can't send these over network.
+				 * However, it's unreasonable to randomly throw this burden off onto users by crashing their servers, so the
+				 * next best solution is to just not send the NBT. This is also not an ideal solution (books and the like
+				 * with too-large tags won't work on the client side) but it's better than crashing the server or client due
+				 * to a protocol bug. Mojang have confirmed this will be resolved by a future MCPE release, so we'll just
+				 * work around this problem until then.
+				 */
+				$nbt = "";
+				$nbtLen = 0;
 			}
 		}
 
@@ -143,6 +178,9 @@ class NetworkBinaryStream extends BinaryStream{
 	 * @param bool $types Whether to include metadata types along with values in the returned array
 	 *
 	 * @return array
+	 *
+	 * @throws BadPacketException
+	 * @throws BinaryDataException
 	 */
 	public function getEntityMetadata(bool $types = true) : array{
 		$count = $this->getUnsignedVarInt();
@@ -181,7 +219,7 @@ class NetworkBinaryStream extends BinaryStream{
 					$value = $this->getVector3();
 					break;
 				default:
-					throw new \UnexpectedValueException("Invalid data type " . $type);
+					throw new BadPacketException("Unknown entity metadata type " . $type);
 			}
 			if($types){
 				$data[$key] = [$type, $value];
@@ -237,7 +275,7 @@ class NetworkBinaryStream extends BinaryStream{
 					$this->putVector3Nullable($d[1]);
 					break;
 				default:
-					throw new \UnexpectedValueException("Invalid data type " . $d[0]);
+					throw new \InvalidArgumentException("Invalid data type " . $d[0]);
 			}
 		}
 	}
@@ -246,7 +284,8 @@ class NetworkBinaryStream extends BinaryStream{
 	 * Reads a list of Attributes from the stream.
 	 * @return Attribute[]
 	 *
-	 * @throws \UnexpectedValueException if reading an attribute with an unrecognized name
+	 * @throws BadPacketException if reading an attribute with an unrecognized name
+	 * @throws BinaryDataException
 	 */
 	public function getAttributeList() : array{
 		$list = [];
@@ -268,7 +307,7 @@ class NetworkBinaryStream extends BinaryStream{
 
 				$list[] = $attr;
 			}else{
-				throw new \UnexpectedValueException("Unknown attribute type \"$id\"");
+				throw new BadPacketException("Unknown attribute type \"$id\"");
 			}
 		}
 
@@ -294,6 +333,8 @@ class NetworkBinaryStream extends BinaryStream{
 	/**
 	 * Reads and returns an EntityUniqueID
 	 * @return int
+	 *
+	 * @throws BinaryDataException
 	 */
 	public function getEntityUniqueId() : int{
 		return $this->getVarLong();
@@ -311,6 +352,8 @@ class NetworkBinaryStream extends BinaryStream{
 	/**
 	 * Reads and returns an EntityRuntimeID
 	 * @return int
+	 *
+	 * @throws BinaryDataException
 	 */
 	public function getEntityRuntimeId() : int{
 		return $this->getUnsignedVarLong();
@@ -331,6 +374,8 @@ class NetworkBinaryStream extends BinaryStream{
 	 * @param int &$x
 	 * @param int &$y
 	 * @param int &$z
+	 *
+	 * @throws BinaryDataException
 	 */
 	public function getBlockPosition(&$x, &$y, &$z) : void{
 		$x = $this->getVarInt();
@@ -357,6 +402,8 @@ class NetworkBinaryStream extends BinaryStream{
 	 * @param int &$x
 	 * @param int &$y
 	 * @param int &$z
+	 *
+	 * @throws BinaryDataException
 	 */
 	public function getSignedBlockPosition(&$x, &$y, &$z) : void{
 		$x = $this->getVarInt();
@@ -381,6 +428,8 @@ class NetworkBinaryStream extends BinaryStream{
 	 * Reads a floating-point Vector3 object with coordinates rounded to 4 decimal places.
 	 *
 	 * @return Vector3
+	 *
+	 * @throws BinaryDataException
 	 */
 	public function getVector3() : Vector3{
 		return new Vector3($this->getRoundedLFloat(4), $this->getRoundedLFloat(4), $this->getRoundedLFloat(4));
@@ -417,6 +466,10 @@ class NetworkBinaryStream extends BinaryStream{
 		$this->putLFloat($vector->z);
 	}
 
+	/**
+	 * @return float
+	 * @throws BinaryDataException
+	 */
 	public function getByteRotation() : float{
 		return (float) ($this->getByte() * (360 / 256));
 	}
@@ -430,6 +483,9 @@ class NetworkBinaryStream extends BinaryStream{
 	 * TODO: implement this properly
 	 *
 	 * @return array, members are in the structure [name => [type, value]]
+	 *
+	 * @throws BadPacketException
+	 * @throws BinaryDataException
 	 */
 	public function getGameRules() : array{
 		$count = $this->getUnsignedVarInt();
@@ -448,6 +504,8 @@ class NetworkBinaryStream extends BinaryStream{
 				case GameRules::RULE_TYPE_FLOAT:
 					$value = $this->getLFloat();
 					break;
+				default:
+					throw new BadPacketException("Unknown gamerule type $type");
 			}
 
 			$rules[$name] = [$type, $value];
@@ -477,12 +535,16 @@ class NetworkBinaryStream extends BinaryStream{
 				case GameRules::RULE_TYPE_FLOAT:
 					$this->putLFloat($rule[1]);
 					break;
+				default:
+					throw new \InvalidArgumentException("Invalid gamerule type " . $rule[0]);
 			}
 		}
 	}
 
 	/**
 	 * @return EntityLink
+	 *
+	 * @throws BinaryDataException
 	 */
 	protected function getEntityLink() : EntityLink{
 		$link = new EntityLink();
@@ -505,6 +567,10 @@ class NetworkBinaryStream extends BinaryStream{
 		$this->putBool($link->immediate);
 	}
 
+	/**
+	 * @return CommandOriginData
+	 * @throws BinaryDataException
+	 */
 	protected function getCommandOriginData() : CommandOriginData{
 		$result = new CommandOriginData();
 

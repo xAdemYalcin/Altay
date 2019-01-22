@@ -25,11 +25,12 @@ namespace pocketmine\network\mcpe\protocol;
 
 #include <rules/DataPacket.h>
 
+use pocketmine\network\BadPacketException;
 use pocketmine\network\mcpe\handler\SessionHandler;
 use pocketmine\network\mcpe\protocol\types\ScorePacketEntry;
 use function count;
 
-class SetScorePacket extends DataPacket{
+class SetScorePacket extends DataPacket implements ClientboundPacket{
 	public const NETWORK_ID = ProtocolInfo::SET_SCORE_PACKET;
 
 	public const TYPE_CHANGE = 0;
@@ -58,7 +59,7 @@ class SetScorePacket extends DataPacket{
 						$entry->customName = $this->getString();
 						break;
 					default:
-						throw new \UnexpectedValueException("Unknown entry type $entry->type");
+						throw new BadPacketException("Unknown entry type $entry->type");
 				}
 			}
 		}

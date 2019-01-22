@@ -25,6 +25,7 @@ declare(strict_types=1);
 namespace pocketmine\event\inventory;
 
 use pocketmine\event\Cancellable;
+use pocketmine\event\CancellableTrait;
 use pocketmine\event\Event;
 use pocketmine\inventory\transaction\InventoryTransaction;
 
@@ -33,6 +34,8 @@ use pocketmine\inventory\transaction\InventoryTransaction;
  * The source of this can be a Player, entities, mobs, or even hoppers in the future!
  */
 class InventoryTransactionEvent extends Event implements Cancellable{
+	use CancellableTrait;
+
 	/** @var InventoryTransaction */
 	private $transaction;
 

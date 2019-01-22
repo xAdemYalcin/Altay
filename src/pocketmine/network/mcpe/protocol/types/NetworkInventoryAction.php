@@ -37,8 +37,10 @@ use pocketmine\inventory\transaction\action\SlotChangeAction;
 use pocketmine\inventory\transaction\action\TradeAction;
 use pocketmine\inventory\transaction\action\InventoryAction;
 use pocketmine\item\Item;
+use pocketmine\network\BadPacketException;
 use pocketmine\network\mcpe\NetworkBinaryStream;
 use pocketmine\Player;
+use pocketmine\utils\BinaryDataException;
 
 class NetworkInventoryAction{
 	public const SOURCE_CONTAINER = 0;
@@ -104,8 +106,9 @@ class NetworkInventoryAction{
 	 * @param NetworkBinaryStream $packet
 	 *
 	 * @return $this
-	 * @throws \UnexpectedValueException
-	 * @throws \OutOfBoundsException
+	 *
+	 * @throws BinaryDataException
+	 * @throws BadPacketException
 	 */
 	public function read(NetworkBinaryStream $packet) : NetworkInventoryAction{
 		$this->sourceType = $packet->getUnsignedVarInt();
@@ -124,7 +127,7 @@ class NetworkInventoryAction{
 				$this->windowId = $packet->getVarInt();
 				break;
 			default:
-				throw new \UnexpectedValueException("Unknown inventory action source type $this->sourceType");
+				throw new BadPacketException("Unknown inventory action source type $this->sourceType");
 		}
 
 		$this->inventorySlot = $packet->getUnsignedVarInt();

@@ -31,13 +31,9 @@ use pocketmine\event\server\NetworkInterfaceRegisterEvent;
 use pocketmine\event\server\NetworkInterfaceUnregisterEvent;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\PacketPool;
-use pocketmine\Server;
 use function spl_object_hash;
 
 class Network{
-	/** @var Server */
-	private $server;
-
 	/** @var NetworkInterface[] */
 	private $interfaces = [];
 
@@ -53,11 +49,8 @@ class Network{
 	/** @var NetworkSession[] */
 	private $updateSessions = [];
 
-	public function __construct(Server $server){
+	public function __construct(){
 		PacketPool::init();
-
-		$this->server = $server;
-
 	}
 
 	public function addStatistics(float $upload, float $download) : void{
@@ -83,6 +76,14 @@ class Network{
 	 */
 	public function getInterfaces() : array{
 		return $this->interfaces;
+	}
+
+	public function getConnectionCount() : int{
+		$count = 0;
+		foreach($this->interfaces as $interface){
+			$count += $interface->getConnectionCount();
+		}
+		return $count;
 	}
 
 	public function tick() : void{
@@ -145,13 +146,6 @@ class Network{
 		foreach($this->interfaces as $interface){
 			$interface->setName($this->name);
 		}
-	}
-
-	/**
-	 * @return Server
-	 */
-	public function getServer() : Server{
-		return $this->server;
 	}
 
 	/**

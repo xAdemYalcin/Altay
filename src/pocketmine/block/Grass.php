@@ -1,24 +1,23 @@
 <?php
 
 /*
- *               _ _
- *         /\   | | |
- *        /  \  | | |_ __ _ _   _
- *       / /\ \ | | __/ _` | | | |
- *      / ____ \| | || (_| | |_| |
- *     /_/    \_|_|\__\__,_|\__, |
- *                           __/ |
- *                          |___/
+ *
+ *  ____            _        _   __  __ _                  __  __ ____
+ * |  _ \ ___   ___| | _____| |_|  \/  (_)_ __   ___      |  \/  |  _ \
+ * | |_) / _ \ / __| |/ / _ \ __| |\/| | | '_ \ / _ \_____| |\/| | |_) |
+ * |  __/ (_) | (__|   <  __/ |_| |  | | | | | |  __/_____| |  | |  __/
+ * |_|   \___/ \___|_|\_\___|\__|_|  |_|_|_| |_|\___|     |_|  |_|_|
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * @author TuranicTeam
- * @link https://github.com/TuranicTeam/Altay
+ * @author PocketMine Team
+ * @link http://www.pocketmine.net/
  *
- */
+ *
+*/
 
 declare(strict_types=1);
 
@@ -26,9 +25,9 @@ namespace pocketmine\block;
 
 use pocketmine\event\block\BlockSpreadEvent;
 use pocketmine\item\Hoe;
-use pocketmine\item\Shovel;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\Shovel;
 use pocketmine\level\generator\object\TallGrass as TallGrassObject;
 use pocketmine\math\Facing;
 use pocketmine\Player;
@@ -67,7 +66,7 @@ class Grass extends Solid{
 
 	public function onRandomTick() : void{
 		$lightAbove = $this->level->getFullLightAt($this->x, $this->y + 1, $this->z);
-		if($lightAbove < 4 and BlockFactory::$lightFilter[$this->level->getFullBlock($this->x, $this->y + 1, $this->z)] >= 3){ //2 plus 1 standard filter amount
+		if($lightAbove < 4 and $this->level->getBlockAt($this->x, $this->y + 1, $this->z)->getLightFilter() >= 2){
 			//grass dies
 			$ev = new BlockSpreadEvent($this, $this, BlockFactory::get(Block::DIRT));
 			$ev->call();
@@ -82,8 +81,12 @@ class Grass extends Solid{
 				$z = mt_rand($this->z - 1, $this->z + 1);
 
 				$b = $this->level->getBlockAt($x, $y, $z);
-				if($b->getId() !== Block::DIRT or $b->getDamage() === 1 or //coarse dirt
-					$this->level->getFullLightAt($x, $y + 1, $z) < 4 or BlockFactory::$lightFilter[$this->level->getFullBlock($x, $y + 1, $z)] >= 3){
+				if(
+					$b->getId() !== Block::DIRT or
+					$b->getDamage() === 1 or //coarse dirt
+					$this->level->getFullLightAt($x, $y + 1, $z) < 4 or
+					$this->level->getBlockAt($x, $y + 1, $z)->getLightFilter() >= 2
+				){
 					continue;
 				}
 

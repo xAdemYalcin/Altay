@@ -152,7 +152,7 @@ class ExperienceOrb extends Entity{
 			return null;
 		}
 
-		$entity = $this->server->findEntity($this->targetPlayerRuntimeId);
+		$entity = $this->level->getEntity($this->targetPlayerRuntimeId);
 		if($entity instanceof Human){
 			return $entity;
 		}
@@ -161,7 +161,7 @@ class ExperienceOrb extends Entity{
 	}
 
 	public function setTargetPlayer(?Human $player) : void{
-		$this->targetPlayerRuntimeId = $player ? $player->getId() : null;
+		$this->targetPlayerRuntimeId = $player !== null ? $player->getId() : null;
 	}
 
 	public function entityBaseTick(int $tickDiff = 1) : bool{

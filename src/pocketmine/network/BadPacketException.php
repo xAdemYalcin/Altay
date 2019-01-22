@@ -21,38 +21,8 @@
 
 declare(strict_types=1);
 
-namespace pocketmine\level\sound;
+namespace pocketmine\network;
 
-use pocketmine\math\Vector3;
-use pocketmine\network\mcpe\protocol\LevelEventPacket;
-
-class GenericSound extends Sound{
-
-	/** @var int */
-	protected $id;
-	/** @var float */
-	protected $pitch = 0;
-
-	public function __construct(int $id, float $pitch = 0){
-		$this->id = $id;
-		$this->pitch = $pitch * 1000;
-	}
-
-	public function getPitch() : float{
-		return $this->pitch / 1000;
-	}
-
-	public function setPitch(float $pitch) : void{
-		$this->pitch = $pitch * 1000;
-	}
-
-	public function encode(Vector3 $pos){
-		$pk = new LevelEventPacket;
-		$pk->evid = $this->id;
-		$pk->position = $pos;
-		$pk->data = (int) $this->pitch;
-
-		return $pk;
-	}
+class BadPacketException extends \RuntimeException{
 
 }

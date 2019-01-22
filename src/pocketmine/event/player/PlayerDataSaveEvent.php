@@ -25,6 +25,7 @@ declare(strict_types=1);
 namespace pocketmine\event\player;
 
 use pocketmine\event\Cancellable;
+use pocketmine\event\CancellableTrait;
 use pocketmine\event\Event;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\Server;
@@ -34,6 +35,8 @@ use pocketmine\IPlayer;
  * Called when a player's data is about to be saved to disk.
  */
 class PlayerDataSaveEvent extends Event implements Cancellable{
+	use CancellableTrait;
+
 	/** @var CompoundTag */
 	protected $data;
 	/** @var string */

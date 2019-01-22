@@ -25,6 +25,7 @@ declare(strict_types=1);
 namespace pocketmine\event\player;
 
 use pocketmine\event\Cancellable;
+use pocketmine\event\CancellableTrait;
 use pocketmine\lang\TextContainer;
 use pocketmine\Player;
 
@@ -32,6 +33,8 @@ use pocketmine\Player;
  * Called when a player leaves the server
  */
 class PlayerKickEvent extends PlayerEvent implements Cancellable{
+	use CancellableTrait;
+
 	/** @var TextContainer|string */
 	protected $quitMessage;
 

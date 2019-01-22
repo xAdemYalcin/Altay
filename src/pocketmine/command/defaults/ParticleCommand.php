@@ -90,7 +90,7 @@ class ParticleCommand extends VanillaCommand{
 			$level = $sender->getLevel();
 			$pos = new Vector3($this->getRelativeDouble($sender->getX(), $sender, $args[1]), $this->getRelativeDouble($sender->getY(), $sender, $args[2], 0, Level::Y_MAX), $this->getRelativeDouble($sender->getZ(), $sender, $args[3]));
 		}else{
-			$level = $sender->getServer()->getDefaultLevel();
+			$level = $sender->getServer()->getLevelManager()->getDefaultLevel();
 			$pos = new Vector3((float) $args[1], (float) $args[2], (float) $args[3]);
 		}
 

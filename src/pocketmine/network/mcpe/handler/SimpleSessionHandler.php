@@ -32,6 +32,7 @@ use pocketmine\inventory\transaction\InventoryTransaction;
 use pocketmine\maps\MapData;
 use pocketmine\maps\MapManager;
 use pocketmine\math\Vector3;
+use pocketmine\network\BadPacketException;
 use pocketmine\network\mcpe\protocol\AdventureSettingsPacket;
 use pocketmine\network\mcpe\protocol\AnimatePacket;
 use pocketmine\network\mcpe\protocol\BlockEntityDataPacket;
@@ -497,6 +498,7 @@ class SimpleSessionHandler extends SessionHandler{
 	 * @param bool   $assoc
 	 *
 	 * @return mixed
+	 * @throws BadPacketException
 	 */
 	private static function stupid_json_decode(string $json, bool $assoc = false){
 		if(preg_match('/^\[(.+)\]$/s', $json, $matches) > 0){
@@ -511,7 +513,7 @@ class SimpleSessionHandler extends SessionHandler{
 
 			$fixed = "[" . implode(",", $parts) . "]";
 			if(($ret = json_decode($fixed, $assoc)) === null){
-				throw new \InvalidArgumentException("Failed to fix JSON: " . json_last_error_msg() . "(original: $json, modified: $fixed)");
+				throw new BadPacketException("Failed to fix JSON: " . json_last_error_msg() . "(original: $json, modified: $fixed)");
 			}
 
 			return $ret;

@@ -295,16 +295,16 @@
         },
         {
             "name": "pocketmine/binaryutils",
-            "version": "0.1.7",
+            "version": "0.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pmmp/BinaryUtils.git",
-                "reference": "3403751da9d39853b43426085cd242173baadd2b"
+                "reference": "33f511715d22418c03368b49b45a6c25d6b33806"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pmmp/BinaryUtils/zipball/3403751da9d39853b43426085cd242173baadd2b",
-                "reference": "3403751da9d39853b43426085cd242173baadd2b",
+                "url": "https://api.github.com/repos/pmmp/BinaryUtils/zipball/33f511715d22418c03368b49b45a6c25d6b33806",
+                "reference": "33f511715d22418c03368b49b45a6c25d6b33806",
                 "shasum": ""
             },
             "require": {
@@ -322,10 +322,10 @@
             ],
             "description": "Classes and methods for conveniently handling binary data",
             "support": {
-                "source": "https://github.com/pmmp/BinaryUtils/tree/0.1.7",
+                "source": "https://github.com/pmmp/BinaryUtils/tree/0.1.8",
                 "issues": "https://github.com/pmmp/BinaryUtils/issues"
             },
-            "time": "2019-01-07T15:59:50+00:00"
+            "time": "2019-01-16T17:31:44+00:00"
         },
         {
             "name": "pocketmine/math",
@@ -372,12 +372,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pmmp/NBT.git",
-                "reference": "8b211471159b4aca329c665bdbd9149046ca6550"
+                "reference": "6736e85ec7600309d7ef1dc5b965ff7e4b1c5357"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pmmp/NBT/zipball/8b211471159b4aca329c665bdbd9149046ca6550",
-                "reference": "8b211471159b4aca329c665bdbd9149046ca6550",
+                "url": "https://api.github.com/repos/pmmp/NBT/zipball/6736e85ec7600309d7ef1dc5b965ff7e4b1c5357",
+                "reference": "6736e85ec7600309d7ef1dc5b965ff7e4b1c5357",
                 "shasum": ""
             },
             "require": {
@@ -405,7 +405,7 @@
                 "source": "https://github.com/pmmp/NBT/tree/master",
                 "issues": "https://github.com/pmmp/NBT/issues"
             },
-            "time": "2019-01-09T00:12:13+00:00"
+            "time": "2019-01-18T15:28:20+00:00"
         },
         {
             "name": "pocketmine/raklib",
@@ -413,12 +413,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pmmp/RakLib.git",
-                "reference": "2f5dfdaa28ff69d72cd1682faa521e18b17a15ef"
+                "reference": "ceee20a6755e33132621fba4e5f21fccb317f73e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pmmp/RakLib/zipball/2f5dfdaa28ff69d72cd1682faa521e18b17a15ef",
-                "reference": "2f5dfdaa28ff69d72cd1682faa521e18b17a15ef",
+                "url": "https://api.github.com/repos/pmmp/RakLib/zipball/ceee20a6755e33132621fba4e5f21fccb317f73e",
+                "reference": "ceee20a6755e33132621fba4e5f21fccb317f73e",
                 "shasum": ""
             },
             "require": {
@@ -446,7 +446,7 @@
                 "source": "https://github.com/pmmp/RakLib/tree/master",
                 "issues": "https://github.com/pmmp/RakLib/issues"
             },
-            "time": "2019-01-09T18:42:21+00:00"
+            "time": "2019-01-21T14:17:51+00:00"
         },
         {
             "name": "pocketmine/snooze",
@@ -488,12 +488,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pmmp/SPL.git",
-                "reference": "985e212ac528412ec00ddd3b88c5fc11549a2fe0"
+                "reference": "d7bd7b8cb10c264ca6e6b5c3ef9b52e48a6f29d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pmmp/SPL/zipball/985e212ac528412ec00ddd3b88c5fc11549a2fe0",
-                "reference": "985e212ac528412ec00ddd3b88c5fc11549a2fe0",
+                "url": "https://api.github.com/repos/pmmp/SPL/zipball/d7bd7b8cb10c264ca6e6b5c3ef9b52e48a6f29d8",
+                "reference": "d7bd7b8cb10c264ca6e6b5c3ef9b52e48a6f29d8",
                 "shasum": ""
             },
             "type": "library",
@@ -512,7 +512,7 @@
             "support": {
                 "source": "https://github.com/pmmp/SPL/tree/master"
             },
-            "time": "2018-10-21T17:32:00+00:00"
+            "time": "2019-01-17T18:54:01+00:00"
         }
     ],
     "packages-dev": [],

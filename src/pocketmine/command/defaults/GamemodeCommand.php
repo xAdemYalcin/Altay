@@ -25,15 +25,14 @@ declare(strict_types=1);
 namespace pocketmine\command\defaults;
 
 use pocketmine\command\Command;
-use pocketmine\command\CommandEnumValues;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
+use pocketmine\GameMode;
 use pocketmine\lang\TranslationContainer;
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Player;
-use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 use function count;
 
@@ -41,15 +40,15 @@ class GamemodeCommand extends VanillaCommand{
 
 	public function __construct(string $name){
 		parent::__construct($name, "%pocketmine.command.gamemode.description", "%commands.gamemode.usage", ["gm"], [
-				[
-					new CommandParameter("gameMode", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("gameMode", [
-						"creative", "survival", "adventure"
-					])), new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET)
-				], [
-					new CommandParameter("gameMode", AvailableCommandsPacket::ARG_TYPE_INT, false),
-					new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET)
-				]
-			]);
+			[
+				new CommandParameter("gameMode", AvailableCommandsPacket::ARG_TYPE_STRING, false, new CommandEnum("gameMode", [
+					"creative", "survival", "adventure"
+				])), new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET)
+			], [
+				new CommandParameter("gameMode", AvailableCommandsPacket::ARG_TYPE_INT, false),
+				new CommandParameter("player", AvailableCommandsPacket::ARG_TYPE_TARGET)
+			]
+		]);
 		$this->setPermission("pocketmine.command.gamemode");
 	}
 
@@ -62,7 +61,7 @@ class GamemodeCommand extends VanillaCommand{
 			throw new InvalidCommandSyntaxException();
 		}
 
-		$gameMode = Server::getGamemodeFromString($args[0]);
+		$gameMode = GameMode::fromString($args[0]);
 
 		if($gameMode === -1){
 			$sender->sendMessage("Unknown game mode");
@@ -87,11 +86,11 @@ class GamemodeCommand extends VanillaCommand{
 			$sender->sendMessage("Game mode change for " . $target->getName() . " failed!");
 		}else{
 			if($target === $sender){
-				Command::broadcastCommandMessage($sender, new TranslationContainer("commands.gamemode.success.self", [Server::getGamemodeString($gameMode)]));
+				Command::broadcastCommandMessage($sender, new TranslationContainer("commands.gamemode.success.self", [GameMode::toTranslation($gameMode)]));
 			}else{
-				$target->sendMessage(new TranslationContainer("gameMode.changed", [Server::getGamemodeString($gameMode)]));
+				$target->sendMessage(new TranslationContainer("gameMode.changed", [GameMode::toTranslation($gameMode)]));
 				Command::broadcastCommandMessage($sender, new TranslationContainer("commands.gamemode.success.other", [
-					Server::getGamemodeString($gameMode), $target->getName()
+					GameMode::toTranslation($gameMode), $target->getName()
 				]));
 			}
 		}

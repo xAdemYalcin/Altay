@@ -25,14 +25,13 @@ declare(strict_types=1);
 namespace pocketmine\command\defaults;
 
 use pocketmine\command\Command;
-use pocketmine\command\CommandEnumValues;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
 use pocketmine\lang\TranslationContainer;
 use pocketmine\nbt\JsonNbtParser;
-use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\nbt\NbtDataException;
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
@@ -101,16 +100,11 @@ class GiveCommand extends VanillaCommand{
 		}
 
 		if(isset($args[3])){
-			$tags = $exception = null;
 			$data = implode(" ", array_slice($args, 3));
 			try{
 				$tags = JsonNbtParser::parseJson($data);
-			}catch(\Exception $ex){
-				$exception = $ex;
-			}
-
-			if(!($tags instanceof CompoundTag) or $exception !== null){
-				$sender->sendMessage(new TranslationContainer("commands.give.tagError", [$exception !== null ? $exception->getMessage() : "Invalid tag conversion"]));
+			}catch(NbtDataException $e){
+				$sender->sendMessage(new TranslationContainer("commands.give.tagError", [$e->getMessage()]));
 				return true;
 			}
 

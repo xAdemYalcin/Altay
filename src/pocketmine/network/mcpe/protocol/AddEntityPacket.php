@@ -28,12 +28,13 @@ namespace pocketmine\network\mcpe\protocol;
 use pocketmine\entity\Attribute;
 use pocketmine\entity\EntityIds;
 use pocketmine\math\Vector3;
+use pocketmine\network\BadPacketException;
 use pocketmine\network\mcpe\handler\SessionHandler;
 use pocketmine\network\mcpe\protocol\types\EntityLink;
 use function array_search;
 use function count;
 
-class AddEntityPacket extends DataPacket{
+class AddEntityPacket extends DataPacket implements ClientboundPacket{
 	public const NETWORK_ID = ProtocolInfo::ADD_ENTITY_PACKET;
 
 	/*
@@ -128,7 +129,7 @@ class AddEntityPacket extends DataPacket{
 		$this->entityRuntimeId = $this->getEntityRuntimeId();
 		$this->type = array_search($t = $this->getString(), self::LEGACY_ID_MAP_BC, true);
 		if($this->type === false){
-			throw new \UnexpectedValueException("Can't map ID $t to legacy ID");
+			throw new BadPacketException("Can't map ID $t to legacy ID");
 		}
 		$this->position = $this->getVector3();
 		$this->motion = $this->getVector3();
@@ -145,12 +146,16 @@ class AddEntityPacket extends DataPacket{
 			$attr = Attribute::getAttribute($id);
 
 			if($attr !== null){
-				$attr->setMinValue($min);
-				$attr->setMaxValue($max);
-				$attr->setValue($current);
+				try{
+					$attr->setMinValue($min);
+					$attr->setMaxValue($max);
+					$attr->setValue($current);
+				}catch(\InvalidArgumentException $e){
+					throw new BadPacketException($e->getMessage(), 0, $e); //TODO: address this properly
+				}
 				$this->attributes[] = $attr;
 			}else{
-				throw new \UnexpectedValueException("Unknown attribute type \"$id\"");
+				throw new BadPacketException("Unknown attribute type \"$id\"");
 			}
 		}
 

@@ -25,7 +25,6 @@ declare(strict_types=1);
  * Implementation of the Source RCON Protocol to allow remote console commands
  * Source: https://developer.valvesoftware.com/wiki/Source_RCON_Protocol
  */
-
 namespace pocketmine\network\rcon;
 
 use pocketmine\command\RemoteConsoleCommandSender;
@@ -44,8 +43,8 @@ use function socket_set_block;
 use function socket_strerror;
 use function socket_write;
 use function trim;
-use const AF_UNIX;
 use const AF_INET;
+use const AF_UNIX;
 use const SOCK_STREAM;
 use const SOCKET_ENOPROTOOPT;
 use const SOCKET_EPROTONOSUPPORT;
@@ -65,11 +64,20 @@ class RCON{
 	/** @var resource */
 	private $ipcThreadSocket;
 
+	/**
+	 * @param Server $server
+	 * @param string $password
+	 * @param int    $port
+	 * @param string $interface
+	 * @param int    $maxClients
+	 *
+	 * @throws \RuntimeException
+	 */
 	public function __construct(Server $server, string $password, int $port = 19132, string $interface = "0.0.0.0", int $maxClients = 50){
 		$this->server = $server;
 		$this->server->getLogger()->info("Starting remote control listener");
 		if($password === ""){
-			throw new \InvalidArgumentException("Empty password");
+			throw new \RuntimeException("Empty password");
 		}
 
 		$this->socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
@@ -88,13 +96,17 @@ class RCON{
 			}
 		}
 
-		[
-			$this->ipcMainSocket, $this->ipcThreadSocket
-		] = $ipc;
+		[$this->ipcMainSocket, $this->ipcThreadSocket] = $ipc;
 
 		$notifier = new SleeperNotifier();
 		$this->server->getTickSleeper()->addNotifier($notifier, function() : void{
-			$this->check();
+			$response = new RemoteConsoleCommandSender();
+			$this->server->dispatchCommand($response, $this->instance->cmd);
+
+			$this->instance->response = TextFormat::clean($response->getMessage());
+			$this->instance->synchronized(function(RCONInstance $thread){
+				$thread->notify();
+			}, $this->instance);
 		});
 		$this->instance = new RCONInstance($this->socket, $password, (int) max(1, $maxClients), $this->server->getLogger(), $this->ipcThreadSocket, $notifier);
 
@@ -110,15 +122,5 @@ class RCON{
 		@socket_close($this->socket);
 		@socket_close($this->ipcMainSocket);
 		@socket_close($this->ipcThreadSocket);
-	}
-
-	public function check() : void{
-		$response = new RemoteConsoleCommandSender();
-		$this->server->dispatchCommand($response, $this->instance->cmd);
-
-		$this->instance->response = TextFormat::clean($response->getMessage());
-		$this->instance->synchronized(function(RCONInstance $thread){
-			$thread->notify();
-		}, $this->instance);
 	}
 }
