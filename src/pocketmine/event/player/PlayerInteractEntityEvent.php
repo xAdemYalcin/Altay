@@ -26,6 +26,7 @@ namespace pocketmine\event\player;
 
 use pocketmine\entity\Entity;
 use pocketmine\event\Cancellable;
+use pocketmine\event\CancellableTrait;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
@@ -34,6 +35,8 @@ use pocketmine\Player;
  * Called when a player interacts with an entity
  */
 class PlayerInteractEntityEvent extends PlayerEvent implements Cancellable{
+	use CancellableTrait;
+
 	/** @var Entity */
 	protected $entity;
 	/** @var Item */
