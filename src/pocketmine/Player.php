@@ -183,6 +183,18 @@ use const PHP_INT_MAX;
  */
 class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
+	public const OS_ANDROID = 1;
+	public const OS_IOS = 2;
+	public const OS_MAC = 3;
+	public const OS_FIREOS = 4;
+	public const OS_GEARVR = 5;
+	public const OS_HOLOLENS = 6;
+	public const OS_WINDOWS = 7;
+	public const OS_WIN32 = 8;
+	public const OS_DEDICATED = 9;
+	public const OS_ORBIS = 10;
+	public const OS_NX = 11;
+
 	/**
 	 * Checks a supplied username and checks it is valid.
 	 *

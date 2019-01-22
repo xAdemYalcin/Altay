@@ -24,9 +24,9 @@ declare(strict_types=1);
 namespace pocketmine\level;
 
 use pocketmine\entity\Entity;
-use pocketmine\event\level\LevelInitEvent;
 use pocketmine\event\level\LevelLoadEvent;
 use pocketmine\event\level\LevelUnloadEvent;
+use pocketmine\event\level\LevelInitEvent;
 use pocketmine\level\format\io\exception\UnsupportedLevelFormatException;
 use pocketmine\level\format\io\LevelProvider;
 use pocketmine\level\format\io\LevelProviderManager;
@@ -57,6 +57,10 @@ class LevelManager{
 	private $levels = [];
 	/** @var Level|null */
 	private $levelDefault;
+	/** @var Level|null */
+	private $levelNether;
+	/** @var Level|null */
+	private $levelEnd;
 
 	/** @var Server */
 	private $server;
@@ -73,6 +77,10 @@ class LevelManager{
 	private $autoSave = true;
 	/** @var int */
 	private $autoSaveTicks = 6000;
+	/** @var bool */
+	private $allowNether = true;
+	/** @var bool */
+	private $allowEnd = true;
 
 
 	/** @var int */
@@ -88,6 +96,9 @@ class LevelManager{
 
 		$this->autoSave = $this->server->getConfigBool("auto-save", $this->autoSave);
 		$this->autoSaveTicks = (int) $this->server->getProperty("ticks-per.autosave", 6000);
+
+		$this->allowNether = (bool) $this->server->getAltayProperty("dimensions.nether.active", $this->allowNether);
+		$this->allowEnd = (bool) $this->server->getAltayProperty("dimensions.end.active", $this->allowEnd);
 	}
 
 	/**
@@ -105,6 +116,20 @@ class LevelManager{
 	}
 
 	/**
+	 * @return Level|null
+	 */
+	public function getNetherLevel() : ?Level{
+		return $this->levelNether;
+	}
+
+	/**
+	 * @return Level|null
+	 */
+	public function getEndLevel() : ?Level{
+		return $this->levelEnd;
+	}
+
+	/**
 	 * Sets the default level to a different level
 	 * This won't change the level-name property,
 	 * it only affects the server on runtime
@@ -114,6 +139,18 @@ class LevelManager{
 	public function setDefaultLevel(?Level $level) : void{
 		if($level === null or ($this->isLevelLoaded($level->getFolderName()) and $level !== $this->levelDefault)){
 			$this->levelDefault = $level;
+		}
+	}
+
+	public function setNetherLevel(?Level $level) : void{
+		if($level === null or ($this->isLevelLoaded($level->getFolderName()) and $level !== $this->levelNether)){
+			$this->levelNether = $level;
+		}
+	}
+
+	public function setEndLevel(?Level $level) : void{
+		if($level === null or ($this->isLevelLoaded($level->getFolderName()) and $level !== $this->levelEnd)){
+			$this->levelEnd = $level;
 		}
 	}
 
@@ -433,5 +470,19 @@ class LevelManager{
 			$level->save(false);
 		}
 		Timings::$worldSaveTimer->stopTiming();
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isAllowEnd() : bool{
+		return $this->allowEnd;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isAllowNether() : bool{
+		return $this->allowNether;
 	}
 }

@@ -324,18 +324,12 @@ class Server{
 	/** @var bool */
 	public $folderPluginLoader = true;
 	/** @var bool */
-	public $allowNether = true;
-	/** @var bool */
-	public $allowEnd = true;
-	/** @var bool */
 	public $mobAiEnabled = true;
 
 	public function loadAltayConfig(){
 		$this->loadIncompatibleApi = $this->getAltayProperty("developer.load-incompatible-api", true);
 		$this->keepInventory = $this->getAltayProperty("player.keep-inventory", false);
 		$this->keepExperience = $this->getAltayProperty("player.keep-experience", false);
-		$this->allowNether = $this->getAltayProperty("dimensions.nether.active", true);
-		$this->allowEnd = $this->getAltayProperty("dimensions.end.active", true);
 		$this->folderPluginLoader = $this->getAltayProperty("developer.folder-plugin-loader", true);
 		$this->mobAiEnabled = $this->getAltayProperty("level.enable-mob-ai", false);
 	}
@@ -1385,6 +1379,31 @@ class Server{
 					return;
 				}
 				$this->levelManager->setDefaultLevel($level);
+			}
+			if($this->levelManager->isAllowNether() and $this->levelManager->getNetherLevel() === null){
+				/** @var string $netherLevelName */
+				$netherLevelName = $this->getAltayProperty("dimensions.nether.level-name", "nether");
+				if(trim($netherLevelName) == ""){
+					$netherLevelName = "nether";
+				}
+				if(!$this->levelManager->loadLevel($netherLevelName)){
+					$this->levelManager->generateLevel($netherLevelName, time(), GeneratorManager::getGenerator("hell"));
+				}
+
+				$this->levelManager->setNetherLevel($this->levelManager->getLevelByName($netherLevelName));
+			}
+
+			if($this->levelManager->isAllowEnd() and $this->levelManager->getEndLevel() === null){
+				/** @var string $endLevelName */
+				$endLevelName = $this->getAltayProperty("dimensions.end.level-name", "end");
+				if(trim($endLevelName) == ""){
+					$endLevelName = "end";
+				}
+				if(!$this->levelManager->loadLevel($endLevelName)){
+					$this->levelManager->generateLevel($endLevelName, time(), GeneratorManager::getGenerator("end"));
+				}
+
+				$this->levelManager->setEndLevel($this->levelManager->getLevelByName($endLevelName));
 			}
 
 			if($this->properties->hasChanged()){
