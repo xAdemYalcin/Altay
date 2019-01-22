@@ -45,7 +45,7 @@ class SetBlockCommand extends VanillaCommand{
 			if(BlockFactory::isRegistered($id)){
 				for($i = 0; $i < 15; $i++){
 					if(BlockFactory::isRegistered($id, $i)){
-						$blockName = (BlockFactory::get($id, $i))->getName();
+						$blockName = strtolower((BlockFactory::get($id, $i))->getName());
 						$blockNames[$blockName] = $blockName;
 					}else{
 						goto go_to_next;
