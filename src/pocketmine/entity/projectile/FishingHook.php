@@ -83,9 +83,8 @@ class FishingHook extends Projectile{
 	 */
 	public function __construct(Level $level, CompoundTag $nbt, ?Entity $owner = null){
 		parent::__construct($level, $nbt, $owner);
+
 		if($owner instanceof Player){
-			$this->setPosition($this->add(0, $owner->getEyeHeight() - 0.1, 0));
-			$this->setMotion($owner->getDirectionVector()->multiply(0.4));
 			$owner->setFishingHook($this);
 			$this->handleHookCasting($this->motion->x, $this->motion->y, $this->motion->z, 1.5, 1.0);
 		}
