@@ -50,7 +50,6 @@ class GameRules{
 	public const RULE_TNT_EXPLODES = "tntexplodes";
 	public const RULE_NATURAL_REGENERATION = "naturalRegeneration";
 
-	public const RULE_TYPE_UNKNOWN = 0;
 	public const RULE_TYPE_BOOL = 1;
 	public const RULE_TYPE_INT = 2;
 	public const RULE_TYPE_FLOAT = 3;
@@ -104,18 +103,15 @@ class GameRules{
 	/**
 	 * @param string $name
 	 * @param        $value
-	 * @param bool   $force
 	 *
 	 * @return bool
 	 */
-	public function setRuleWithMatching(string $name, $value, bool $force = false) : bool{
+	public function setRuleWithMatching(string $name, $value) : bool{
 		if($this->hasRule($name)){
 			$type = $this->rules[$name][0];
 			$value = $this->convertType($value, $type);
 
 			return $this->setRule($name, $value, $type);
-		}elseif($force){
-			return $this->setRule($name, $value, self::RULE_TYPE_UNKNOWN);
 		}
 
 		return false;
@@ -164,8 +160,6 @@ class GameRules{
 				return is_float($input);
 			case self::RULE_TYPE_BOOL:
 				return is_bool($input);
-			case self::RULE_TYPE_UNKNOWN:
-				return true;
 		}
 	}
 
@@ -267,7 +261,7 @@ class GameRules{
 	public function readSaveData(CompoundTag $nbt) : void{
 		foreach($nbt->getValue() as $tag){
 			if($tag instanceof StringTag){
-				$this->setRuleWithMatching($tag->getName(), $tag->getValue(), true);
+				$this->setRuleWithMatching($tag->getName(), $tag->getValue());
 			}
 		}
 
