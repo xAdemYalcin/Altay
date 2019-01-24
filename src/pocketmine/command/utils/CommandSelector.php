@@ -51,20 +51,18 @@ class CommandSelector{
 	 * @return Entity[]
 	 */
 	public static function findTargets(CommandSender $sender, string $selector, string $entityType = Entity::class, ?Vector3 $pos = null) : array{
-		Utils::testValidInstance($entityType, Entity::class);
-
 		$targets = [];
 
 		if(!($pos instanceof Position)){
 			if($sender instanceof Position){
 				$pos = $sender->asPosition()->setComponents($pos->x, $pos->y, $pos->z);
 			}else{
-				$pos = new Position($pos->x, $pos->y, $pos->z, $sender->getServer()->getDefaultLevel());
+				$pos = new Position($pos->x, $pos->y, $pos->z, $sender->getServer()->getLevelManager()->getDefaultLevel());
 			}
 		}
 
 		if($pos === null){
-			$pos = $sender instanceof Position ? $sender : $sender->getServer()->getDefaultLevel()->getSpawnLocation();
+			$pos = $sender instanceof Position ? $sender : $sender->getServer()->getLevelManager()->getDefaultLevel()->getSpawnLocation();
 		}
 		switch($selector){
 			case CommandSelector::SELECTOR_ALL_PLAYERS:
