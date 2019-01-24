@@ -2844,11 +2844,11 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	}
 
 	/**
-	 * @param DataPacket $packet
+	 * @param ClientboundPacket $packet
 	 *
 	 * @return bool
 	 */
-	public function directDataPacket(DataPacket $packet) : bool{
+	public function directDataPacket(ClientboundPacket $packet) : bool{
 		return $this->sendDataPacket($packet, true);
 	}
 
