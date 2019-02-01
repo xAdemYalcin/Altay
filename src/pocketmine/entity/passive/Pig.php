@@ -80,7 +80,7 @@ class Pig extends Animal{
 		}
 
 		if(!$this->isImmobile()){
-			if($this->isSaddled() and $this->riddenByEntity === null){
+			if($this->isSaddled() and $this->getRiddenByEntity() === null){
 				$player->mountEntity($this);
 				return true;
 			}

@@ -385,10 +385,10 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	/** @var float */
 	protected $entityCollisionReduction = 0;
 
-	/** @var Entity */
-	protected $ridingEntity = null;
-	/** @var Entity */
-	protected $riddenByEntity = null;
+	/** @var int */
+	protected $ridingEid = null;
+	/** @var int */
+	protected $riddenByEid = null;
 	/** @var float */
 	protected $entityRiderPitchDelta = 0;
 	/** @var float */
@@ -566,19 +566,35 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	}
 
 	public function getRidingEntity() : ?Entity{
-		return $this->ridingEntity;
+		if($this->ridingEid !== null){
+			return $this->server->getLevelManager()->findEntity($this->ridingEid);
+		}else{
+			return null;
+		}
 	}
 
 	public function setRidingEntity(?Entity $ridingEntity = null) : void{
-		$this->ridingEntity = $ridingEntity;
+		if($ridingEntity instanceof Entity){
+			$this->ridingEid = $ridingEntity->getId();
+		}else{
+			$this->ridingEid = null;
+		}
 	}
 
 	public function getRiddenByEntity() : ?Entity{
-		return $this->riddenByEntity;
+		if($this->riddenByEid !== null){
+			return $this->server->getLevelManager()->findEntity($this->riddenByEid);
+		}else{
+			return null;
+		}
 	}
 
 	public function setRiddenByEntity(?Entity $riddenByEntity = null) : void{
-		$this->riddenByEntity = $riddenByEntity;
+		if($riddenByEntity instanceof Entity){
+			$this->riddenByEid = $riddenByEntity->getId();
+		}else{
+			$this->riddenByEid = null;
+		}
 	}
 
 	public function isBaby() : bool{
@@ -1032,14 +1048,14 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	}
 
 	public function entityBaseTick(int $tickDiff = 1) : bool{
-		if($this->ridingEntity instanceof Entity and $this->ridingEntity->isClosed()){
-			$this->ridingEntity = null;
+		if($this->getRidingEntity() instanceof Entity and $this->getRidingEntity()->isClosed()){
+			$this->ridingEid = null;
 			$this->setRiding(false);
 		}
 
-		if($this->riddenByEntity instanceof Entity and $this->riddenByEntity->isClosed()){
-			$this->riddenByEntity = null;
-			unset($this->passengers[array_search($this->riddenByEntity, $this->passengers, true)]);
+		if($this->getRiddenByEntity() instanceof Entity and $this->getRiddenByEntity()->isClosed()){
+			$this->riddenByEid = null;
+			unset($this->passengers[array_search($this->riddenByEid, $this->passengers, true)]);
 			$this->setGenericFlag(Entity::DATA_FLAG_WASD_CONTROLLED, false);
 		}
 
@@ -1524,7 +1540,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	}
 
 	public function mountEntity(Entity $entity, int $seatNumber = 0) : bool{
-		if($this->ridingEntity == null and $entity !== $this and count($entity->passengers) < $entity->getSeatCount()){
+		if($this->getRidingEntity() == null and $entity !== $this and count($entity->passengers) < $entity->getSeatCount()){
 			if(!isset($entity->passengers[$seatNumber])){
 
 				if($seatNumber === 0){
@@ -1537,7 +1553,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 				$this->setRotation($entity->yaw, $entity->pitch);
 				$this->setRidingEntity($entity);
 
-				$entity->passengers[$seatNumber] = $this;
+				$entity->passengers[$seatNumber] = $this->getId();
 
 				$this->propertyManager->setVector3(self::DATA_RIDER_SEAT_POSITION, $entity->getRiderSeatPosition($seatNumber)->add(0, $this->getMountedYOffset(), 0));
 				$this->propertyManager->setByte(self::DATA_CONTROLLING_RIDER_SEAT_NUMBER, $seatNumber);
@@ -1584,10 +1600,10 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	}
 
 	public function dismountEntity(bool $immediate = false) : bool{
-		if($this->ridingEntity !== null){
-			$entity = $this->ridingEntity;
+		if($this->getRidingEntity() !== null){
+			$entity = $this->getRidingEntity();
 
-			unset($entity->passengers[array_search($this, $entity->passengers, true)]);
+			unset($entity->passengers[array_search($this->getId(), $entity->passengers, true)]);
 
 			if($this->isRiding()){
 				$entity->setRiddenByEntity(null);
@@ -1622,21 +1638,21 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	}
 
 	public function updateRiderPosition() : void{
-		if($this->riddenByEntity !== null){
-			$this->riddenByEntity->setPosition($this->add($this->getRiderSeatPosition()));
+		if($this->getRiddenByEntity() !== null){
+			$this->getRiddenByEntity()->setPosition($this->add($this->getRiderSeatPosition()));
 		}
 	}
 
 	public function updateRidden() : void{
-		if($this->ridingEntity === null) return;
+		if($this->getRidingEntity() === null) return;
 
-		if($this->ridingEntity->isClosed()){
-			$this->ridingEntity = null;
+		if($this->getRidingEntity()->isClosed()){
+			$this->ridingEid = null;
 		}else{
 			$this->resetMotion();
 
 			if(!($this instanceof Player)){
-				$this->ridingEntity->updateRiderPosition();
+				$this->getRidingEntity()->updateRiderPosition();
 			}
 			$this->entityRiderYawDelta += $this->yaw - $this->lastLocation->yaw;
 
@@ -1674,8 +1690,8 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	 * @param float $fallDistance
 	 */
 	public function fall(float $fallDistance) : void{
-		if($this->riddenByEntity instanceof Entity){
-			$this->riddenByEntity->fall($fallDistance);
+		if($this->getRidingEntity() instanceof Entity){
+			$this->getRidingEntity()->fall($fallDistance);
 		}
 	}
 

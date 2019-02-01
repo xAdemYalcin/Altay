@@ -121,7 +121,7 @@ abstract class AbstractHorse extends Tamable{
 					}
 					return true;
 				}
-			}elseif(!$this->isBaby() and $this->riddenByEntity === null){
+			}elseif(!$this->isBaby() and $this->getRiddenByEntity() === null){
 				$player->mountEntity($this);
 				return true;
 			}
@@ -200,14 +200,14 @@ abstract class AbstractHorse extends Tamable{
 	}
 
 	public function throwRider() : void{
-		if($this->riddenByEntity !== null){
-			$this->riddenByEntity->dismountEntity();
+		if($this->getRiddenByEntity() !== null){
+			$this->getRiddenByEntity()->dismountEntity();
 		}
 		$this->jumpPower = 0;
 		$this->rearingCounter = 0;
 	}
 
 	public function canBePushed() : bool{
-		return parent::canBePushed() and $this->riddenByEntity === null;
+		return parent::canBePushed() and $this->getRiddenByEntity() === null;
 	}
 }

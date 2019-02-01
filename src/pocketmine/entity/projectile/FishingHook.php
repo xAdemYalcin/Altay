@@ -270,13 +270,13 @@ class FishingHook extends Projectile{
 	public function handleHookRetraction() : void{
 		$angler = $this->getOwningEntity();
 		if($this->isValid() and $angler instanceof Player){
-			if($this->ridingEntity != null){
+			if($this->getRidingEntity() != null){
 				$d0 = $angler->x - $this->x;
 				$d2 = $angler->y - $this->y;
 				$d4 = $angler->z - $this->z;
 				$d6 = sqrt($d0 * $d0 + $d2 * $d2 + $d4 * $d4);
 				$d8 = 0.1;
-				$this->ridingEntity->setMotion(new Vector3($d0 * $d8, $d2 * $d8 + sqrt($d6) * 0.08, $d4 * $d8));
+				$this->getRidingEntity()->setMotion(new Vector3($d0 * $d8, $d2 * $d8 + sqrt($d6) * 0.08, $d4 * $d8));
 			}elseif($this->ticksCatchable > 0){
 				// TODO: Random weighted items
 				$items = [

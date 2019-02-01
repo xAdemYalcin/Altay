@@ -2082,7 +2082,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		// TODO: Remove this, we should move horse self
 		// This movement coming from client and this may be a hack
 		// so we should check this
-		if($this->isRiding() and $this->ridingEntity !== null and $this->ridingEntity->getId() === $target->getId()){
+		if($this->isRiding() and $this->getRidingEntity() !== null and $this->ridingEid === $target->getId()){
 			$target->setPositionAndRotation($packet->position, $packet->zRot, $packet->xRot);
 		}
 
@@ -2289,7 +2289,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 		switch($packet->action){
 			case InteractPacket::ACTION_LEAVE_VEHICLE:
-				if($this->ridingEntity === $target){
+				if($this->ridingEid === $packet->target){
 					$this->dismountEntity();
 				}
 				break;
