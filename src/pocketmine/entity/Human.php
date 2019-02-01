@@ -24,6 +24,8 @@ declare(strict_types=1);
 
 namespace pocketmine\entity;
 
+use pocketmine\entity\effect\Effect;
+use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\projectile\ProjectileSource;
 use pocketmine\entity\utils\ExperienceUtils;
 use pocketmine\event\entity\EntityDamageEvent;
@@ -195,20 +197,15 @@ class Human extends Creature implements ProjectileSource, InventoryHolder{
 		$old = $attr->getValue();
 		$attr->setValue($new);
 
-		$reset = false;
 		// ranges: 18-20 (regen), 7-17 (none), 1-6 (no sprint), 0 (health depletion)
 		foreach([
 			        17, 6, 0
 		        ] as $bound){
 			if(($old > $bound) !== ($new > $bound)){
-				$reset = true;
+				$this->foodTickTimer = 0;
 				break;
 			}
 		}
-		if($reset){
-			$this->foodTickTimer = 0;
-		}
-
 	}
 
 	public function getMaxFood() : float{
@@ -572,7 +569,9 @@ class Human extends Creature implements ProjectileSource, InventoryHolder{
 	}
 
 	public function getXpDropAmount() : int{
-		return (int) min(100, $this->getCurrentTotalXp());
+		//this causes some XP to be lost on death when above level 1 (by design), dropping at most enough points for
+		//about 7.5 levels of XP.
+		return (int) min(100, 7 * $this->getXpLevel());
 	}
 
 	public function getInventory(){

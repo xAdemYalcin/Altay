@@ -83,6 +83,7 @@ use function is_infinite;
 use function is_nan;
 use function lcg_value;
 use function sin;
+use function spl_object_id;
 use const M_PI_2;
 
 abstract class Entity extends Location implements Metadatable, EntityIds{
@@ -367,6 +368,8 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	protected $gravity;
 	/** @var float */
 	protected $drag;
+	/** @var bool */
+	protected $gravityEnabled = true;
 
 	/** @var Server */
 	protected $server;
@@ -425,10 +428,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 		$this->boundingBox = new AxisAlignedBB(0, 0, 0, 0, 0, 0);
 		$this->recalculateBoundingBox();
 
-		$this->chunk = $this->level->getChunkAtPosition($this, false);
-		if($this->chunk === null){
-			throw new \InvalidStateException("Cannot create entities in unloaded chunks");
-		}
+		$this->chunk = $this->level->getChunkAtPosition($this);
 
 		if($nbt->hasTag("Motion", ListTag::class)){
 			/** @var float[] $motion */
@@ -1118,6 +1118,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 
 	/**
 	 * @param int $fireTicks
+	 *
 	 * @throws \InvalidArgumentException
 	 */
 	public function setFireTicks(int $fireTicks) : void{
@@ -1263,6 +1264,14 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 		}
 	}
 
+	public function hasGravity() : bool{
+		return $this->gravityEnabled;
+	}
+
+	public function setHasGravity(bool $v = true) : void{
+		$this->gravityEnabled = $v;
+	}
+
 	protected function applyDragBeforeGravity() : bool{
 		return false;
 	}
@@ -1278,7 +1287,9 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 			$this->motion->y *= $friction;
 		}
 
-		$this->applyGravity();
+		if($this->gravityEnabled){
+			$this->applyGravity();
+		}
 
 		if(!$this->applyDragBeforeGravity()){
 			$this->motion->y *= $friction;
@@ -2034,15 +2045,17 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 			if($this->chunk !== null){
 				$this->chunk->removeEntity($this);
 			}
-			$this->chunk = $this->level->getChunk($chunkX, $chunkZ, true);
+			//TODO: this shouldn't be loading chunks, but currently we don't know what to do if they try to move into an
+			//unloaded chunk
+			$this->chunk = $this->level->getOrLoadChunk($chunkX, $chunkZ, true);
 
 			if(!$this->justCreated){
 				$newChunk = $this->level->getViewersForPosition($this);
 				foreach($this->hasSpawned as $player){
-					if(!isset($newChunk[$player->getLoaderId()])){
+					if(!isset($newChunk[spl_object_id($player)])){
 						$this->despawnFrom($player);
 					}else{
-						unset($newChunk[$player->getLoaderId()]);
+						unset($newChunk[spl_object_id($player)]);
 					}
 				}
 				foreach($newChunk as $player){
@@ -2087,6 +2100,19 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 
 	public function resetMotion() : void{
 		$this->motion->setComponents(0, 0, 0);
+	}
+
+	/**
+	 * Adds the given values to the entity's motion vector.
+	 *
+	 * @param float $x
+	 * @param float $y
+	 * @param float $z
+	 */
+	public function addMotion(float $x, float $y, float $z) : void{
+		$this->motion->x += $x;
+		$this->motion->y += $y;
+		$this->motion->z += $z;
 	}
 
 	public function isOnGround() : bool{
@@ -2200,8 +2226,9 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	 * @param Player $player
 	 */
 	public function spawnTo(Player $player) : void{
-		if(!isset($this->hasSpawned[$player->getLoaderId()])){
-			$this->hasSpawned[$player->getLoaderId()] = $player;
+		$id = spl_object_id($player);
+		if(!isset($this->hasSpawned[$id])){
+			$this->hasSpawned[$id] = $player;
 
 			$this->sendSpawnPacket($player);
 		}
@@ -2230,13 +2257,14 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	 * @param bool   $send
 	 */
 	public function despawnFrom(Player $player, bool $send = true) : void{
-		if(isset($this->hasSpawned[$player->getLoaderId()])){
+		$id = spl_object_id($player);
+		if(isset($this->hasSpawned[$id])){
 			if($send){
 				$pk = new RemoveEntityPacket();
 				$pk->entityUniqueId = $this->id;
 				$player->sendDataPacket($pk);
 			}
-			unset($this->hasSpawned[$player->getLoaderId()]);
+			unset($this->hasSpawned[$id]);
 		}
 	}
 

@@ -78,7 +78,6 @@ use pocketmine\network\mcpe\protocol\types\PlayerListEntry;
 use pocketmine\network\mcpe\RakLibInterface;
 use pocketmine\network\Network;
 use pocketmine\network\query\QueryHandler;
-use pocketmine\network\rcon\RCON;
 use pocketmine\network\upnp\UPnP;
 use pocketmine\permission\BanList;
 use pocketmine\permission\DefaultPermissions;
@@ -138,7 +137,7 @@ use function register_shutdown_function;
 use function rename;
 use function round;
 use function sleep;
-use function spl_object_hash;
+use function spl_object_id;
 use function sprintf;
 use function str_repeat;
 use function str_replace;
@@ -146,7 +145,6 @@ use function stripos;
 use function strlen;
 use function strrpos;
 use function strtolower;
-use function substr;
 use function time;
 use function touch;
 use function trim;
@@ -248,9 +246,6 @@ class Server{
 
 	/** @var bool */
 	private $onlineMode = true;
-
-	/** @var RCON */
-	private $rcon;
 
 	/** @var EntityMetadataStore */
 	private $entityMetadata;
@@ -492,13 +487,6 @@ class Server{
 	}
 
 	/**
-	 * @return int
-	 */
-	public function getSpawnRadius() : int{
-		return $this->getConfigInt("spawn-protection", 16);
-	}
-
-	/**
 	 * @return bool
 	 */
 	public function isHardcore() : bool{
@@ -684,31 +672,22 @@ class Server{
 	/**
 	 * @param string $name
 	 *
-	 * @return CompoundTag
+	 * @return CompoundTag|null
 	 */
-    public function getOfflinePlayerData(string $name): CompoundTag{
-        $name = strtolower($name);
-        $path = $this->getDataPath()."players/";
-        if($this->shouldSavePlayerData()){
-            if(file_exists($path."$name.dat")){
-                try {
-                    return (new BigEndianNbtSerializer())->readCompressed(file_get_contents($path.$name.".dat"));
-                } catch(NbtDataException $e){ //zlib decode error / corrupt data
-                    rename($path."$name.dat", $path."$name.dat.bak");
-                    $this->logger->error($this->getLanguage()->translateString("pocketmine.data.playerCorrupted", [$name]));
-                }
-            }
-            $this->logger->notice($this->getLanguage()->translateString("pocketmine.data.playerNotFound", [$name]));
-        }
-        $spawn = $this->levelManager->getDefaultLevel()->getSafeSpawn();
+	public function getOfflinePlayerData(string $name) : ?CompoundTag{
+		$name = strtolower($name);
+		$path = $this->getDataPath() . "players/";
 
-        $nbt = EntityFactory::createBaseNBT($spawn);
-        $nbt->setString("Level", $this->levelManager->getDefaultLevel()->getFolderName());
-        $nbt->setByte("OnGround", 1); //TODO: this hack is needed for new players in-air ticks - they don't get detected as on-ground until they move
-        //TODO: old code had a TODO for SpawnForced
-
-        return $nbt;
-    }
+		if(file_exists($path . "$name.dat")){
+			try{
+				return (new BigEndianNbtSerializer())->readCompressed(file_get_contents($path . "$name.dat"));
+			}catch(NbtDataException $e){ //zlib decode error / corrupt data
+				rename($path . "$name.dat", $path . "$name.dat.bak");
+				$this->logger->error($this->getLanguage()->translateString("pocketmine.data.playerCorrupted", [$name]));
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * @param string      $name
@@ -1105,13 +1084,25 @@ class Server{
 
 			$this->logger->info("Loading server properties...");
 			$this->properties = new Config($this->dataPath . "server.properties", Config::PROPERTIES, [
-				"motd" => \pocketmine\NAME . " Server", "server-port" => 19132, "white-list" => false,
-				"announce-player-achievements" => true, "spawn-protection" => 16, "max-players" => 20, "gamemode" => 0,
-				"force-gamemode" => false, "hardcore" => false, "pvp" => true, "difficulty" => 1,
-				"generator-settings" => "", "level-name" => "world", "level-seed" => "", "level-type" => "DEFAULT",
-				"enable-query" => true, "enable-rcon" => false,
-				"rcon.password" => substr(base64_encode(random_bytes(20)), 3, 10), "auto-save" => true,
-				"view-distance" => 8, "xbox-auth" => true, "language" => "eng"
+				"motd" => \pocketmine\NAME . " Server",
+				"server-port" => 19132,
+				"white-list" => false,
+				"announce-player-achievements" => true,
+				"max-players" => 20,
+				"gamemode" => 0,
+				"force-gamemode" => false,
+				"hardcore" => false,
+				"pvp" => true,
+				"difficulty" => 1,
+				"generator-settings" => "",
+				"level-name" => "world",
+				"level-seed" => "",
+				"level-type" => "DEFAULT",
+				"enable-query" => true,
+				"auto-save" => true,
+				"view-distance" => 8,
+				"xbox-auth" => true,
+				"language" => "eng"
 			]);
 
 			define('pocketmine\DEBUG', (int) $this->getProperty("debug.level", 1));
@@ -1222,14 +1213,6 @@ class Server{
 				Timings::$serverCommandTimer->stopTiming();
 			});
 			$this->console->start(PTHREADS_INHERIT_NONE);
-
-			if($this->getConfigBool("enable-rcon", false)){
-				try{
-					$this->rcon = new RCON($this, $this->getConfigString("rcon.password", ""), $this->getConfigInt("rcon.port", $this->getPort()), $this->getIp(), $this->getConfigInt("rcon.max-clients", 50));
-				}catch(\RuntimeException $e){
-					$this->getLogger()->critical("RCON can't be started: " . $e->getMessage());
-				}
-			}
 
 			$this->entityMetadata = new EntityMetadataStore();
 			$this->playerMetadata = new PlayerMetadataStore();
@@ -1417,7 +1400,7 @@ class Server{
 
 	/**
 	 * @param TextContainer|string $message
-	 * @param Player[]             $recipients
+	 * @param CommandSender[]      $recipients
 	 *
 	 * @return int
 	 */
@@ -1465,6 +1448,17 @@ class Server{
 		return count($recipients);
 	}
 
+	private function selectPermittedPlayers(string $permission) : array{
+		/** @var Player[] $players */
+		$players = [];
+		foreach(PermissionManager::getInstance()->getPermissionSubscriptions($permission) as $permissible){
+			if($permissible instanceof Player and $permissible->hasPermission($permission)){
+				$players[spl_object_id($permissible)] = $permissible; //prevent duplication
+			}
+		}
+		return $players;
+	}
+
 	/**
 	 * @param string   $tip
 	 * @param Player[] $recipients
@@ -1472,15 +1466,7 @@ class Server{
 	 * @return int
 	 */
 	public function broadcastTip(string $tip, array $recipients = null) : int{
-		if(!is_array($recipients)){
-			/** @var Player[] $recipients */
-			$recipients = [];
-			foreach(PermissionManager::getInstance()->getPermissionSubscriptions(self::BROADCAST_CHANNEL_USERS) as $permissible){
-				if($permissible instanceof Player and $permissible->hasPermission(self::BROADCAST_CHANNEL_USERS)){
-					$recipients[spl_object_hash($permissible)] = $permissible; // do not send messages directly, or some might be repeated
-				}
-			}
-		}
+		$recipients = $recipients ?? $this->selectPermittedPlayers(self::BROADCAST_CHANNEL_USERS);
 
 		/** @var Player[] $recipients */
 		foreach($recipients as $recipient){
@@ -1497,16 +1483,7 @@ class Server{
 	 * @return int
 	 */
 	public function broadcastPopup(string $popup, array $recipients = null) : int{
-		if(!is_array($recipients)){
-			/** @var Player[] $recipients */
-			$recipients = [];
-
-			foreach(PermissionManager::getInstance()->getPermissionSubscriptions(self::BROADCAST_CHANNEL_USERS) as $permissible){
-				if($permissible instanceof Player and $permissible->hasPermission(self::BROADCAST_CHANNEL_USERS)){
-					$recipients[spl_object_hash($permissible)] = $permissible; // do not send messages directly, or some might be repeated
-				}
-			}
-		}
+		$recipients = $recipients ?? $this->selectPermittedPlayers(self::BROADCAST_CHANNEL_USERS);
 
 		/** @var Player[] $recipients */
 		foreach($recipients as $recipient){
@@ -1527,16 +1504,7 @@ class Server{
 	 * @return int
 	 */
 	public function broadcastTitle(string $title, string $subtitle = "", int $fadeIn = -1, int $stay = -1, int $fadeOut = -1, array $recipients = null) : int{
-		if(!is_array($recipients)){
-			/** @var Player[] $recipients */
-			$recipients = [];
-
-			foreach(PermissionManager::getInstance()->getPermissionSubscriptions(self::BROADCAST_CHANNEL_USERS) as $permissible){
-				if($permissible instanceof Player and $permissible->hasPermission(self::BROADCAST_CHANNEL_USERS)){
-					$recipients[spl_object_hash($permissible)] = $permissible; // do not send messages directly, or some might be repeated
-				}
-			}
-		}
+		$recipients = $recipients ?? $this->selectPermittedPlayers(self::BROADCAST_CHANNEL_USERS);
 
 		/** @var Player[] $recipients */
 		foreach($recipients as $recipient){
@@ -1558,7 +1526,7 @@ class Server{
 		foreach(explode(";", $permissions) as $permission){
 			foreach(PermissionManager::getInstance()->getPermissionSubscriptions($permission) as $permissible){
 				if($permissible instanceof CommandSender and $permissible->hasPermission($permission)){
-					$recipients[spl_object_hash($permissible)] = $permissible; // do not send messages directly, or some might be repeated
+					$recipients[spl_object_id($permissible)] = $permissible; // do not send messages directly, or some might be repeated
 				}
 			}
 		}
@@ -1768,9 +1736,6 @@ class Server{
 			$this->hasStopped = true;
 
 			$this->shutdown();
-			if($this->rcon instanceof RCON){
-				$this->rcon->stop();
-			}
 
 			if($this->getProperty("network.upnp-forwarding", false)){
 				$this->logger->info("[UPnP] Removing port forward...");
@@ -2012,14 +1977,14 @@ class Server{
 	}
 
 	public function addPlayer(Player $player){
-		$this->players[spl_object_hash($player)] = $player;
+		$this->players[spl_object_id($player)] = $player;
 	}
 
 	/**
 	 * @param Player $player
 	 */
 	public function removePlayer(Player $player){
-		unset($this->players[spl_object_hash($player)]);
+		unset($this->players[spl_object_id($player)]);
 	}
 
 	public function addOnlinePlayer(Player $player){

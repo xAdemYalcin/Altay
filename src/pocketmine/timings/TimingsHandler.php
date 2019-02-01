@@ -30,7 +30,7 @@ use function count;
 use function fwrite;
 use function microtime;
 use function round;
-use function spl_object_hash;
+use function spl_object_id;
 use const PHP_EOL;
 
 class TimingsHandler{
@@ -155,7 +155,7 @@ class TimingsHandler{
 		$this->name = $name;
 		$this->parent = $parent;
 
-		self::$HANDLERS[spl_object_hash($this)] = $this;
+		self::$HANDLERS[spl_object_id($this)] = $this;
 	}
 
 	public function startTiming(){
@@ -196,6 +196,6 @@ class TimingsHandler{
 	}
 
 	public function remove(){
-		unset(self::$HANDLERS[spl_object_hash($this)]);
+		unset(self::$HANDLERS[spl_object_id($this)]);
 	}
 }

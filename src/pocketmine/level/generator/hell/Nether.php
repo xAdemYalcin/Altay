@@ -31,6 +31,7 @@ use pocketmine\block\SoulSand;
 use pocketmine\level\biome\Biome;
 use pocketmine\level\ChunkManager;
 use pocketmine\level\generator\Generator;
+use pocketmine\level\generator\InvalidGeneratorOptionsException;
 use pocketmine\level\generator\noise\Simplex;
 use pocketmine\level\generator\object\OreType;
 use pocketmine\level\generator\populator\Ore;
@@ -56,6 +57,13 @@ class Nether extends Generator{
 	/** @var Simplex */
 	private $noiseBase;
 
+	/**
+	 * @param ChunkManager $level
+	 * @param int          $seed
+	 * @param array        $options
+	 *
+	 * @throws InvalidGeneratorOptionsException
+	 */
 	public function __construct(ChunkManager $level, int $seed, array $options = []){
 		parent::__construct($level, $seed, $options);
 

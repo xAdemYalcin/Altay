@@ -21,32 +21,21 @@
 
 declare(strict_types=1);
 
-namespace pocketmine\command;
+namespace pocketmine\entity\effect;
 
-use pocketmine\lang\TextContainer;
-use function trim;
+use pocketmine\entity\Living;
 
-class RemoteConsoleCommandSender extends ConsoleCommandSender{
+class AbsorptionEffect extends Effect{
 
-	/** @var string */
-	private $messages = "";
-
-	public function sendMessage($message){
-		if($message instanceof TextContainer){
-			$message = $this->getServer()->getLanguage()->translate($message);
-		}else{
-			$message = $this->getServer()->getLanguage()->translateString($message);
+	public function add(Living $entity, EffectInstance $instance) : void{
+		$new = (4 * $instance->getEffectLevel());
+		if($new > $entity->getAbsorption()){
+			$entity->setAbsorption($new);
 		}
-
-		$this->messages .= trim($message, "\r\n") . "\n";
 	}
 
-	public function getMessage(){
-		return $this->messages;
-	}
-
-	public function getName() : string{
-		return "Rcon";
+	public function remove(Living $entity, EffectInstance $instance) : void{
+		$entity->setAbsorption(0);
 	}
 
 

@@ -52,9 +52,6 @@ abstract class DefaultPermissions{
 		self::registerPermission(new Permission(self::ROOT . ".broadcast.user", "Allows the user to receive user broadcasts", Permission::DEFAULT_TRUE), $broadcasts);
 		$broadcasts->recalculatePermissibles();
 
-		$spawnprotect = self::registerPermission(new Permission(self::ROOT . ".spawnprotect.bypass", "Allows the user to edit blocks within the protected spawn radius", Permission::DEFAULT_OP), $parent);
-		$spawnprotect->recalculatePermissibles();
-
 		$commands = self::registerPermission(new Permission(self::ROOT . ".command", "Allows using all PocketMine commands"), $parent);
 
 		$clear = self::registerPermission(new Permission(self::ALTAY . ".command.clear", "Allows the user to clear inventory players", Permission::DEFAULT_OP), $commands);

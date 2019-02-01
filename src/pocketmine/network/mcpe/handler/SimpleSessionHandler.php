@@ -31,6 +31,7 @@ use pocketmine\inventory\transaction\TransactionValidationException;
 use pocketmine\inventory\transaction\InventoryTransaction;
 use pocketmine\maps\MapData;
 use pocketmine\maps\MapManager;
+use pocketmine\level\TerrainNotLoadedException;
 use pocketmine\math\Vector3;
 use pocketmine\network\BadPacketException;
 use pocketmine\network\mcpe\protocol\AdventureSettingsPacket;
@@ -225,6 +226,12 @@ class SimpleSessionHandler extends SessionHandler{
 		return true;
 	}
 
+	/**
+	 * @param UseItemTransactionData $data
+	 *
+	 * @return bool
+	 * @throws BadPacketException
+	 */
 	private function handleUseItemTransaction(UseItemTransactionData $data) : bool{
 		switch($data->getActionType()){
 			case UseItemTransactionData::ACTION_CLICK_BLOCK:
@@ -240,10 +247,18 @@ class SimpleSessionHandler extends SessionHandler{
 					return true;
 				}
 				//TODO: end hack for client spam bug
-				$this->player->interactBlock($data->getBlockPos(), $data->getFace(), $clickPos);
+				try{
+					$this->player->interactBlock($data->getBlockPos(), $data->getFace(), $clickPos);
+				}catch(TerrainNotLoadedException $e){
+					throw new BadPacketException($e->getMessage(), 0, $e);
+				}
 				return true;
 			case UseItemTransactionData::ACTION_BREAK_BLOCK:
-				$this->player->breakBlock($data->getBlockPos());
+				try{
+					$this->player->breakBlock($data->getBlockPos());
+				}catch(TerrainNotLoadedException $e){
+					throw new BadPacketException($e->getMessage(), 0, $e);
+				}
 				return true;
 			case UseItemTransactionData::ACTION_CLICK_AIR:
 				$this->player->useHeldItem();
@@ -293,18 +308,23 @@ class SimpleSessionHandler extends SessionHandler{
 	}
 
 	public function handleInteract(InteractPacket $packet) : bool{
-		if($packet->action === InteractPacket::ACTION_MOUSEOVER and $packet->target === 0){
+		if($packet->action === InteractPacket::ACTION_MOUSEOVER){
 			//TODO HACK: silence useless spam (MCPE 1.8)
-			//this packet is EXPECTED to only be sent when interacting with an entity, but due to some messy Mojang
-			//hacks, it also sends it when changing the held item now, which causes us to think the inventory was closed
-			//when it wasn't.
+			//due to some messy Mojang hacks, it sends this when changing the held item now, which causes us to think
+			//the inventory was closed when it wasn't.
+			//this is also sent whenever entity metadata updates, which can get really spammy.
+			//TODO: implement handling for this where it matters
 			return true;
 		}
 		return $this->player->handleInteract($packet);
 	}
 
 	public function handleBlockPickRequest(BlockPickRequestPacket $packet) : bool{
-		return $this->player->pickBlock(new Vector3($packet->blockX, $packet->blockY, $packet->blockZ), $packet->addUserData);
+		try{
+			return $this->player->pickBlock(new Vector3($packet->blockX, $packet->blockY, $packet->blockZ), $packet->addUserData);
+		}catch(TerrainNotLoadedException $e){
+			throw new BadPacketException($e->getMessage(), 0, $e);
+		}
 	}
 
 	public function handleEntityPickRequest(EntityPickRequestPacket $packet) : bool{
@@ -316,7 +336,11 @@ class SimpleSessionHandler extends SessionHandler{
 
 		switch($packet->action){
 			case PlayerActionPacket::ACTION_START_BREAK:
-				$this->player->startBreakBlock($pos, $packet->face);
+				try{
+					$this->player->startBreakBlock($pos, $packet->face);
+				}catch(TerrainNotLoadedException $e){
+					throw new BadPacketException($e->getMessage(), 0, $e);
+				}
 
 				break;
 
@@ -352,10 +376,11 @@ class SimpleSessionHandler extends SessionHandler{
 				$this->player->toggleGlide(false);
 				break;
 			case PlayerActionPacket::ACTION_CONTINUE_BREAK:
-				$this->player->continueBreakBlock($pos, $packet->face);
-				break;
-			case PlayerActionPacket::ACTION_SET_ENCHANTMENT_SEED:
-				// TODO
+				try{
+					$this->player->continueBreakBlock($pos, $packet->face);
+				}catch(TerrainNotLoadedException $e){
+					throw new BadPacketException($e->getMessage(), 0, $e);
+				}
 				break;
 			case PlayerActionPacket::ACTION_START_SWIMMING:
 				if(!$this->player->isSwimming()){

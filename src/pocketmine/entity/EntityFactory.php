@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace pocketmine\entity;
 
+use pocketmine\entity\effect\Effect;
 use pocketmine\entity\hostile\Blaze;
 use pocketmine\entity\hostile\CaveSpider;
 use pocketmine\entity\hostile\Creeper;
