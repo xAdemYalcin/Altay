@@ -206,4 +206,8 @@ abstract class AbstractHorse extends Tamable{
 		$this->jumpPower = 0;
 		$this->rearingCounter = 0;
 	}
+
+	public function canBePushed() : bool{
+		return parent::canBePushed() and $this->riddenByEntity === null;
+	}
 }
