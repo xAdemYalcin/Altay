@@ -58,19 +58,20 @@ class AvailableCommandsPacket extends DataPacket implements ClientboundPacket{
 	public const ARG_TYPE_VALUE = 0x03;
 	public const ARG_TYPE_WILDCARD_INT = 0x04;
 	public const ARG_TYPE_OPERATOR = 0x05;
-	public const ARG_TYPE_WILDCARD_TARGET = 0x06;
-	public const ARG_TYPE_TARGET = 0x07;
+	public const ARG_TYPE_TARGET = 0x06;
+	public const ARG_TYPE_WILDCARD_TARGET = 0x07;
 
-	public const ARG_TYPE_STRING = 0x0f;
-	public const ARG_TYPE_POSITION = 0x10;
+	public const ARG_TYPE_FILE_PATH = 0x0e;
 
-	public const ARG_TYPE_MESSAGE = 0x13;
+	public const ARG_TYPE_INT_RANGE = 0x12;
 
-	public const ARG_TYPE_RAWTEXT = 0x15;
+	public const ARG_TYPE_STRING = 0x1a;
+	public const ARG_TYPE_POSITION = 0x1c;
 
-	public const ARG_TYPE_JSON = 0x18;
-
-	public const ARG_TYPE_COMMAND = 0x1f;
+	public const ARG_TYPE_MESSAGE = 0x1f;
+	public const ARG_TYPE_RAWTEXT = 0x21;
+	public const ARG_TYPE_JSON = 0x24;
+	public const ARG_TYPE_COMMAND = 0x2b;
 
 	/**
 	 * Enums are a little different: they are composed as follows:
@@ -82,6 +83,8 @@ class AvailableCommandsPacket extends DataPacket implements ClientboundPacket{
 	 * This is used for /xp <level: int>L. It can only be applied to integer parameters.
 	 */
 	public const ARG_FLAG_POSTFIX = 0x1000000;
+
+	public const ARG_FLAG_SOFT_ENUM = 0x4000000;
 
 	/**
 	 * @var string[]
