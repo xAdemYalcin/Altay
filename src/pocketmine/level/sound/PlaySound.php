@@ -27,7 +27,7 @@ namespace pocketmine\level\sound;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 
-class PlaySound extends Sound{
+class PlaySound implements Sound{
 
 	/** @var string */
 	protected $soundName = "";

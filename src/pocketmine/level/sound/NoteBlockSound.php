@@ -28,7 +28,7 @@ use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\BlockEventPacket;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 
-class NoteBlockSound extends Sound{
+class NoteBlockSound implements Sound{
 
 	public const INSTRUMENT_PIANO = 0;
 	public const INSTRUMENT_BASS_DRUM = 1;
