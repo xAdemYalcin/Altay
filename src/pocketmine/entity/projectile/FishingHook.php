@@ -36,11 +36,11 @@ use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\level\Level;
 use pocketmine\level\particle\GenericParticle;
-use pocketmine\level\particle\Particle;
 use pocketmine\math\RayTraceResult;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\protocol\EntityEventPacket;
+use pocketmine\network\mcpe\protocol\types\ParticleIds;
 use pocketmine\Player;
 use function cos;
 use function floor;
@@ -193,10 +193,10 @@ class FishingHook extends Projectile{
 
 							if($block1 instanceof Water){
 								if($this->random->nextFloat() < 0.15){
-									$this->level->addParticle(new Vector3($d13, $d15 - 0.1, $d16), new GenericParticle(Particle::TYPE_BUBBLE));
+									$this->level->addParticle(new Vector3($d13, $d15 - 0.1, $d16), new GenericParticle(ParticleIds::BUBBLE));
 								}
 
-								$this->level->addParticle(new Vector3($d13, $d15, $d16), new GenericParticle(Particle::TYPE_WATER_WAKE));
+								$this->level->addParticle(new Vector3($d13, $d15, $d16), new GenericParticle(ParticleIds::WATER_WAKE));
 							}
 						}
 					}elseif($this->ticksCaughtDelay > 0){
@@ -220,7 +220,7 @@ class FishingHook extends Projectile{
 							$block = $this->level->getBlock(new Vector3($d12, $d14 - 1, $d6));
 
 							if($block instanceof Water){
-								$this->level->addParticle(new Vector3($d12, $d14, $d6), new GenericParticle(Particle::TYPE_SPLASH));
+								$this->level->addParticle(new Vector3($d12, $d14, $d6), new GenericParticle(ParticleIds::SPLASH));
 							}
 						}
 

@@ -26,9 +26,11 @@ namespace pocketmine\tile;
 
 use pocketmine\item\Record;
 use pocketmine\item\Item;
-use pocketmine\level\particle\{GenericParticle, Particle};
+use pocketmine\level\particle\GenericParticle;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\network\mcpe\protocol\{LevelSoundEventPacket, TextPacket};
+use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
+use pocketmine\network\mcpe\protocol\TextPacket;
+use pocketmine\network\mcpe\protocol\types\ParticleIds;
 use pocketmine\Player;
 use pocketmine\Server;
 
@@ -112,7 +114,7 @@ class Jukebox extends Spawnable{
 	public function onUpdate() : bool{
 		if($this->hasRecordItem()){
 			if(Server::getInstance()->getTick() % 30 === 0){
-				$this->level->addParticle($this->add(0.5, 1.5, 0.5), new GenericParticle(Particle::TYPE_NOTE, mt_rand(0, 4) | mt_rand(0, 24)));
+				$this->level->addParticle($this->add(0.5, 1.5, 0.5), new GenericParticle(ParticleIds::NOTE, mt_rand(0, 4) | mt_rand(0, 24)));
 			}
 			return true;
 		}
