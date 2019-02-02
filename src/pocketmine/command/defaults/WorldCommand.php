@@ -27,6 +27,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\lang\TranslationContainer;
 use pocketmine\level\Level;
+use pocketmine\level\LevelManager;
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\CommandParameter;
 use pocketmine\Player;
@@ -54,7 +55,7 @@ class WorldCommand extends VanillaCommand{
 			throw new InvalidCommandSyntaxException();
 		}
 
-		$level = $this->getLevelByName($sender->getServer(), $args[0]);
+		$level = $this->getLevelByName($sender->getServer()->getLevelManager(), $args[0]);
 		if($countArgs === 1){
 			if($sender instanceof Player){
 				if($level !== null){
@@ -81,13 +82,13 @@ class WorldCommand extends VanillaCommand{
 		return true;
 	}
 
-	private function getLevelByName(Server $server, string $name) : ?Level{
-		if($server->isLevelGenerated($name)){
-			if(($level = $server->getLevelByName($name)) !== null){
+	private function getLevelByName(LevelManager $manager, string $name) : ?Level{
+		if($manager->isLevelGenerated($name)){
+			if(($level = $manager->getLevelByName($name)) !== null){
 				return $level;
 			}else{
-				$server->loadLevel($name);
-				return $server->getLevelByName($name);
+				$manager->loadLevel($name);
+				return $manager->getLevelByName($name);
 			}
 		}
 
