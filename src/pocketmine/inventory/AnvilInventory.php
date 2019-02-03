@@ -24,7 +24,13 @@ declare(strict_types=1);
 
 namespace pocketmine\inventory;
 
+use pocketmine\block\BlockIds;
+use pocketmine\item\Durable;
+use pocketmine\item\EnchantedBook;
+use pocketmine\item\TieredTool;
 use pocketmine\item\Item;
+use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use pocketmine\level\Position;
 use pocketmine\network\mcpe\protocol\types\WindowTypes;
 use pocketmine\Player;
@@ -60,16 +66,73 @@ class AnvilInventory extends ContainerInventory{
 	 * @return bool
 	 */
 	public function onResult(Item $result) : bool{
-		$this->clear(0);
+		$input = $this->getItem(0);
+		$material = $this->getItem(1);
+		$resultE = clone $input;
 
-		if(!$this->getItem(1)->isNull()){
-			$material = $this->getItem(1);
-			$material->pop();
+		// TODO: check xp level cost
 
-			$this->setItem(1, $material);
+		if($material instanceof EnchantedBook){ // enchanting
+			foreach($material->getEnchantments() as $enchantment){
+				if($resultE->hasEnchantment($enchantment->getId())){
+					if($enchantment->getLevel() > $resultE->getEnchantmentLevel($enchantment->getId())){
+						$resultE->addEnchantment($enchantment);
+					}
+				}else{
+					$resultE->addEnchantment($enchantment);
+				}
+			}
+		}elseif($input instanceof Durable and $material instanceof Durable and $input->equals($material, false, true)){ // item repair
+			/** @var Durable $resultE */
+			$resultE->setDamage(min($input->getDamage() + $material->getDamage(), $resultE->getMaxDurability()));
+			foreach($material->getEnchantments() as $enchantment){
+				if($resultE->hasEnchantment($enchantment->getId())){
+					if($enchantment->getLevel() > $resultE->getEnchantmentLevel($enchantment->getId())){
+						$resultE->addEnchantment($enchantment);
+					}
+				}else{
+					$resultE->addEnchantment($enchantment);
+				}
+			}
+		}elseif($input instanceof TieredTool){ // repairing tiered tool
+			static $tierIds = [
+				TieredTool::TIER_WOODEN => BlockIds::WOODEN_PLANKS,
+				TieredTool::TIER_STONE => BlockIds::COBBLESTONE,
+				TieredTool::TIER_IRON => ItemIds::IRON_INGOT,
+				TieredTool::TIER_GOLD => ItemIds::GOLD_INGOT,
+				TieredTool::TIER_DIAMOND => ItemIds::DIAMOND
+			];
+
+			if(isset($tierIds[$input->getTier()])){
+				$targetMaterial = ItemFactory::get($tierIds[$input->getTier()]);
+				if($material->equals($targetMaterial)){
+					/** @var TieredTool $resultE */
+					if($input->getDamage() < $input->getMaxDurability()){
+						$resultE->setDamage($resultE->getDamage() + 1);
+					}
+				}
+			}
 		}
 
-		return true; // TODO: check result
+		if($result->hasCustomName()){
+			if($input->getCustomName() !== $result->getCustomName()){ // renaming
+				$resultE->setCustomName($result->getCustomName());
+			}
+		}
+
+		if($result->equalsExact($resultE)){
+			$this->clear(0);
+
+			if(!$this->getItem(1)->isNull()){
+				$material = $this->getItem(1);
+				$material->pop();
+
+				$this->setItem(1, $material);
+			}
+
+			return true;
+		}
+		return false;
 	}
 
 	/**
