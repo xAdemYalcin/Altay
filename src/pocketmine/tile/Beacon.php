@@ -25,8 +25,8 @@ declare(strict_types=1);
 namespace pocketmine\tile;
 
 use pocketmine\block\Block;
-use pocketmine\entity\Effect;
-use pocketmine\entity\EffectInstance;
+use pocketmine\entity\effect\Effect;
+use pocketmine\entity\effect\EffectInstance;
 use pocketmine\inventory\BeaconInventory;
 use pocketmine\inventory\InventoryHolder;
 use pocketmine\level\Level;
