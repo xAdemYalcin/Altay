@@ -25,8 +25,8 @@ declare(strict_types=1);
 namespace pocketmine\entity\passive;
 
 use pocketmine\entity\Ageable;
-use pocketmine\entity\Effect;
-use pocketmine\entity\EffectInstance;
+use pocketmine\entity\effect\Effect;
+use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\Mob;
 use pocketmine\entity\NPC;
 use pocketmine\inventory\TradeInventory;
