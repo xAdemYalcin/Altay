@@ -778,7 +778,7 @@ abstract class Living extends Entity implements Damageable{
 		return parent::onUpdate($currentTick);
 	}
 
-	public function entityBaseTick(int $tickDiff = 1) : bool{
+	protected function entityBaseTick(int $tickDiff = 1) : bool{
 		Timings::$timerLivingEntityBaseTick->startTiming();
 
 		if($this->getLastAttacker() instanceof Entity and $this->getLastAttacker()->isClosed()){

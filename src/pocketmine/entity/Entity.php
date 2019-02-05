@@ -1047,7 +1047,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 		return $this->propertyManager;
 	}
 
-	public function entityBaseTick(int $tickDiff = 1) : bool{
+	protected function entityBaseTick(int $tickDiff = 1) : bool{
 		if($this->getRidingEntity() instanceof Entity and $this->getRidingEntity()->isClosed()){
 			$this->ridingEid = null;
 			$this->setRiding(false);
@@ -1513,10 +1513,6 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 
 	public function canBePushed() : bool{
 		return false;
-	}
-
-	public function canTriggerWalking() : bool{
-		return true;
 	}
 
 	public function resetFallDistance() : void{

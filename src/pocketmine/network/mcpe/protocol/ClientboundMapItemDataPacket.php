@@ -32,6 +32,7 @@ use pocketmine\network\mcpe\handler\SessionHandler;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\network\mcpe\protocol\types\MapDecoration;
 use pocketmine\network\mcpe\protocol\types\MapTrackedObject;
+use pocketmine\utils\Binary;
 use pocketmine\utils\Color;
 use function assert;
 use function count;
@@ -108,7 +109,7 @@ class ClientboundMapItemDataPacket extends DataPacket implements ClientboundPack
 				$decoration->yOffset = $this->getByte();
 				$decoration->label = $this->getString();
 
-				$decoration->color = Color::fromABGR($this->getUnsignedVarInt());
+				$decoration->color = Color::fromRGBA(Binary::flipIntEndianness($this->getUnsignedVarInt()));
 
 				$this->decorations[$i] = $decoration;
 			}
@@ -127,7 +128,7 @@ class ClientboundMapItemDataPacket extends DataPacket implements ClientboundPack
 
 			for($y = 0; $y < $this->height; ++$y){
 				for($x = 0; $x < $this->width; ++$x){
-					$this->colors[$y][$x] = Color::fromABGR($this->getUnsignedVarInt());
+					$this->colors[$y][$x] = Color::fromRGBA(Binary::flipIntEndianness($this->getUnsignedVarInt()));
 				}
 			}
 		}
@@ -183,7 +184,7 @@ class ClientboundMapItemDataPacket extends DataPacket implements ClientboundPack
 				$this->putString($decoration->label);
 
 				assert($decoration->color instanceof Color);
-				$this->putUnsignedVarInt($decoration->color->toABGR());
+				$this->putUnsignedVarInt(Binary::flipIntEndianness($decoration->color->toRGBA()));
 			}
 		}
 
@@ -197,7 +198,8 @@ class ClientboundMapItemDataPacket extends DataPacket implements ClientboundPack
 
 			for($y = 0; $y < $this->height; ++$y){
 				for($x = 0; $x < $this->width; ++$x){
-					$this->putUnsignedVarInt($this->colors[$y][$x]->toABGR());
+					//if mojang had any sense this would just be a regular LE int
+					$this->putUnsignedVarInt(Binary::flipIntEndianness($this->colors[$y][$x]->toRGBA()));
 				}
 			}
 		}
