@@ -72,7 +72,7 @@ abstract class Animal extends Mob implements Ageable{
 		return parent::onInteract($player, $item, $clickPos);
 	}
 
-	public function entityBaseTick(int $diff = 1) : bool{
+	protected function entityBaseTick(int $diff = 1) : bool{
 		if($this->isInLove()){
 			if($this->inLove-- > 0 and $this->inLove % 10 === 0){
 				$this->broadcastEntityEvent(EntityEventPacket::LOVE_PARTICLES);

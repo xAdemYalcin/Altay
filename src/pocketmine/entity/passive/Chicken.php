@@ -114,7 +114,7 @@ class Chicken extends Animal{
 		return new Vector3(0, 1, 0);
 	}
 
-	public function entityBaseTick(int $diff = 1) : bool{
+	protected function entityBaseTick(int $diff = 1) : bool{
 		if(!$this->onGround and $this->motion->y < 0){
 			$this->motion->y *= 0.6;
 		}

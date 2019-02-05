@@ -79,7 +79,7 @@ class Boat extends Vehicle{
 		];
 	}
 
-	public function entityBaseTick(int $diff = 1) : bool{
+	protected function entityBaseTick(int $diff = 1) : bool{
 		if($this->getHealth() < $this->getMaxHealth() and Server::getInstance()->getTick() % 10 === 0){
 			$this->heal(new EntityRegainHealthEvent($this, 1, EntityRegainHealthEvent::CAUSE_REGEN));
 		}

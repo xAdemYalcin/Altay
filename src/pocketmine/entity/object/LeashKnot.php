@@ -107,7 +107,7 @@ class LeashKnot extends Entity{
 	 *
 	 * @return bool
 	 */
-	public function entityBaseTick(int $tickDiff = 1) : bool{
+	protected function entityBaseTick(int $tickDiff = 1) : bool{
 		if($this->dropCounter++ >= 100 and $this->isValid()){
 			$this->dropCounter = 0;
 			if(!$this->isSurfaceValid() and !$this->isFlaggedForDespawn()){

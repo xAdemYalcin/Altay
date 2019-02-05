@@ -154,7 +154,7 @@ class Creeper extends Monster implements Ageable{
 		}
 	}
 
-	public function entityBaseTick(int $diff = 1) : bool{
+	protected function entityBaseTick(int $diff = 1) : bool{
 		$hasUpdate = parent::entityBaseTick($diff);
 
 		$this->lastActiveTime = $this->timeSinceIgnited;

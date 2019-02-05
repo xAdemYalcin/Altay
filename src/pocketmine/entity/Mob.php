@@ -118,7 +118,7 @@ abstract class Mob extends Living{
 	 *
 	 * @return bool
 	 */
-	public function entityBaseTick(int $diff = 1) : bool{
+	protected function entityBaseTick(int $diff = 1) : bool{
 		$hasUpdate = parent::entityBaseTick($diff);
 
 		if(!$this->isImmobile()){

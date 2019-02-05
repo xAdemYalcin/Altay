@@ -57,7 +57,7 @@ class FireworksRocket extends Entity{
 		$this->motion->z *= 1.15;
 	}
 
-	public function entityBaseTick(int $tickDiff = 1) : bool{
+	protected function entityBaseTick(int $tickDiff = 1) : bool{
 		if($this->closed){
 			return false;
 		}

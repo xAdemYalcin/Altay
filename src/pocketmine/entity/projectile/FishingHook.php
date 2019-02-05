@@ -133,7 +133,7 @@ class FishingHook extends Projectile{
 	 *
 	 * @return bool
 	 */
-	public function entityBaseTick(int $tickDiff = 1) : bool{
+	protected function entityBaseTick(int $tickDiff = 1) : bool{
 		$hasUpdate = parent::entityBaseTick($tickDiff);
 
 		$owner = $this->getOwningEntity();
