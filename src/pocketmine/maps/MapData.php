@@ -187,7 +187,7 @@ class MapData{
 
 			for($y = 0; $y < $height; $y++){
 				for($x = 0; $x < $width; $x++){
-					$this->colors[$y][$x] = Color::fromABGR($byteColors[$x + $y * $width] ?? 0);
+					$this->colors[$y][$x] = Color::fromARGB($byteColors[$x + $y * $width] ?? 0);
 				}
 			}
 		}
@@ -214,7 +214,7 @@ class MapData{
 			for($y = 0; $y < $h; $y++){
 				for($x = 0; $x < $w; $x++){
 					$color = $this->colors[$y][$x] ?? new Color(0, 0, 0);
-					$byteColors[$x + $y * $w] = $color->toABGR();
+					$byteColors[$x + $y * $w] = $color->toARGB();
 				}
 			}
 
