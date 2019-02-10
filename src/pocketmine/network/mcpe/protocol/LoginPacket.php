@@ -53,6 +53,7 @@ class LoginPacket extends DataPacket implements ServerboundPacket{
 	public const I_XUID = 'XUID';
 
 	public const I_CLIENT_RANDOM_ID = 'ClientRandomId';
+	public const I_DEVICE_ID = 'DeviceId';
 	public const I_SERVER_ADDRESS = 'ServerAddress';
 	public const I_LANGUAGE_CODE = 'LanguageCode';
 
@@ -172,6 +173,7 @@ class LoginPacket extends DataPacket implements ServerboundPacket{
 
 		$v = new Validator();
 		$v->required(self::I_CLIENT_RANDOM_ID)->integer();
+		$v->required(self::I_DEVICE_ID)->string();
 		$v->required(self::I_SERVER_ADDRESS)->string();
 		$v->required(self::I_LANGUAGE_CODE)->string();
 
@@ -196,7 +198,8 @@ class LoginPacket extends DataPacket implements ServerboundPacket{
 			),
 			$this->clientData[self::I_LANGUAGE_CODE],
 			$this->extraData[self::I_XUID],
-			$this->clientData[self::I_CLIENT_RANDOM_ID]
+			$this->clientData[self::I_CLIENT_RANDOM_ID],
+            $this->clientData[self::I_DEVICE_ID]
 		);
 	}
 
