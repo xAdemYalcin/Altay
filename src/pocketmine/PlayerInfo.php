@@ -45,8 +45,12 @@ class PlayerInfo{
 	private $clientId;
 	/** @var string */
 	private $deviceId;
+    /** @var int */
+    private $deviceOS;
+    /** @var string */
+    private $deviceModel;
 
-	public function __construct(string $username, UUID $uuid, Skin $skin, string $locale, string $xuid, int $clientId, string $deviceId){
+	public function __construct(string $username, UUID $uuid, Skin $skin, string $locale, string $xuid, int $clientId, string $deviceId, int $deviceOS, string $deviceModel){
 		$this->username = $username;
 		$this->uuid = $uuid;
 		$this->skin = $skin;
@@ -54,6 +58,8 @@ class PlayerInfo{
 		$this->xuid = $xuid;
 		$this->clientId = $clientId;
 		$this->deviceId = $deviceId;
+		$this->deviceOS = $deviceOS;
+        $this->deviceModel = $deviceModel;
 	}
 
 	/**
@@ -98,7 +104,24 @@ class PlayerInfo{
 		return $this->clientId;
 	}
 
-	public function getDeviceId(): string{
+    /**
+     * @return string
+     */
+    public function getDeviceId(): string{
 	    return $this->deviceId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDeviceOS(): int{
+        return $this->deviceOS;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDeviceModel(): string{
+        return $this->deviceModel;
     }
 }

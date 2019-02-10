@@ -53,9 +53,12 @@ class LoginPacket extends DataPacket implements ServerboundPacket{
 	public const I_XUID = 'XUID';
 
 	public const I_CLIENT_RANDOM_ID = 'ClientRandomId';
-	public const I_DEVICE_ID = 'DeviceId';
 	public const I_SERVER_ADDRESS = 'ServerAddress';
 	public const I_LANGUAGE_CODE = 'LanguageCode';
+
+    public const I_DEVICE_ID = 'DeviceId';
+	public const I_DEVICE_OS = "DeviceOS";
+    public const I_DEVICE_MODEL = 'DeviceModel';
 
 	public const I_SKIN_ID = 'SkinId';
 	public const I_SKIN_DATA = 'SkinData';
@@ -173,9 +176,12 @@ class LoginPacket extends DataPacket implements ServerboundPacket{
 
 		$v = new Validator();
 		$v->required(self::I_CLIENT_RANDOM_ID)->integer();
-		$v->required(self::I_DEVICE_ID)->string();
 		$v->required(self::I_SERVER_ADDRESS)->string();
 		$v->required(self::I_LANGUAGE_CODE)->string();
+
+        $v->required(self::I_DEVICE_ID)->string();
+        $v->required(self::I_DEVICE_OS)->integer();
+        $v->required(self::I_DEVICE_MODEL)->string();
 
 		$v->required(self::I_SKIN_ID)->string();
 		$v->required(self::I_SKIN_DATA)->string();
@@ -199,7 +205,9 @@ class LoginPacket extends DataPacket implements ServerboundPacket{
 			$this->clientData[self::I_LANGUAGE_CODE],
 			$this->extraData[self::I_XUID],
 			$this->clientData[self::I_CLIENT_RANDOM_ID],
-            $this->clientData[self::I_DEVICE_ID]
+            $this->clientData[self::I_DEVICE_ID],
+            $this->clientData[self::I_DEVICE_OS],
+            $this->clientData[self::I_DEVICE_MODEL]
 		);
 	}
 

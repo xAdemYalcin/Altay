@@ -1876,9 +1876,9 @@ class Player extends Human implements CommandSender, ChunkLoader, ChunkListener,
 		$this->rawUUID = $this->uuid->toBinary();
 		$this->xuid = $this->playerInfo->getXuid();
 
-		$this->deviceModel = $packet->clientData["DeviceModel"];
-		$this->deviceOS = $packet->clientData["DeviceOS"];
-		$this->deviceId = $packet->clientData["DeviceId"];
+        $this->deviceId = $packet->playerInfo->getDeviceId();
+        $this->deviceOS = $packet->playerInfo->getDeviceOS();
+		$this->deviceModel = $packet->playerInfo->getDeviceModel();
 
 		$this->setSkin($this->playerInfo->getSkin());
 

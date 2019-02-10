@@ -2082,16 +2082,17 @@ class Level implements ChunkManager, Metadatable{
 		return $nearby;
 	}
 
-	/**
-	 * Returns the closest Entity to the specified position, within the given radius.
-	 *
-	 * @param Vector3 $pos
-	 * @param float   $maxDistance
-	 * @param string  $entityType Class of entity to use for instanceof
-	 * @param bool    $includeDead Whether to include entitites which are dead
-	 *
-	 * @return Entity|null an entity of type $entityType, or null if not found
-	 */
+    /**
+     * Returns the closest Entity to the specified position, within the given radius.
+     *
+     * @param Vector3 $pos
+     * @param float $maxDistance
+     * @param string $entityType Class of entity to use for instanceof
+     * @param bool $includeDead Whether to include entitites which are dead
+     *
+     * @param callable|null $filter
+     * @return Entity|null an entity of type $entityType, or null if not found
+     */
 	public function getNearestEntity(Vector3 $pos, float $maxDistance, string $entityType = Entity::class, bool $includeDead = false, callable $filter = null) : ?Entity{
 		assert(is_a($entityType, Entity::class, true));
 
