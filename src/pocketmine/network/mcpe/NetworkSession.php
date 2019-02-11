@@ -418,7 +418,9 @@ class NetworkSession{
 	public function onResourcePacksDone() : void{
 		$this->player->_actuallyConstruct();
 
-		$this->setHandler(new PreSpawnSessionHandler($this->server, $this->player, $this));
+		if($this->connected){
+			$this->setHandler(new PreSpawnSessionHandler($this->server, $this->player, $this));
+		}
 	}
 
 	public function onTerrainReady() : void{
