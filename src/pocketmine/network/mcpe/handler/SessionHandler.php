@@ -64,6 +64,7 @@ use pocketmine\network\mcpe\protocol\GuiDataPickItemPacket;
 use pocketmine\network\mcpe\protocol\HurtArmorPacket;
 use pocketmine\network\mcpe\protocol\LabTablePacket;
 use pocketmine\network\mcpe\protocol\LevelEventPacket;
+use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacketV1;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacketV2;
 use pocketmine\network\mcpe\protocol\LoginPacket;
@@ -244,6 +245,10 @@ abstract class SessionHandler{
 	public function handleExplode(ExplodePacket $packet) : bool{
 		return false;
 	}
+
+	public function handleLevelSoundEventPacket(LevelSoundEventPacket $packet){
+	    return false;
+    }
 
 	public function handleLevelSoundEventPacketV1(LevelSoundEventPacketV1 $packet) : bool{
 		return false;

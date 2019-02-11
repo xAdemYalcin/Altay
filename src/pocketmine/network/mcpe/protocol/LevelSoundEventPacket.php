@@ -317,6 +317,6 @@ class LevelSoundEventPacket extends DataPacket implements ClientboundPacket, Ser
 	}
 
 	public function handle(SessionHandler $handler) : bool{
-		return $handler->handleLevelSoundEvent($this);
+		return $handler->handleLevelSoundEventPacket($this);
 	}
 }
