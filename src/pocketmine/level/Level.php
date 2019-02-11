@@ -1483,7 +1483,8 @@ class Level implements ChunkManager, Metadatable{
 			if($chunk !== null){
 				$fullState = $chunk->getFullBlock($x & 0x0f, $y, $z & 0x0f);
 			}else{
-				throw new TerrainNotLoadedException("Chunk at block $x $y $z is not loaded");
+			    $this->loadChunk($x, $z);
+				//throw new TerrainNotLoadedException("Chunk at block $x $y $z is not loaded");
 			}
 		}
 
@@ -2384,7 +2385,8 @@ class Level implements ChunkManager, Metadatable{
 	public function getChunk(int $x, int $z) : Chunk{
 		$chunk = $this->chunks[Level::chunkHash($x, $z)] ?? null;
 		if($chunk === null){
-			throw new TerrainNotLoadedException("Chunk $x $z is not loaded");
+		    $this->loadChunk($x, $z);
+			//throw new TerrainNotLoadedException("Chunk $x $z is not loaded");
 		}
 		return $chunk;
 	}
