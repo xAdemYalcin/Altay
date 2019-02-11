@@ -46,43 +46,55 @@ class SimpleChunkManager implements ChunkManager{
 	}
 
 	public function getBlockAt(int $x, int $y, int $z) : Block{
-		return BlockFactory::fromFullBlock($this->getChunk($x >> 4, $z >> 4)->getFullBlock($x & 0xf, $y, $z & 0xf));
+		if($chunk = $this->getChunk($x >> 4, $z >> 4)){
+			return BlockFactory::fromFullBlock($chunk->getFullBlock($x & 0xf, $y, $z & 0xf));
+		}
+		return BlockFactory::get(Block::AIR);
 	}
 
 	public function setBlockAt(int $x, int $y, int $z, Block $block) : bool{
-		return $this->getChunk($x >> 4, $z >> 4)->setBlock($x & 0xf, $y, $z & 0xf, $block->getId(), $block->getDamage());
+		if(($chunk = $this->getChunk($x >> 4, $z >> 4)) !== null){
+			return $chunk->setBlock($x & 0xf, $y, $z & 0xf, $block->getId(), $block->getDamage());
+		}
+		return false;
 	}
 
 	public function getBlockLightAt(int $x, int $y, int $z) : int{
-		return $this->getChunk($x >> 4, $z >> 4)->getBlockLight($x & 0xf, $y, $z & 0xf);
+		if($chunk = $this->getChunk($x >> 4, $z >> 4)){
+			return $chunk->getBlockLight($x & 0xf, $y, $z & 0xf);
+		}
+
+		return 0;
 	}
 
 	public function setBlockLightAt(int $x, int $y, int $z, int $level){
-		$this->getChunk($x >> 4, $z >> 4)->setBlockLight($x & 0xf, $y, $z & 0xf, $level);
+		if($chunk = $this->getChunk($x >> 4, $z >> 4)){
+			$chunk->setBlockLight($x & 0xf, $y, $z & 0xf, $level);
+		}
 	}
 
 	public function getBlockSkyLightAt(int $x, int $y, int $z) : int{
-		return $this->getChunk($x >> 4, $z >> 4)->getBlockSkyLight($x & 0xf, $y, $z & 0xf);
+		if($chunk = $this->getChunk($x >> 4, $z >> 4)){
+			return $chunk->getBlockSkyLight($x & 0xf, $y, $z & 0xf);
+		}
+
+		return 0;
 	}
 
 	public function setBlockSkyLightAt(int $x, int $y, int $z, int $level){
-		$this->getChunk($x >> 4, $z >> 4)->setBlockSkyLight($x & 0xf, $y, $z & 0xf, $level);
+		if($chunk = $this->getChunk($x >> 4, $z >> 4)){
+			$chunk->setBlockSkyLight($x & 0xf, $y, $z & 0xf, $level);
+		}
 	}
 
 	/**
 	 * @param int $chunkX
 	 * @param int $chunkZ
 	 *
-	 * @return Chunk
-	 * @throws TerrainNotLoadedException
+	 * @return Chunk|null
 	 */
-	public function getChunk(int $chunkX, int $chunkZ) : Chunk{
-		$chunk = $this->chunks[Level::chunkHash($chunkX, $chunkZ)] ?? null;
-		if($chunk === null){
-			throw new TerrainNotLoadedException("Chunk $chunkX $chunkZ is not loaded");
-		}
-
-		return $chunk;
+	public function getChunk(int $chunkX, int $chunkZ){
+		return $this->chunks[Level::chunkHash($chunkX, $chunkZ)] ?? null;
 	}
 
 	/**
