@@ -2804,7 +2804,7 @@ class Level implements ChunkManager, Metadatable{
 	}
 
 	private function queueUnloadChunk(int $x, int $z){
-		$this->unloadQueue[Level::chunkHash($x, $z)] = microtime(true);
+		$this->unloadQueue[$index = Level::chunkHash($x, $z)] = microtime(true);
 	}
 
 	public function unloadChunkRequest(int $x, int $z, bool $safe = true){
