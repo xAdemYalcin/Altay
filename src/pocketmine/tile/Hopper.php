@@ -129,11 +129,13 @@ class Hopper extends Spawnable implements Container, Nameable, InventoryHolder{
 		}
 
 		$pos = $this->asVector3()->getSide($block->getFacing());
-		$tile = $this->level->getTileAt($pos->x, $pos->y, $pos->z);
-		if($tile instanceof Tile and $tile instanceof InventoryHolder){
-			$item = $this->inventory->firstItem();
-			if($item != null){
-				$this->transferItem($item, $tile);
+		if($this->level->isInLoadedTerrain($pos)){
+			$tile = $this->level->getTileAt($pos->x, $pos->y, $pos->z);
+			if($tile instanceof Tile and $tile instanceof InventoryHolder){
+				$item = $this->inventory->firstItem();
+				if($item != null){
+					$this->transferItem($item, $tile);
+				}
 			}
 		}
 
