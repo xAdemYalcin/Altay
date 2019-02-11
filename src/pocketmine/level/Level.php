@@ -2392,7 +2392,6 @@ class Level implements ChunkManager, Metadatable{
 		$chunk = $this->chunks[Level::chunkHash($x, $z)] ?? null;
 		if($chunk === null){
 		    $this->loadChunk($x, $z);
-		    return $this->getChunk($x, $z);
 			//throw new TerrainNotLoadedException("Chunk $x $z is not loaded");
 		}
 		return $chunk;
