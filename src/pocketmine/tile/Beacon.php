@@ -148,8 +148,10 @@ class Beacon extends Spawnable implements Nameable, InventoryHolder{
 		for($i = 1; $i < 5; $i++){
 			for($x = -$i; $x < $i + 1; $x++){
 				for($z = -$i; $z < $i + 1; $z++){
-					$allMineral = $allMineral && in_array($this->level->getBlockAt($this->x + $x, $this->y - $i, $this->z + $z)->getId(), $this->minerals);
-					if(!$allMineral) return $i - 1;
+					if($this->level->isInLoadedTerrain($this->add($x, -$i, $z))){
+						$allMineral = $allMineral && in_array($this->level->getBlockAt($this->x + $x, $this->y - $i, $this->z + $z)->getId(), $this->minerals);
+						if(!$allMineral) return $i - 1;
+					}
 				}
 			}
 		}
