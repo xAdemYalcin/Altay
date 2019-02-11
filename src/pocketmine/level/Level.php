@@ -1479,7 +1479,7 @@ class Level implements ChunkManager, Metadatable{
 				return $this->blockCache[$chunkHash][$relativeBlockHash];
 			}
 
-			$chunk = $this->chunks[$chunkHash] ?? null;
+			$chunk = $this->getOrLoadChunk($x >> 4, $z >> 4);
 			if($chunk !== null){
 				$fullState = $chunk->getFullBlock($x & 0x0f, $y, $z & 0x0f);
 			}else{
