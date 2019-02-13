@@ -63,6 +63,7 @@ use pocketmine\network\mcpe\protocol\PlayerInputPacket;
 use pocketmine\network\mcpe\protocol\RequestChunkRadiusPacket;
 use pocketmine\network\mcpe\protocol\RiderJumpPacket;
 use pocketmine\network\mcpe\protocol\ServerSettingsRequestPacket;
+use pocketmine\network\mcpe\protocol\SetEntityMotionPacket;
 use pocketmine\network\mcpe\protocol\SetPlayerGameTypePacket;
 use pocketmine\network\mcpe\protocol\ShowCreditsPacket;
 use pocketmine\network\mcpe\protocol\SpawnExperienceOrbPacket;
@@ -562,5 +563,15 @@ class SimpleSessionHandler extends SessionHandler{
 
 	public function handleLevelSoundEvent(LevelSoundEventPacket $packet) : bool{
 		return $this->player->handleLevelSoundEvent($packet);
+	}
+
+	public function handleSetEntityMotion(SetEntityMotionPacket $packet) : bool{
+		// TODO: remove this
+		$target = $this->player->getServer()->getLevelManager()->findEntity($packet->entityRuntimeId);
+		if($target !== null){
+			if($this->player->isRiding() and $this->player->getRidingEntity() !== null and $this->player->getRidingEntity()->getId() === $target->getId()){
+				$target->setMotion($packet->motion);
+			}
+		}
 	}
 }
