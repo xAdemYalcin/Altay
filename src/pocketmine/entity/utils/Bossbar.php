@@ -49,7 +49,7 @@ class Bossbar extends Vector3{
 	protected $entityId;
 	/** @var array */
 	protected $metadata = [];
-	/** @var array */
+	/** @var Player[] */
 	protected $viewers = [];
 
 	public function __construct(string $title = "Altay Bossbar API", float $hp = 1, float $maxHp = 1){
@@ -125,7 +125,7 @@ class Bossbar extends Vector3{
 		$player->sendDataPacket($pk2);
 
 		if($isViewer){
-			$this->viewers[$player->getLoaderId()] = $player;
+			$this->viewers[spl_object_id($player)] = $player;
 		}
 	}
 
@@ -141,8 +141,8 @@ class Bossbar extends Vector3{
 
 		$player->sendDataPacket($pk2);
 
-		if(isset($this->viewers[$player->getLoaderId()])){
-			unset($this->viewers[$player->getLoaderId()]);
+		if(isset($this->viewers[spl_object_id($player)])){
+			unset($this->viewers[spl_object_id($player)]);
 		}
 	}
 
