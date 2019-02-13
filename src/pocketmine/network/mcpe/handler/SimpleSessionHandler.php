@@ -571,7 +571,11 @@ class SimpleSessionHandler extends SessionHandler{
 		if($target !== null){
 			if($this->player->isRiding() and $this->player->getRidingEntity() !== null and $this->player->getRidingEntity()->getId() === $target->getId()){
 				$target->setMotion($packet->motion);
+
+				return true;
 			}
 		}
+
+		return false;
 	}
 }
