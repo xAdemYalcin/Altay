@@ -132,10 +132,8 @@ class AnimalSpawner{
 													$entity = null;
 													try{
 														$class = $entry->entityClass;
-														$spawnPos = $pos1->add(0.5, 0, 0.5);
-														$level->loadChunk($spawnPos->getFloorX() >> 4, $spawnPos->getFloorZ() >> 4);
 														/** @var Living $entity */
-														$entity = new $class($level, EntityFactory::createBaseNBT($spawnPos));
+														$entity = new $class($level, EntityFactory::createBaseNBT($pos1->add(0.5, 0, 0.5)));
 													}catch(\Exception $e){
 														return;
 													}
@@ -255,10 +253,8 @@ class AnimalSpawner{
 
 							try{
 								$class = $entry->entityClass;
-								$spawnPos = $pos->add(0.5, 0, 0.5);
-								$level->loadChunk($spawnPos->getFloorX() >> 4, $spawnPos->getFloorZ() >> 4);
 								/** @var Entity $entity */
-								$entity = new $class($level, EntityFactory::createBaseNBT($spawnPos));
+								$entity = new $class($level, EntityFactory::createBaseNBT($pos->add(0.5, 0, 0.5)));
 							}catch(\Exception $e){
 								continue;
 							}
