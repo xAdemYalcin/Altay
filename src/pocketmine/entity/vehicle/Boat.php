@@ -40,8 +40,8 @@ class Boat extends Vehicle{
 	public $height = 0.5;
 	public $width = 1.0;
 
-	protected $gravity = 0.9;
-	protected $drag = 0.1;
+	protected $gravity = 0.09;
+	protected $drag = 0.01;
 
 	protected function initEntity(CompoundTag $nbt) : void{
 		$this->setHealth(4);
@@ -54,7 +54,11 @@ class Boat extends Vehicle{
 	}
 
 	public function getRiderSeatPosition(int $seatNumber = 0) : Vector3{
-		return new Vector3($seatNumber * 0.8, -0.2, 0);
+		return new Vector3($seatNumber * 0.8, 0, 0);
+	}
+
+	public function getMountedYOffset() : float{
+		return -0.3;
 	}
 
 	public function getBoatType() : int{
