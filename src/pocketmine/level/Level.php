@@ -2000,12 +2000,10 @@ class Level implements ChunkManager, Metadatable{
 
 			for($x = $minX; $x <= $maxX; ++$x){
 				for($z = $minZ; $z <= $maxZ; ++$z){
-					if($this->isChunkLoaded($x, $z)){
-						foreach($this->getChunkEntities($x, $z) as $ent){
-							/** @var Entity|null $entity */
-							if($ent->canBeCollidedWith() and ($entity === null or ($ent !== $entity and $entity->canCollideWith($ent))) and $ent->boundingBox->intersectsWith($bb)){
-								$nearby[] = $ent;
-							}
+					foreach($this->getChunkEntities($x, $z) as $ent){
+						/** @var Entity|null $entity */
+						if($ent->canBeCollidedWith() and ($entity === null or ($ent !== $entity and $entity->canCollideWith($ent))) and $ent->boundingBox->intersectsWith($bb)){
+							$nearby[] = $ent;
 						}
 					}
 				}
@@ -2033,11 +2031,9 @@ class Level implements ChunkManager, Metadatable{
 
 		for($x = $minX; $x <= $maxX; ++$x){
 			for($z = $minZ; $z <= $maxZ; ++$z){
-				if($this->isChunkLoaded($x, $z)){
-					foreach($this->getChunkEntities($x, $z) as $ent){
-						if($ent !== $entity and $ent->boundingBox->intersectsWith($bb)){
-							$nearby[] = $ent;
-						}
+				foreach($this->getChunkEntities($x, $z) as $ent){
+					if($ent !== $entity and $ent->boundingBox->intersectsWith($bb)){
+						$nearby[] = $ent;
 					}
 				}
 			}
@@ -2071,21 +2067,19 @@ class Level implements ChunkManager, Metadatable{
 
 		for($x = $minX; $x <= $maxX; ++$x){
 			for($z = $minZ; $z <= $maxZ; ++$z){
-				if($this->isChunkLoaded($x, $z)){
-					foreach($this->getChunkEntities($x, $z) as $entity){
-						if(!($entity instanceof $entityType) or $entity->isClosed() or $entity->isFlaggedForDespawn() or (!$includeDead and !$entity->isAlive())){
+				foreach($this->getChunkEntities($x, $z) as $entity){
+					if(!($entity instanceof $entityType) or $entity->isClosed() or $entity->isFlaggedForDespawn() or (!$includeDead and !$entity->isAlive())){
+						continue;
+					}
+					if($filter !== null){
+						if(!$filter($entity)){
 							continue;
 						}
-						if($filter !== null){
-							if(!$filter($entity)){
-								continue;
-							}
-						}
-						$distSq = $entity->distanceSquared($pos);
-						if($distSq < $currentTargetDistSq){
-							$currentTargetDistSq = $distSq;
-							$currentTarget = $entity;
-						}
+					}
+					$distSq = $entity->distanceSquared($pos);
+					if($distSq < $currentTargetDistSq){
+						$currentTargetDistSq = $distSq;
+						$currentTarget = $entity;
 					}
 				}
 			}
