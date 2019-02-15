@@ -48,14 +48,14 @@ class MapDecoration{
 		return new ListTag($name, [
 			new IntTag("icon", $this->icon), new IntTag("rot", $this->rot), new IntTag("xOffset", $this->xOffset),
 			new IntTag("yOffset", $this->yOffset), new StringTag("label", $this->label),
-			new IntTag("color", $this->color->toABGR())
+			new IntTag("color", $this->color->toARGB())
 		]);
 	}
 
 	public static function fromNBT(ListTag $nbt) : MapDecoration{
 		$d = new MapDecoration();
 		foreach($nbt->getValue() as $item){
-			$d->{$item->getName()} = $item->getName() === "color" ? Color::fromABGR($item->getValue()) : $item->getValue();
+			$d->{$item->getName()} = $item->getName() === "color" ? Color::fromARGB($item->getValue()) : $item->getValue();
 		}
 
 		return $d;

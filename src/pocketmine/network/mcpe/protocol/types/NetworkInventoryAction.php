@@ -28,6 +28,7 @@ use pocketmine\inventory\AnvilInventory;
 use pocketmine\inventory\BeaconInventory;
 use pocketmine\inventory\ContainerInventory;
 use pocketmine\inventory\EnchantInventory;
+use pocketmine\inventory\FakeInventory;
 use pocketmine\inventory\TradeInventory;
 use pocketmine\inventory\transaction\action\AnvilAction;
 use pocketmine\inventory\transaction\action\CreativeInventoryAction;
@@ -205,7 +206,7 @@ class NetworkInventoryAction{
 				return new CreativeInventoryAction($this->oldItem, $this->newItem, $type);
 			case self::SOURCE_CRAFTING_GRID:
 			case self::SOURCE_TODO:
-				$window = $player->findWindow(ContainerInventory::class);
+				$window = $player->findWindow(FakeInventory::class);
 
 				switch($this->windowId){
 					case self::SOURCE_TYPE_CRAFTING_ADD_INGREDIENT:

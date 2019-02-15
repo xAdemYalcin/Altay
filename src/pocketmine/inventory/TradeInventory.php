@@ -32,7 +32,7 @@ use pocketmine\network\mcpe\protocol\types\WindowTypes;
 use pocketmine\network\mcpe\protocol\UpdateTradePacket;
 use pocketmine\Player;
 
-class TradeInventory extends ContainerInventory{
+class TradeInventory extends ContainerInventory implements FakeInventory{
 
 	/** @var Villager */
 	protected $holder;
