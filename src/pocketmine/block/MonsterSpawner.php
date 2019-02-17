@@ -27,10 +27,11 @@ namespace pocketmine\block;
 use pocketmine\item\SpawnEgg;
 use pocketmine\item\TieredTool;
 use pocketmine\item\Item;
+use pocketmine\math\Vector3;
 use pocketmine\Player;
 use pocketmine\tile\MobSpawner;
-use pocketmine\tile\TileFactory;
 use function mt_rand;
+use pocketmine\tile\TileFactory;
 
 class MonsterSpawner extends Transparent{
 
@@ -68,10 +69,10 @@ class MonsterSpawner extends Transparent{
 		return mt_rand(15, 43);
 	}
 
-	public function onActivate(Item $item, Player $player = null) : bool{
+	public function onActivate(Item $item, int $face, Vector3 $clickVector, Player $player = null) : bool{
 		if($item instanceof SpawnEgg){
 			/** @var MobSpawner $tile */
-			$tile = TileFactory::createFromItem(MobSpawner::class, $this->level, $this, $item);
+			$tile = TileFactory::create(MobSpawner::class, $this->level, $this);
 			$tile->setEntityId($item->getDamage());
 			$this->level->addTile($tile);
 

@@ -29,7 +29,6 @@ use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 use pocketmine\tile\Jukebox as TileJukebox;
-use pocketmine\tile\TileFactory;
 
 class Jukebox extends Solid{
 
@@ -62,18 +61,11 @@ class Jukebox extends Solid{
 		return BlockToolType::TYPE_AXE;
 	}
 
-	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
-		if(parent::place($item, $blockReplace, $blockClicked, $face, $clickVector, $player)){
-			$tile = TileFactory::createFromItem(TileJukebox::class, $this->getLevel(), $this, $item);
-			$this->level->addTile($tile);
-
-			return true;
-		}
-
-		return false;
+	protected function getTileClass() : ?string{
+		return TileJukebox::class;
 	}
 
-	public function onActivate(Item $item, Player $player = null) : bool{
+	public function onActivate(Item $item, int $face, Vector3 $clickVector, Player $player = null) : bool{
 		if($player instanceof Player){
 			$jb = $this->getLevel()->getTile($this);
 			if($jb instanceof TileJukebox){

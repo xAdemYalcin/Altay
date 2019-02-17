@@ -29,7 +29,6 @@ use pocketmine\math\Facing;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 use pocketmine\tile\Beacon as TileBeacon;
-use pocketmine\tile\TileFactory;
 
 class Beacon extends Transparent{
 
@@ -55,17 +54,11 @@ class Beacon extends Transparent{
 		return 4.5;
 	}
 
-	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
-		if(parent::place($item, $blockReplace, $blockClicked, $face, $clickVector, $player)){
-			$tile = TileFactory::createFromItem(TileBeacon::class, $this->getLevel(), $this, $item);
-			$this->level->addTile($tile);
-
-			return true;
-		}
-		return false;
+	protected function getTileClass() : ?string{
+		return TileBeacon::class;
 	}
 
-	public function onActivate(Item $item, Player $player = null) : bool{
+	public function onActivate(Item $item, int $face, Vector3 $clickVector, Player $player = null) : bool{
 		if($player instanceof Player){
 			$tile = $this->level->getTile($this);
 			if($tile instanceof TileBeacon){

@@ -30,7 +30,6 @@ use pocketmine\math\Facing;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 use pocketmine\tile\Hopper as TileHopper;
-use pocketmine\tile\TileFactory;
 
 class Hopper extends Transparent{
 
@@ -77,7 +76,7 @@ class Hopper extends Transparent{
 		return "Hopper";
 	}
 
-	public function onActivate(Item $item, Player $player = null) : bool{
+	public function onActivate(Item $item, int $face, Vector3 $clickVector, Player $player = null) : bool{
 		if($player instanceof Player){
 			$hopper = $this->getLevel()->getTile($this);
 			if($hopper instanceof TileHopper){
@@ -99,13 +98,12 @@ class Hopper extends Transparent{
 			$this->facing = Facing::DOWN;
 		}
 		$this->enabled = true;
-		if(parent::place($item, $blockReplace, $blockClicked, $face, $clickVector, $player)){
-			$tile = TileFactory::createFromItem(TileHopper::class, $this->getLevel(), $this, $item);
-			$this->level->addTile($tile);
 
-			return true;
-		}
-		return true;
+		return parent::place($item, $blockReplace, $blockClicked, $face, $clickVector, $player);
+	}
+
+	protected function getTileClass() : ?string{
+		return TileHopper::class;
 	}
 
 	/**

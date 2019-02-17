@@ -58,7 +58,7 @@ class DragonEgg extends Fallable{
 		return BlockToolType::TYPE_PICKAXE;
 	}
 
-	public function onActivate(Item $item, Player $player = null) : bool{
+	public function onActivate(Item $item, int $face, Vector3 $clickVector, Player $player = null) : bool{
 		$level = $player->getLevel();
 		for($i = 0; $i < 1000; $i++){
 			$x = $this->x + mt_rand(-15, 15);
