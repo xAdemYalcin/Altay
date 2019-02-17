@@ -23,8 +23,15 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use pocketmine\entity\EntityFactory;
+use pocketmine\entity\Living;
+use pocketmine\entity\object\LeashKnot;
+use pocketmine\item\Item;
 use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Facing;
+use pocketmine\math\Vector3;
+use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
+use pocketmine\Player;
 
 abstract class Fence extends Transparent{
 	/** @var bool[] facing => dummy */
@@ -83,5 +90,34 @@ abstract class Fence extends Transparent{
 		}
 
 		return $bbs;
+	}
+
+	public function onActivate(Item $item, int $face, Vector3 $clickVector, ?Player $player = null) : bool{
+		if($player !== null){
+			$knot = LeashKnot::getKnotFromPosition($player->level, $this);
+			$f = 7.0;
+			$flag = false;
+
+			foreach($player->level->getCollidingEntities(new AxisAlignedBB($this->x - $f, $this->y - $f, $this->z - $f, $this->x + $f, $this->y + $f, $this->z + $f)) as $entity){
+				if($entity instanceof Living){
+					if($entity->isLeashed() and $entity->getLeashedToEntity() === $player){
+						if($knot === null){
+							$knot = new LeashKnot($player->level, EntityFactory::createBaseNBT($this));
+							$knot->spawnToAll();
+						}
+
+						$entity->setLeashedToEntity($knot, true);
+						$flag = true;
+					}
+				}
+			}
+
+			if($flag){
+				$player->level->broadcastLevelSoundEvent($this, LevelSoundEventPacket::SOUND_LEASHKNOT_PLACE);
+			}
+
+			return true;
+		}
+		return false;
 	}
 }

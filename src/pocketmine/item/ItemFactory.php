@@ -245,7 +245,7 @@ class ItemFactory{
 		self::registerItem(new RabbitStew());
 		self::registerItem(new Item(Item::RABBIT_FOOT, 0, "Rabbit's Foot"));
 		self::registerItem(new Item(Item::RABBIT_HIDE, 0, "Rabbit Hide"));
-		self::registerItem(new Lead());
+		self::registerItem(new Item(Item::LEAD, 0, "Lead"));
 		self::registerItem(new Item(Item::PRISMARINE_CRYSTALS, 0, "Prismarine Crystals"));
 		self::registerItem(new RawMutton());
 		self::registerItem(new CookedMutton());

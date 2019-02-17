@@ -41,7 +41,6 @@ use pocketmine\item\Armor;
 use pocketmine\item\Consumable;
 use pocketmine\item\Durable;
 use pocketmine\item\enchantment\Enchantment;
-use pocketmine\item\Lead;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\math\Vector3;
@@ -1130,7 +1129,7 @@ abstract class Living extends Entity implements Damageable{
 			$this->clearLeashed(true, !$player->isCreative());
 			return true;
 		}else{
-			if($item instanceof Lead and $this->allowLeashing()){
+			if($item->getId() === Item::LEAD and $this->allowLeashing()){
 				$this->setLeashedToEntity($player);
 				$item->pop();
 				return true;
