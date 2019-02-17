@@ -40,7 +40,7 @@ class Lead extends Item{
 		parent::__construct(self::LEAD, $meta, "Lead");
 	}
 
-	public function onActivate(Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector) : bool{
+	public function onActivate(Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector) : ItemUseResult{
 		if($blockClicked instanceof Fence){
 			$knot = LeashKnot::getKnotFromPosition($player->level, $blockClicked);
 			$f = 7.0;
@@ -64,8 +64,8 @@ class Lead extends Item{
 				$player->level->broadcastLevelSoundEvent($blockClicked, LevelSoundEventPacket::SOUND_LEASHKNOT_PLACE);
 			}
 
-			return true;
+			return ItemUseResult::success();
 		}
-		return false;
+		return ItemUseResult::none();
 	}
 }

@@ -43,14 +43,14 @@ class Boat extends Item{
 		return 1;
 	}
 
-	public function onActivate(Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector) : bool{
+	public function onActivate(Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector) : ItemUseResult{
 		$nbt = EntityFactory::createBaseNBT($blockReplace->add(0.5, 0, 0.5));
 		$nbt->setInt("Variant", $this->getDamage());
 		$entity = EntityFactory::create(EntityBoat::class, $player->level, $nbt);
 		$entity->spawnToAll();
 
-		$this->count--;
+		$this->pop();
 
-		return true;
+		return ItemUseResult::success();
 	}
 }

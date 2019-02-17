@@ -98,18 +98,18 @@ class Fireworks extends Item{
 		$this->setNamedTagEntry($tag);
 	}
 
-	public function onActivate(Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector) : bool{
+	public function onActivate(Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector) : ItemUseResult{
 		$nbt = EntityFactory::createBaseNBT($blockReplace->add(0.5, 0, 0.5), new Vector3(0.001, 0.05, 0.001), lcg_value() * 360, 90);
 
 		$entity = EntityFactory::create(FireworksRocket::class, $player->getLevel(), $nbt, $this);
 
 		if($entity instanceof Entity){
-			--$this->count;
+			$this->pop();
 			$entity->spawnToAll();
-			return true;
+			return ItemUseResult::success();
 		}
 
-		return false;
+		return ItemUseResult::fail();
 	}
 
 	public function onClickAir(Player $player, Vector3 $directionVector) : bool{
