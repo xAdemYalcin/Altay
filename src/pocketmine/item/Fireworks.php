@@ -112,7 +112,7 @@ class Fireworks extends Item{
 		return ItemUseResult::fail();
 	}
 
-	public function onClickAir(Player $player, Vector3 $directionVector) : bool{
+	public function onClickAir(Player $player, Vector3 $directionVector) : ItemUseResult{
 		if($player->isGliding()){
 			$motion = new Vector3((-sin($player->yaw / 180 * M_PI) * cos($player->pitch / 180 * M_PI) * self::BOOST_POWER), (-sin($player->pitch / 180 * M_PI) * self::BOOST_POWER), (cos($player->yaw / 180 * M_PI) * cos($player->pitch / 180 * M_PI) * self::BOOST_POWER));
 
@@ -120,16 +120,15 @@ class Fireworks extends Item{
 			$entity = EntityFactory::create(FireworksRocket::class, $player->getLevel(), $nbt, $this);
 
 			if($entity instanceof Entity){
-				--$this->count;
+				$this->pop();
 				$entity->spawnToAll();
 				$player->setMotion($motion);
 				$player->getLevel()->addSound($player, new BlazeShootSound());
-				return true;
 			}
 
-			return true;
+			return ItemUseResult::success();
 		}
 
-		return false;
+		return ItemUseResult::none();
 	}
 }

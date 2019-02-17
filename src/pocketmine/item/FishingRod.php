@@ -48,7 +48,7 @@ class FishingRod extends Tool{
 		return 65;
 	}
 
-	public function onClickAir(Player $player, Vector3 $directionVector) : bool{
+	public function onClickAir(Player $player, Vector3 $directionVector) : ItemUseResult{
 		if($player->getFishingHook() === null){
 			$hook = new FishingHook($player->level, EntityFactory::createBaseNBT($player->add(0, $player->getEyeHeight() - 0.1, 0), $player->getDirectionVector()->multiply(0.4)), $player);
 			($ev = new ProjectileLaunchEvent($hook))->call();
@@ -64,6 +64,6 @@ class FishingRod extends Tool{
 			$player->animate(AnimatePacket::ACTION_SWING_ARM);
 			$this->applyDamage(1);
 		}
-		return true;
+		return ItemUseResult::success();
 	}
 }

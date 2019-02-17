@@ -89,17 +89,17 @@ abstract class Armor extends Durable{
 		return $epf;
 	}
 
-	public function onClickAir(Player $player, Vector3 $directionVector) : bool{
+	public function onClickAir(Player $player, Vector3 $directionVector) : ItemUseResult{
 		$slot = $this->getArmorSlot();
 		if($player->getArmorInventory()->getItem($slot)->isNull()){
 			$player->getArmorInventory()->setItem($slot, $this);
 
-			$this->count--;
+			$this->pop();
 
-			return true;
+			return ItemUseResult::success();
 		}
 
-		return false;
+		return ItemUseResult::none();
 	}
 
 	protected function getUnbreakingDamageReduction(int $amount) : int{
