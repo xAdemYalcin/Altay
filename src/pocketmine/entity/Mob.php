@@ -29,6 +29,7 @@ use pocketmine\entity\pathfinder\EntityNavigator;
 use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Facing;
 use pocketmine\math\Vector3;
+use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\timings\Timings;
 use function abs;
@@ -99,7 +100,12 @@ abstract class Mob extends Living{
 		$this->addBehaviors();
 
 		$this->setDefaultMovementSpeed($this->getMovementSpeed());
-		$this->setImmobile(boolval($nbt->getByte("NoAI", 1)));
+
+		if($nbt->hasTag("NoAI", ByteTag::class)){
+			$this->setImmobile(boolval($nbt->getByte("NoAI")));
+		}else{
+			$this->setImmobile(boolval($nbt->getByte("Immobile", 1)));
+		}
 	}
 
 	/**
@@ -108,7 +114,7 @@ abstract class Mob extends Living{
 	public function saveNBT() : CompoundTag{
 		$nbt = parent::saveNBT();
 
-		$nbt->setByte("NoAI", intval($this->isImmobile()));
+		$nbt->setByte("Immobile", intval($this->isImmobile()));
 
 		return $nbt;
 	}
