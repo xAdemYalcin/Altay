@@ -73,18 +73,4 @@ class Beacon extends Transparent{
 
 		return true;
 	}
-
-	/**
-	 * @param int   $levels
-	 * @param Block $block
-	 */
-	public function buildPyramidLevels(int $levels, Block $block) : void{
-		for($i = 1; $i < $levels + 1; $i++){
-			for($x = -$i; $x < $i + 1; $x++){
-				for($z = -$i; $z < $i + 1; $z++){
-					$this->level->setBlock($this->add($x, -$i, $z), $block);
-				}
-			}
-		}
-	}
 }
