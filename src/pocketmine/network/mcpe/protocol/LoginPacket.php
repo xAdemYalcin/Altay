@@ -179,9 +179,9 @@ class LoginPacket extends DataPacket implements ServerboundPacket{
 		$v->required(self::I_SERVER_ADDRESS)->string();
 		$v->required(self::I_LANGUAGE_CODE)->string();
 
-        $v->required(self::I_DEVICE_ID)->string();
-        $v->required(self::I_DEVICE_OS)->integer();
-        $v->required(self::I_DEVICE_MODEL)->string();
+		$v->optional(self::I_DEVICE_ID)->string();
+		$v->optional(self::I_DEVICE_OS)->integer();
+		$v->optional(self::I_DEVICE_MODEL)->string();
 
 		$v->required(self::I_SKIN_ID)->string();
 		$v->required(self::I_SKIN_DATA)->string();
@@ -205,9 +205,9 @@ class LoginPacket extends DataPacket implements ServerboundPacket{
 			$this->clientData[self::I_LANGUAGE_CODE],
 			$this->extraData[self::I_XUID],
 			$this->clientData[self::I_CLIENT_RANDOM_ID],
-            $this->clientData[self::I_DEVICE_ID],
-            $this->clientData[self::I_DEVICE_OS],
-            $this->clientData[self::I_DEVICE_MODEL]
+			$this->clientData[self::I_DEVICE_ID] ?? "",
+			$this->clientData[self::I_DEVICE_OS] ?? 0,
+			$this->clientData[self::I_DEVICE_MODEL] ?? ""
 		);
 	}
 
