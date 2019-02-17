@@ -2325,7 +2325,6 @@ class Player extends Human implements CommandSender, ChunkLoader, ChunkListener,
 	 * @param bool    $addTileNBT
 	 *
 	 * @return bool
-	 * @throws TerrainNotLoadedException
 	 */
 	public function pickBlock(Vector3 $pos, bool $addTileNBT) : bool{
 		$block = $this->level->getBlock($pos);
@@ -2364,7 +2363,6 @@ class Player extends Human implements CommandSender, ChunkLoader, ChunkListener,
 	 * @param int     $face
 	 *
 	 * @return bool
-	 * @throws TerrainNotLoadedException
 	 */
 	public function startBreakBlock(Vector3 $pos, int $face) : bool{
 		if($pos->distanceSquared($this) > 10000){
@@ -2400,8 +2398,6 @@ class Player extends Human implements CommandSender, ChunkLoader, ChunkListener,
 	/**
 	 * @param Vector3 $pos
 	 * @param int     $face
-	 *
-	 * @throws TerrainNotLoadedException
 	 */
 	public function continueBreakBlock(Vector3 $pos, int $face) : void{
 		$block = $this->level->getBlock($pos);
@@ -2420,7 +2416,6 @@ class Player extends Human implements CommandSender, ChunkLoader, ChunkListener,
 	 * @param Vector3 $pos
 	 *
 	 * @return bool if the block was successfully broken.
-	 * @throws TerrainNotLoadedException
 	 */
 	public function breakBlock(Vector3 $pos) : bool{
 		$this->doCloseInventory();
@@ -2467,7 +2462,6 @@ class Player extends Human implements CommandSender, ChunkLoader, ChunkListener,
 	 * @param Vector3 $clickOffset
 	 *
 	 * @return bool if it did something
-	 * @throws TerrainNotLoadedException
 	 */
 	public function interactBlock(Vector3 $pos, int $face, Vector3 $clickOffset) : bool{
 		$this->setUsingItem(false);
@@ -2737,11 +2731,7 @@ class Player extends Human implements CommandSender, ChunkLoader, ChunkListener,
 			return true;
 		}
 
-		try{
-			$t = $this->level->getTile($pos);
-		}catch(TerrainNotLoadedException $e){
-			throw new BadPacketException($e->getMessage(), 0, $e);
-		}
+		$t = $this->level->getTile($pos);
 		if($t instanceof Spawnable){
 			$nbt = new NetworkNbtSerializer();
 			try{
@@ -2758,11 +2748,7 @@ class Player extends Human implements CommandSender, ChunkLoader, ChunkListener,
 	}
 
 	public function handleItemFrameDropItem(ItemFrameDropItemPacket $packet) : bool{
-		try{
-			$tile = $this->level->getTileAt($packet->x, $packet->y, $packet->z);
-		}catch(TerrainNotLoadedException $e){
-			throw new BadPacketException($e->getMessage(), 0, $e);
-		}
+		$tile = $this->level->getTileAt($packet->x, $packet->y, $packet->z);
 		if($tile instanceof ItemFrame){
 			//TODO: use facing blockstate property instead of damage value
 			$ev = new PlayerInteractEvent($this, $this->inventory->getItemInHand(), $tile->getBlock(), null, 5 - $tile->getBlock()->getDamage(), PlayerInteractEvent::LEFT_CLICK_BLOCK);

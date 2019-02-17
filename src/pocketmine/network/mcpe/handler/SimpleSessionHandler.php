@@ -31,7 +31,6 @@ use pocketmine\inventory\transaction\TransactionValidationException;
 use pocketmine\inventory\transaction\InventoryTransaction;
 use pocketmine\maps\MapData;
 use pocketmine\maps\MapManager;
-use pocketmine\level\TerrainNotLoadedException;
 use pocketmine\math\Vector3;
 use pocketmine\network\BadPacketException;
 use pocketmine\network\mcpe\protocol\AdventureSettingsPacket;
@@ -248,18 +247,10 @@ class SimpleSessionHandler extends SessionHandler{
 					return true;
 				}
 				//TODO: end hack for client spam bug
-				try{
-					$this->player->interactBlock($data->getBlockPos(), $data->getFace(), $clickPos);
-				}catch(TerrainNotLoadedException $e){
-					throw new BadPacketException($e->getMessage(), 0, $e);
-				}
+				$this->player->interactBlock($data->getBlockPos(), $data->getFace(), $clickPos);
 				return true;
 			case UseItemTransactionData::ACTION_BREAK_BLOCK:
-				try{
-					$this->player->breakBlock($data->getBlockPos());
-				}catch(TerrainNotLoadedException $e){
-					throw new BadPacketException($e->getMessage(), 0, $e);
-				}
+				$this->player->breakBlock($data->getBlockPos());
 				return true;
 			case UseItemTransactionData::ACTION_CLICK_AIR:
 				$this->player->useHeldItem();
@@ -321,11 +312,7 @@ class SimpleSessionHandler extends SessionHandler{
 	}
 
 	public function handleBlockPickRequest(BlockPickRequestPacket $packet) : bool{
-		try{
-			return $this->player->pickBlock(new Vector3($packet->blockX, $packet->blockY, $packet->blockZ), $packet->addUserData);
-		}catch(TerrainNotLoadedException $e){
-			throw new BadPacketException($e->getMessage(), 0, $e);
-		}
+		return $this->player->pickBlock(new Vector3($packet->blockX, $packet->blockY, $packet->blockZ), $packet->addUserData);
 	}
 
 	public function handleEntityPickRequest(EntityPickRequestPacket $packet) : bool{
@@ -337,14 +324,8 @@ class SimpleSessionHandler extends SessionHandler{
 
 		switch($packet->action){
 			case PlayerActionPacket::ACTION_START_BREAK:
-				try{
-					$this->player->startBreakBlock($pos, $packet->face);
-				}catch(TerrainNotLoadedException $e){
-					throw new BadPacketException($e->getMessage(), 0, $e);
-				}
-
+				$this->player->startBreakBlock($pos, $packet->face);
 				break;
-
 			case PlayerActionPacket::ACTION_ABORT_BREAK:
 			case PlayerActionPacket::ACTION_STOP_BREAK:
 				$this->player->stopBreakBlock($pos);
@@ -377,11 +358,7 @@ class SimpleSessionHandler extends SessionHandler{
 				$this->player->toggleGlide(false);
 				break;
 			case PlayerActionPacket::ACTION_CONTINUE_BREAK:
-				try{
-					$this->player->continueBreakBlock($pos, $packet->face);
-				}catch(TerrainNotLoadedException $e){
-					throw new BadPacketException($e->getMessage(), 0, $e);
-				}
+				$this->player->continueBreakBlock($pos, $packet->face);
 				break;
 			case PlayerActionPacket::ACTION_START_SWIMMING:
 				if(!$this->player->isSwimming()){
