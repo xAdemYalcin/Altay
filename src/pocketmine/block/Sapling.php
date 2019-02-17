@@ -24,6 +24,7 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
+use pocketmine\block\utils\TreeType;
 use pocketmine\item\Item;
 use pocketmine\level\generator\object\Tree;
 use pocketmine\math\Facing;
@@ -36,6 +37,13 @@ class Sapling extends Flowable{
 
 	/** @var bool */
 	protected $ready = false;
+	/** @var TreeType */
+	private $treeType;
+
+	public function __construct(int $id, int $variant, TreeType $treeType, ?string $name = null, int $itemId = null){
+		parent::__construct($id, $variant, $name, $itemId);
+		$this->treeType = $treeType;
+	}
 
 	protected function writeStateToMeta() : int{
 		return ($this->ready ? 0x08 : 0);
@@ -58,10 +66,10 @@ class Sapling extends Flowable{
 		return false;
 	}
 
-	public function onActivate(Item $item, Player $player = null) : bool{
+	public function onActivate(Item $item, int $face, Vector3 $clickVector, ?Player $player = null) : bool{
 		if($item->getId() === Item::DYE and $item->getDamage() === 0x0F){ //Bonemeal
 			//TODO: change log type
-			Tree::growTree($this->getLevel(), $this->x, $this->y, $this->z, new Random(mt_rand()), $this->getVariant());
+			Tree::growTree($this->getLevel(), $this->x, $this->y, $this->z, new Random(mt_rand()), $this->treeType);
 
 			$item->pop();
 
@@ -84,7 +92,7 @@ class Sapling extends Flowable{
 	public function onRandomTick() : void{
 		if($this->level->getFullLightAt($this->x, $this->y, $this->z) >= 8 and mt_rand(1, 7) === 1){
 			if($this->ready){
-				Tree::growTree($this->getLevel(), $this->x, $this->y, $this->z, new Random(mt_rand()), $this->getVariant());
+				Tree::growTree($this->getLevel(), $this->x, $this->y, $this->z, new Random(mt_rand()), $this->treeType);
 			}else{
 				$this->ready = true;
 				$this->getLevel()->setBlock($this, $this);

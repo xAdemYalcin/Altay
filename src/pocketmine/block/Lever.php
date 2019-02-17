@@ -120,7 +120,7 @@ class Lever extends Flowable{
 		}
 	}
 
-	public function onActivate(Item $item, Player $player = null) : bool{
+	public function onActivate(Item $item, int $face, Vector3 $clickVector, ?Player $player = null) : bool{
 		$this->powered = !$this->powered;
 		$this->level->setBlock($this, $this);
 		$this->level->broadcastLevelSoundEvent($this->add(0.5, 0.5, 0.5), $this->powered ? LevelSoundEventPacket::SOUND_POWER_ON : LevelSoundEventPacket::SOUND_POWER_OFF);

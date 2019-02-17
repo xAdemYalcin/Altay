@@ -27,21 +27,25 @@ use pocketmine\block\Block;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Utils;
 
-class BlockWriteBatch{
+class BlockTransaction{
+	/** @var ChunkManager */
+	private $world;
+
 	/** @var Block[][][] */
 	private $blocks = [];
 
 	/** @var \Closure[] */
 	private $validators = [];
 
-	public function __construct(){
+	public function __construct(ChunkManager $world){
+		$this->world = $world;
 		$this->addValidator(function(ChunkManager $world, int $x, int $y, int $z) : bool{
 			return $world->isInWorld($x, $y, $z);
 		});
 	}
 
 	/**
-	 * Adds a block to the batch at the given position.
+	 * Adds a block to the transaction at the given position.
 	 *
 	 * @param Vector3 $pos
 	 * @param Block   $state
@@ -68,50 +72,46 @@ class BlockWriteBatch{
 	}
 
 	/**
-	 * Reads a block from the given world, masked by the blocks in this writebatch. This can be useful if you want to
-	 * add blocks to the batch that depend on previous blocks should they exist.
+	 * Reads a block from the given world, masked by the blocks in this transaction. This can be useful if you want to
+	 * add blocks to the transaction that depend on previous blocks should they exist.
 	 *
-	 * @param ChunkManager $world
-	 * @param Vector3      $pos
-	 *
-	 * @return Block
-	 */
-	public function fetchBlock(ChunkManager $world, Vector3 $pos) : Block{
-		return $this->fetchBlockAt($world, $pos->getFloorX(), $pos->getFloorY(), $pos->getFloorZ());
-	}
-
-	/**
-	 * @see BlockWriteBatch::fetchBlock()
-	 *
-	 * @param ChunkManager $world
-	 * @param int          $x
-	 * @param int          $y
-	 * @param int          $z
+	 * @param Vector3 $pos
 	 *
 	 * @return Block
 	 */
-	public function fetchBlockAt(ChunkManager $world, int $x, int $y, int $z) : Block{
-		return $this->blocks[$x][$y][$z] ?? $world->getBlockAt($x, $y, $z);
+	public function fetchBlock(Vector3 $pos) : Block{
+		return $this->fetchBlockAt($pos->getFloorX(), $pos->getFloorY(), $pos->getFloorZ());
 	}
 
 	/**
-	 * Validates and attempts to apply the batch to the given world. If any part of the batch fails to validate, no
-	 * changes will be made to the world.
+	 * @see BlockTransaction::fetchBlock()
 	 *
-	 * @param ChunkManager $world
+	 * @param int $x
+	 * @param int $y
+	 * @param int $z
+	 *
+	 * @return Block
+	 */
+	public function fetchBlockAt(int $x, int $y, int $z) : Block{
+		return $this->blocks[$x][$y][$z] ?? $this->world->getBlockAt($x, $y, $z);
+	}
+
+	/**
+	 * Validates and attempts to apply the transaction to the given world. If any part of the transaction fails to
+	 * validate, no changes will be made to the world.
 	 *
 	 * @return bool if the application was successful
 	 */
-	public function apply(ChunkManager $world) : bool{
+	public function apply() : bool{
 		foreach($this->getBlocks() as [$x, $y, $z, $_]){
 			foreach($this->validators as $validator){
-				if(!$validator($world, $x, $y, $z)){
+				if(!$validator($this->world, $x, $y, $z)){
 					return false;
 				}
 			}
 		}
 		foreach($this->getBlocks() as [$x, $y, $z, $block]){
-			$world->setBlockAt($x, $y, $z, $block);
+			$this->world->setBlockAt($x, $y, $z, $block);
 		}
 		return true;
 	}
@@ -132,7 +132,7 @@ class BlockWriteBatch{
 	/**
 	 * Add a validation predicate which will be used to validate every block.
 	 * The callable signature should be the same as the below dummy function.
-	 * @see BlockWriteBatch::dummyValidator()
+	 * @see BlockTransaction::dummyValidator()
 	 *
 	 * @param callable $validator
 	 */
@@ -143,7 +143,7 @@ class BlockWriteBatch{
 
 	/**
 	 * Dummy function demonstrating the required closure signature for validators.
-	 * @see BlockWriteBatch::addValidator()
+	 * @see BlockTransaction::addValidator()
 	 *
 	 * @dummy
 	 *

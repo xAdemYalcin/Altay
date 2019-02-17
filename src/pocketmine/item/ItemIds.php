@@ -25,6 +25,54 @@ namespace pocketmine\item;
 
 interface ItemIds{
 
+	public const LAVA_CAULDRON = -210;
+
+	public const LANTERN = -208;
+
+	public const BELL = -206;
+
+	public const BARREL = -203;
+	public const SMITHING_TABLE = -202;
+	public const FLETCHING_TABLE = -201;
+	public const CARTOGRAPHY_TABLE = -200;
+
+	public const SMOKER = -198;
+
+	public const BLAST_FURNACE = -196;
+	public const GRINDSTONE = -195;
+
+	public const DARKOAK_WALL_SIGN = -193;
+	public const DARKOAK_STANDING_SIGN = -192;
+	public const ACACIA_WALL_SIGN = -191;
+	public const ACACIA_STANDING_SIGN = -190;
+	public const JUNGLE_WALL_SIGN = -189;
+	public const JUNGLE_STANDING_SIGN = -188;
+	public const BIRCH_WALL_SIGN = -187;
+	public const BIRCH_STANDING_SIGN = -186;
+	public const SMOOTH_QUARTZ_STAIRS = -185;
+	public const RED_NETHER_BRICK_STAIRS = -184;
+	public const SMOOTH_STONE = -183;
+	public const SPRUCE_WALL_SIGN = -182;
+	public const SPRUCE_STANDING_SIGN = -181;
+	public const NORMAL_STONE_STAIRS = -180;
+	public const MOSSY_COBBLESTONE_STAIRS = -179;
+	public const END_BRICK_STAIRS = -178;
+	public const SMOOTH_SANDSTONE_STAIRS = -177;
+	public const SMOOTH_RED_SANDSTONE_STAIRS = -176;
+	public const MOSSY_STONE_BRICK_STAIRS = -175;
+	public const POLISHED_ANDESITE_STAIRS = -174;
+	public const POLISHED_DIORITE_STAIRS = -173;
+	public const POLISHED_GRANITE_STAIRS = -172;
+	public const ANDESITE_STAIRS = -171;
+	public const DIORITE_STAIRS = -170;
+	public const GRANITE_STAIRS = -169;
+	public const DOUBLE_STONE_SLAB4 = -168;
+	public const DOUBLE_STONE_SLAB3 = -167;
+	public const STONE_SLAB4 = -166;
+	public const SCAFFOLDING = -165;
+	public const BAMBOO_SAPLING = -164;
+	public const BAMBOO = -163;
+	public const STONE_SLAB3 = -162;
 	public const BARRIER = -161;
 	public const BUBBLE_COLUMN = -160;
 	public const TURTLE_EGG = -159;
@@ -485,7 +533,7 @@ interface ItemIds{
 	public const RABBIT_HIDE = 415;
 	public const HORSEARMORLEATHER = 416, HORSE_ARMOR_LEATHER = 416, LEATHER_HORSE_ARMOR = 416;
 	public const HORSEARMORIRON = 417, HORSE_ARMOR_IRON = 417, IRON_HORSE_ARMOR = 417;
-	public const GOLD_HORSE_ARMOR = 418, GOLDEN_HORSE_ARMOR = 418, HORSEARMORGOLD = 418, HORSE_ARMOR_GOLD = 418;
+	public const GOLDEN_HORSE_ARMOR = 418, GOLD_HORSE_ARMOR = 418, HORSEARMORGOLD = 418, HORSE_ARMOR_GOLD = 418;
 	public const DIAMOND_HORSE_ARMOR = 419, HORSEARMORDIAMOND = 419, HORSE_ARMOR_DIAMOND = 419;
 	public const LEAD = 420;
 	public const NAMETAG = 421, NAME_TAG = 421;
@@ -536,6 +584,11 @@ interface ItemIds{
 	public const TURTLE_HELMET = 469;
 	public const PHANTOM_MEMBRANE = 470;
 	public const CROSSBOW = 471;
+	public const SPRUCE_SIGN = 472;
+	public const BIRCH_SIGN = 473;
+	public const JUNGLE_SIGN = 474;
+	public const ACACIA_SIGN = 475;
+	public const DARKOAK_SIGN = 476;
 
 	public const COMPOUND = 499;
 	public const RECORD_13 = 500;

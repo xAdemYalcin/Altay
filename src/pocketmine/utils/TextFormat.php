@@ -25,6 +25,7 @@ namespace pocketmine\utils;
 
 use function is_array;
 use function json_encode;
+use function mb_scrub;
 use function preg_quote;
 use function preg_replace;
 use function preg_split;
@@ -65,13 +66,6 @@ abstract class TextFormat{
 	public const ITALIC = TextFormat::ESCAPE . "o";
 	public const RESET = TextFormat::ESCAPE . "r";
 
-	public const CharWidths = [
-		' ' => 4, '!' => 2, '"' => 5, '\'' => 3, '(' => 5, ')' => 5, '*' => 5, ',' => 2, '.' => 2, ':' => 2, ';' => 2,
-		'<' => 5, '>' => 5, '@' => 7, 'I' => 4, '[' => 4, ']' => 4, 'f' => 5, 'i' => 2, 'k' => 5, 'l' => 3, 't' => 4,
-		'' => 5, '|' => 2, '~' => 7, '█' => 9, '░' => 8, '▒' => 9, '▓' => 9, '▌' => 5, '─' => 9
-		//'-' => 9,
-	];
-
 	/**
 	 * Splits the string by Format tokens
 	 *
@@ -84,20 +78,19 @@ abstract class TextFormat{
 	}
 
 	/**
-	 * Cleans the string from Minecraft codes and ANSI Escape Codes
+	 * Cleans the string from Minecraft codes, ANSI Escape Codes and invalid UTF-8 characters
 	 *
 	 * @param string $string
 	 * @param bool   $removeFormat
 	 *
-	 * @return string
+	 * @return string valid clean UTF-8
 	 */
 	public static function clean(string $string, bool $removeFormat = true) : string{
+		$string = mb_scrub($string, 'UTF-8');
 		if($removeFormat){
-			return str_replace(TextFormat::ESCAPE, "", preg_replace([
-				"/" . TextFormat::ESCAPE . "[0-9a-fk-or]/", "/\x1b[\\(\\][[0-9;\\[\\(]+[Bm]/"
-			], "", $string));
+			$string = str_replace(TextFormat::ESCAPE, "", preg_replace("/" . TextFormat::ESCAPE . "[0-9a-fk-or]/u", "", $string));
 		}
-		return str_replace("\x1b", "", preg_replace("/\x1b[\\(\\][[0-9;\\[\\(]+[Bm]/", "", $string));
+		return str_replace("\x1b", "", preg_replace("/\x1b[\\(\\][[0-9;\\[\\(]+[Bm]/u", "", $string));
 	}
 
 	/**
@@ -415,54 +408,4 @@ abstract class TextFormat{
 
 		return $newString;
 	}
-
-	public static function centerLine(string $input) : string{
-		return self::center($input, 180);
-	}
-
-	public static function center(string $input, int $maxLength = 0, bool $addRightPadding = false) : string{
-		$lines = explode("\n", trim($input));
-
-		$sortedLines = $lines;
-		usort($sortedLines, function(string $a, string $b){
-			return self::getPixelLength($b) <=> self::getPixelLength($a);
-		});
-
-		$longest = $sortedLines[0];
-
-		if($maxLength === 0){
-			$maxLength = self::getPixelLength($longest);
-		}
-
-		$result = "";
-
-		$spaceWidth = self::getCharWidth(' ');
-
-		foreach($lines as $sortedLine){
-			$len = max($maxLength - self::getPixelLength($sortedLine), 0);
-			$padding = (int) round($len / (2 * $spaceWidth));
-			$paddingRight = (int) floor($len / (2 * $spaceWidth));
-			$result .= str_pad(' ', $padding) . $sortedLine . self::RESET . ($addRightPadding ? str_pad(' ', $paddingRight) : "") . "\n";
-		}
-
-		$result = rtrim($result, "\n");
-
-		return $result;
-	}
-
-	private static function getCharWidth(string $c) : int{
-		return self::CharWidths[$c] ?? 6;
-	}
-
-	public static function getPixelLength(string $line) : int{
-		$length = 0;
-		foreach(str_split(self::clean($line)) as $c){
-			$length += self::getCharWidth($c);
-		}
-
-		// +1 for each bold character
-		$length += substr_count($line, self::BOLD);
-		return $length;
-	}
-
 }

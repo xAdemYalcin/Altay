@@ -46,6 +46,7 @@ use pocketmine\event\level\SpawnChangeEvent;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemUseResult;
 use pocketmine\level\biome\Biome;
 use pocketmine\level\biome\SpawnListEntry;
 use pocketmine\level\format\Chunk;
@@ -85,8 +86,6 @@ use pocketmine\network\mcpe\protocol\UpdateBlockPacket;
 use pocketmine\Player;
 use pocketmine\plugin\Plugin;
 use pocketmine\Server;
-use pocketmine\tile\Chest;
-use pocketmine\tile\Container;
 use pocketmine\tile\Spawnable;
 use pocketmine\tile\Tile;
 use pocketmine\timings\Timings;
@@ -143,9 +142,6 @@ class Level implements ChunkManager, Metadatable{
 	public const DIFFICULTY_EASY = 1;
 	public const DIFFICULTY_NORMAL = 2;
 	public const DIFFICULTY_HARD = 3;
-
-	/** @var Tile[] */
-	private $tiles = [];
 
 	/** @var Player[] */
 	private $players = [];
@@ -1748,7 +1744,7 @@ class Level implements ChunkManager, Metadatable{
 		$affectedBlocks = $target->getAffectedBlocks();
 
 		if($item === null){
-			$item = ItemFactory::get(Item::AIR, 0, 0);
+			$item = ItemFactory::air();
 		}
 
 		$drops = [];
@@ -1833,15 +1829,7 @@ class Level implements ChunkManager, Metadatable{
 
 		$tile = $this->getTile($target);
 		if($tile !== null){
-			if($tile instanceof Container){
-				if($tile instanceof Chest){
-					$tile->unpair();
-				}
-
-				$tile->getInventory()->dropContents($this, $target);
-			}
-
-			$tile->close();
+			$tile->onBlockDestroyed();
 		}
 	}
 
@@ -1878,17 +1866,20 @@ class Level implements ChunkManager, Metadatable{
 			$ev = new PlayerInteractEvent($player, $item, $blockClicked, $clickVector, $face, PlayerInteractEvent::RIGHT_CLICK_BLOCK);
 			$ev->call();
 			if(!$ev->isCancelled()){
-				if(!$player->isSneaking() and $blockClicked->onActivate($item, $player)){
+				if(!$player->isSneaking() and $blockClicked->onActivate($item, $face, $clickVector, $player)){
 					return true;
 				}
 
-				if(!$player->isSneaking() and $item->onActivate($player, $blockReplace, $blockClicked, $face, $clickVector)){
-					return true;
+				if(!$player->isSneaking()){
+					$result = $item->onActivate($player, $blockReplace, $blockClicked, $face, $clickVector);
+					if($result !== ItemUseResult::none()){
+						return $result === ItemUseResult::success();
+					}
 				}
 			}else{
 				return false;
 			}
-		}elseif($blockClicked->onActivate($item, $player)){
+		}elseif($blockClicked->onActivate($item, $face, $clickVector, $player)){
 			return true;
 		}
 
@@ -1952,6 +1943,11 @@ class Level implements ChunkManager, Metadatable{
 
 		if(!$hand->place($item, $blockReplace, $blockClicked, $face, $clickVector, $player)){
 			return false;
+		}
+		$tile = $this->getTile($hand);
+		if($tile !== null){
+			//TODO: seal this up inside block placement
+			$tile->copyDataFromItem($item);
 		}
 
 		if($playSound){
@@ -2086,16 +2082,6 @@ class Level implements ChunkManager, Metadatable{
 		}
 
 		return $currentTarget;
-	}
-
-
-	/**
-	 * Returns a list of the Tile entities in this level
-	 *
-	 * @return Tile[]
-	 */
-	public function getTiles() : array{
-		return $this->tiles;
 	}
 
 	/**
@@ -2685,7 +2671,6 @@ class Level implements ChunkManager, Metadatable{
 			throw new \InvalidStateException("Attempted to create tile " . get_class($tile) . " in unloaded chunk $chunkX $chunkZ");
 		}
 
-		$this->tiles[Level::blockHash($tile->x, $tile->y, $tile->z)] = $tile;
 		$tile->scheduleUpdate();
 	}
 
@@ -2699,7 +2684,7 @@ class Level implements ChunkManager, Metadatable{
 			throw new \InvalidArgumentException("Invalid Tile level");
 		}
 
-		unset($this->tiles[$blockHash = Level::blockHash($tile->x, $tile->y, $tile->z)], $this->updateTiles[$blockHash]);
+		unset($this->updateTiles[Level::blockHash($tile->x, $tile->y, $tile->z)]);
 
 		$chunkX = $tile->getFloorX() >> 4;
 		$chunkZ = $tile->getFloorZ() >> 4;

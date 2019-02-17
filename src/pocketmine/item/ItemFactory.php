@@ -26,6 +26,7 @@ namespace pocketmine\item;
 
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
+use pocketmine\block\utils\DyeColor;
 use pocketmine\entity\EntityFactory;
 use pocketmine\entity\Living;
 use pocketmine\nbt\tag\CompoundTag;
@@ -47,6 +48,9 @@ class ItemFactory{
 
 	/** @var \SplFixedArray */
 	private static $list = [];
+
+	/** @var Item|null */
+	private static $air = null;
 
 	public static function init(){
 		self::$list = []; //in case of re-initializing
@@ -138,14 +142,13 @@ class ItemFactory{
 		self::registerItem(new Boat());
 		self::registerItem(new Item(Item::LEATHER, 0, "Leather"));
 
-		//TODO: KELP
+
 		self::registerItem(new Item(Item::BRICK, 0, "Brick"));
 		self::registerItem(new Item(Item::CLAY_BALL, 0, "Clay"));
 		self::registerItem(new ItemBlock(Block::SUGARCANE_BLOCK, 0, Item::SUGARCANE));
 		self::registerItem(new Item(Item::PAPER, 0, "Paper"));
 		self::registerItem(new Book());
 		self::registerItem(new Item(Item::SLIME_BALL, 0, "Slimeball"));
-		//TODO: CHEST_MINECART
 
 		self::registerItem(new Egg());
 		self::registerItem(new Compass());
@@ -154,11 +157,13 @@ class ItemFactory{
 		self::registerItem(new Item(Item::GLOWSTONE_DUST, 0, "Glowstone Dust"));
 		self::registerItem(new RawFish());
 		self::registerItem(new CookedFish());
-		for($i = 0; $i < 16; ++$i){
-			//TODO: add colour constants (this is messy)
-			self::registerItem(new Dye($i));
-			self::registerItem(new Bed($i));
-			self::registerItem(new Banner($i));
+		foreach(DyeColor::getAll() as $color){
+			//TODO: use colour object directly
+			//TODO: add interface to dye-colour objects
+			//TODO: new dedicated dyes
+			self::registerItem(new Dye($color->getInvertedMagicNumber(), $color->getDisplayName() . " Dye"));
+			self::registerItem(new Bed($color->getMagicNumber(), $color->getDisplayName() . " Bed"));
+			self::registerItem(new Banner($color->getInvertedMagicNumber(), $color->getDisplayName() . " Banner"));
 		}
 		self::registerItem(new Item(Item::BONE, 0, "Bone"));
 		self::registerItem(new Item(Item::SUGAR, 0, "Sugar"));
@@ -185,7 +190,6 @@ class ItemFactory{
 		foreach(Potion::ALL as $type){
 			self::registerItem(new Potion($type));
 			self::registerItem(new SplashPotion($type));
-			//TODO: LINGERING_POTION
 		}
 		self::registerItem(new GlassBottle());
 		self::registerItem(new SpiderEye());
@@ -194,7 +198,7 @@ class ItemFactory{
 		self::registerItem(new Item(Item::MAGMA_CREAM, 0, "Magma Cream"));
 		self::registerItem(new ItemBlock(Block::BREWING_STAND_BLOCK, 0, Item::BREWING_STAND));
 		self::registerItem(new ItemBlock(Block::CAULDRON_BLOCK, 0, Item::CAULDRON));
-		//TODO: ENDER_EYE
+
 		self::registerItem(new Item(Item::GLISTERING_MELON, 0, "Glistering Melon"));
 
 		foreach(EntityFactory::getKnownTypes() as $className){
@@ -205,7 +209,7 @@ class ItemFactory{
 		}
 
 		self::registerItem(new ExperienceBottle());
-		//TODO: FIREBALL
+
 		self::registerItem(new WritableBook());
 		self::registerItem(new WrittenBook());
 		self::registerItem(new Item(Item::EMERALD, 0, "Emerald"));
@@ -225,7 +229,6 @@ class ItemFactory{
 		self::registerItem(new ItemBlock(Block::SKULL_BLOCK, Skull::TYPE_CREEPER, Item::SKULL));
 		self::registerItem(new ItemBlock(Block::SKULL_BLOCK, Skull::TYPE_DRAGON, Item::SKULL));
 
-		//TODO: CARROTONASTICK
 		self::registerItem(new Item(Item::NETHER_STAR, 0, "Nether Star"));
 		self::registerItem(new PumpkinPie());
 		self::registerItem(new Fireworks());
@@ -234,8 +237,7 @@ class ItemFactory{
 		self::registerItem(new ItemBlock(Block::COMPARATOR_BLOCK, 0, Item::COMPARATOR));
 		self::registerItem(new Item(Item::NETHER_BRICK, 0, "Nether Brick"));
 		self::registerItem(new Item(Item::NETHER_QUARTZ, 0, "Nether Quartz"));
-		//TODO: MINECART_WITH_TNT
-		//TODO: HOPPER_MINECART
+
 		self::registerItem(new Item(Item::PRISMARINE_SHARD, 0, "Prismarine Shard"));
 		self::registerItem(new ItemBlock(Block::HOPPER_BLOCK, 0, Item::HOPPER));
 		self::registerItem(new RawRabbit());
@@ -243,17 +245,11 @@ class ItemFactory{
 		self::registerItem(new RabbitStew());
 		self::registerItem(new Item(Item::RABBIT_FOOT, 0, "Rabbit's Foot"));
 		self::registerItem(new Item(Item::RABBIT_HIDE, 0, "Rabbit Hide"));
-		//TODO: HORSEARMORLEATHER
-		//TODO: HORSEARMORIRON
-		//TODO: GOLD_HORSE_ARMOR
-		//TODO: DIAMOND_HORSE_ARMOR
 		self::registerItem(new Lead());
-		//TODO: NAMETAG
 		self::registerItem(new Item(Item::PRISMARINE_CRYSTALS, 0, "Prismarine Crystals"));
 		self::registerItem(new RawMutton());
 		self::registerItem(new CookedMutton());
 		self::registerItem(new ArmorStand());
-		//TODO: END_CRYSTAL
 		self::registerItem(new ItemBlock(Block::SPRUCE_DOOR_BLOCK, 0, Item::SPRUCE_DOOR));
 		self::registerItem(new ItemBlock(Block::BIRCH_DOOR_BLOCK, 0, Item::BIRCH_DOOR));
 		self::registerItem(new ItemBlock(Block::JUNGLE_DOOR_BLOCK, 0, Item::JUNGLE_DOOR));
@@ -265,21 +261,13 @@ class ItemFactory{
 
 		self::registerItem(new Item(Item::DRAGON_BREATH, 0, "Dragon's Breath"));
 
-		//TODO: SPARKLER
-		//TODO: COMMAND_BLOCK_MINECART
 		self::registerItem(new Elytra());
 		self::registerItem(new Item(Item::SHULKER_SHELL, 0, "Shulker Shell"));
 
-		//TODO: MEDICINE
-		//TODO: BALLOON
-		//TODO: RAPID_FERTILIZER
 		self::registerItem(new Totem());
 
 		self::registerItem(new Item(Item::BLEACH, 0, "Bleach")); //EDU
 		self::registerItem(new Item(Item::IRON_NUGGET, 0, "Iron Nugget"));
-		//TODO: ICE_BOMB
-
-		//TODO: TRIDENT
 
 		self::registerItem(new Beetroot());
 		self::registerItem(new BeetrootSeeds());
@@ -294,9 +282,7 @@ class ItemFactory{
 		self::registerItem(new GoldenAppleEnchanted());
 		self::registerItem(new Item(Item::HEART_OF_THE_SEA, 0, "Heart of the Sea"));
 		self::registerItem(new Item(Item::TURTLE_SHELL_PIECE, 0, "Scute"));
-		//TODO: TURTLE_HELMET
 
-		//TODO: COMPOUND
 		self::registerItem(new Record(Item::RECORD_13, LevelSoundEventPacket::SOUND_RECORD_13));
 		self::registerItem(new Record(Item::RECORD_CAT, LevelSoundEventPacket::SOUND_RECORD_CAT));
 		self::registerItem(new Record(Item::RECORD_BLOCKS, LevelSoundEventPacket::SOUND_RECORD_BLOCKS));
@@ -309,6 +295,40 @@ class ItemFactory{
 		self::registerItem(new Record(Item::RECORD_WARD, LevelSoundEventPacket::SOUND_RECORD_WARD));
 		self::registerItem(new Record(Item::RECORD_11, LevelSoundEventPacket::SOUND_RECORD_11));
 		self::registerItem(new Record(Item::RECORD_WAIT, LevelSoundEventPacket::SOUND_RECORD_WAIT));
+
+		//TODO: minecraft:acacia_sign
+		//TODO: minecraft:balloon
+		//TODO: minecraft:birch_sign
+		//TODO: minecraft:carrotOnAStick
+		//TODO: minecraft:chest_minecart
+		//TODO: minecraft:command_block_minecart
+		//TODO: minecraft:compound
+		//TODO: minecraft:crossbow
+		//TODO: minecraft:darkoak_sign
+		//TODO: minecraft:end_crystal
+		//TODO: minecraft:ender_eye
+		//TODO: minecraft:fireball
+		//TODO: minecraft:fireworksCharge
+		//TODO: minecraft:glow_stick
+		//TODO: minecraft:hopper_minecart
+		//TODO: minecraft:horsearmordiamond
+		//TODO: minecraft:horsearmorgold
+		//TODO: minecraft:horsearmoriron
+		//TODO: minecraft:horsearmorleather
+		//TODO: minecraft:ice_bomb
+		//TODO: minecraft:jungle_sign
+		//TODO: minecraft:kelp
+		//TODO: minecraft:lingering_potion
+		//TODO: minecraft:medicine
+		//TODO: minecraft:name_tag
+		//TODO: minecraft:phantom_membrane
+		//TODO: minecraft:rapid_fertilizer
+		//TODO: minecraft:sparkler
+		//TODO: minecraft:spawn_egg
+		//TODO: minecraft:spruce_sign
+		//TODO: minecraft:tnt_minecart
+		//TODO: minecraft:trident
+		//TODO: minecraft:turtle_helmet
 	}
 
 	/**
@@ -410,6 +430,10 @@ class ItemFactory{
 		}
 
 		return $item;
+	}
+
+	public static function air() : Item{
+		return self::$air ?? (self::$air = self::get(ItemIds::AIR, 0, 0));
 	}
 
 	/**

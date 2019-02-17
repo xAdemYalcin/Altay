@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace pocketmine\level\biome;
 
 use pocketmine\block\Block;
+use pocketmine\block\utils\TreeType;
 use pocketmine\entity\Animal;
 use pocketmine\entity\Creature;
 use pocketmine\entity\CreatureType;
@@ -138,7 +139,7 @@ abstract class Biome{
 
 		self::register(self::SMALL_MOUNTAINS, new SmallMountainsBiome());
 
-		self::register(self::BIRCH_FOREST, new ForestBiome(ForestBiome::TYPE_BIRCH));
+		self::register(self::BIRCH_FOREST, new ForestBiome(TreeType::$BIRCH));
 	}
 
 	/**

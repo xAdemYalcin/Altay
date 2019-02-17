@@ -23,10 +23,10 @@ declare(strict_types=1);
 
 namespace pocketmine\block;
 
-use pocketmine\block\utils\Color;
-use pocketmine\block\utils\PillarRotationTrait;
-use pocketmine\block\utils\WoodType;
+use pocketmine\block\utils\DyeColor;
 use pocketmine\block\utils\InvalidBlockStateException;
+use pocketmine\block\utils\PillarRotationTrait;
+use pocketmine\block\utils\TreeType;
 use pocketmine\item\Item;
 use pocketmine\level\Position;
 use function array_fill;
@@ -93,17 +93,17 @@ class BlockFactory{
 
 		self::registerBlock(new Cobblestone());
 
-		foreach(WoodType::ALL as $type){
-			self::registerBlock(new Planks(Block::PLANKS, $type, WoodType::NAMES[$type] . " Planks"));
-			self::registerBlock(new Sapling(Block::SAPLING, $type, WoodType::NAMES[$type] . " Sapling"));
-			self::registerBlock(new WoodenFence(Block::FENCE, $type, WoodType::NAMES[$type] . " Fence"));
-		}
+		foreach(TreeType::getAll() as $treeType){
+			$magicNumber = $treeType->getMagicNumber();
+			$name = $treeType->getDisplayName();
+			self::registerBlock(new Planks(Block::PLANKS, $magicNumber, $name . " Planks"));
+			self::registerBlock(new Sapling(Block::SAPLING, $magicNumber, $treeType, $name . " Sapling"));
+			self::registerBlock(new WoodenFence(Block::FENCE, $magicNumber, $name . " Fence"));
 
-		foreach(WoodType::ALL as $type){
 			//TODO: find a better way to deal with this split
-			self::registerBlock(new Log($type >= 4 ? Block::WOOD2 : Block::WOOD, $type & 0x03, WoodType::NAMES[$type] . " Log"));
-			self::registerBlock(new Wood($type >= 4 ? Block::WOOD2 : Block::WOOD, ($type & 0x03) | 0b1100, WoodType::NAMES[$type] . " Wood"));
-			self::registerBlock(new Leaves($type >= 4 ? Block::LEAVES2 : Block::LEAVES, $type & 0x03, $type, WoodType::NAMES[$type] . " Leaves"));
+			self::registerBlock(new Log($magicNumber >= 4 ? Block::WOOD2 : Block::WOOD, $magicNumber & 0x03, $treeType, $name . " Log"));
+			self::registerBlock(new Wood($magicNumber >= 4 ? Block::WOOD2 : Block::WOOD, ($magicNumber & 0x03) | 0b1100, $treeType, $name . " Wood"));
+			self::registerBlock(new Leaves($magicNumber >= 4 ? Block::LEAVES2 : Block::LEAVES, $magicNumber & 0x03, $treeType, $name . " Leaves"));
 		}
 
 		self::registerBlock(new Bedrock());
@@ -123,7 +123,6 @@ class BlockFactory{
 		self::registerBlock(new Glass(Block::GLASS, 0, "Glass"));
 		self::registerBlock(new LapisOre());
 		self::registerBlock(new Lapis());
-		//TODO: DISPENSER
 
 		static $sandstoneTypes = [
 			Sandstone::NORMAL => "", Sandstone::CHISELED => "Chiseled ", Sandstone::SMOOTH => "Smooth "
@@ -137,7 +136,7 @@ class BlockFactory{
 		self::registerBlock(new Bed());
 		self::registerBlock(new PoweredRail());
 		self::registerBlock(new DetectorRail());
-		//TODO: STICKY_PISTON
+
 		self::registerBlock(new Cobweb());
 
 		self::registerBlock(new TallGrass(Block::TALL_GRASS, 0, "Fern"));
@@ -146,18 +145,16 @@ class BlockFactory{
 		self::registerBlock(new TallGrass(Block::TALL_GRASS, 3, "Fern"));
 
 		self::registerBlock(new DeadBush());
-		//TODO: PISTON
-		//TODO: PISTONARMCOLLISION
 
-		foreach(Color::ALL as $color){
-			self::registerBlock(new Wool(Block::WOOL, $color, Color::NAMES[$color] . " Wool"));
-			self::registerBlock(new HardenedClay(Block::STAINED_CLAY, $color, Color::NAMES[$color] . " Stained Clay"));
-			self::registerBlock(new Glass(Block::STAINED_GLASS, $color, Color::NAMES[$color] . " Stained Glass"));
-			self::registerBlock(new GlassPane(Block::STAINED_GLASS_PANE, $color, Color::NAMES[$color] . " Stained Glass Pane"));
-			self::registerBlock(new Carpet(Block::CARPET, $color, Color::NAMES[$color] . " Carpet"));
-			self::registerBlock(new Concrete(Block::CONCRETE, $color, Color::NAMES[$color] . " Concrete"));
-			self::registerBlock(new ConcretePowder(Block::CONCRETE_POWDER, $color, Color::NAMES[$color] . " Concrete Powder"));
-			self::registerBlock(new ShulkerBox(Block::SHULKER_BOX, $color, Color::NAMES[$color] . " Shulker Box"));
+		foreach(DyeColor::getAll() as $color){
+			self::registerBlock(new Wool(Block::WOOL, $color->getMagicNumber(), $color->getDisplayName() . " Wool"));
+			self::registerBlock(new HardenedClay(Block::STAINED_CLAY, $color->getMagicNumber(), $color->getDisplayName() . " Stained Clay"));
+			self::registerBlock(new Glass(Block::STAINED_GLASS, $color->getMagicNumber(), $color->getDisplayName() . " Stained Glass"));
+			self::registerBlock(new GlassPane(Block::STAINED_GLASS_PANE, $color->getMagicNumber(), $color->getDisplayName() . " Stained Glass Pane"));
+			self::registerBlock(new Carpet(Block::CARPET, $color->getMagicNumber(), $color->getDisplayName() . " Carpet"));
+			self::registerBlock(new Concrete(Block::CONCRETE, $color->getMagicNumber(), $color->getDisplayName() . " Concrete"));
+			self::registerBlock(new ConcretePowder(Block::CONCRETE_POWDER, $color->getMagicNumber(), $color->getDisplayName() . " Concrete Powder"));
+			self::registerBlock(new ShulkerBox(Block::SHULKER_BOX, $color->getMagicNumber(), $color->getDisplayName() . " Shulker Box"));
 		}
 
 		self::registerBlock(new ShulkerBox(Block::UNDYED_SHULKER_BOX, 0, "Shulker Box"));
@@ -198,8 +195,8 @@ class BlockFactory{
 			new StoneSlab(Block::STONE_SLAB2, Block::DOUBLE_STONE_SLAB2, 6, "Smooth Sandstone"),
 			new StoneSlab(Block::STONE_SLAB2, Block::DOUBLE_STONE_SLAB2, 7, "Red Nether Brick")
 		];
-		foreach(WoodType::ALL as $woodType){
-			$slabTypes[] = new WoodenSlab($woodType);
+		foreach(TreeType::getAll() as $woodType){
+			$slabTypes[] = new WoodenSlab(Block::WOODEN_SLAB, Block::DOUBLE_WOODEN_SLAB, $woodType->getMagicNumber(), $woodType->getDisplayName());
 		}
 		foreach($slabTypes as $type){
 			self::registerBlock($type);
@@ -301,7 +298,7 @@ class BlockFactory{
 		self::registerBlock(new DragonEgg());
 		self::registerBlock(new RedstoneLamp());
 		self::registerBlock((new RedstoneLamp())->setLit()); //flattening hack
-		//TODO: DROPPER
+
 		self::registerBlock(new ActivatorRail());
 		self::registerBlock(new CocoaBlock());
 		self::registerBlock(new SandstoneStairs());
@@ -349,8 +346,7 @@ class BlockFactory{
 		self::registerBlock(new TrappedChest());
 		self::registerBlock(new WeightedPressurePlateLight());
 		self::registerBlock(new WeightedPressurePlateHeavy());
-		//TODO: COMPARATOR_BLOCK
-		//TODO: POWERED_COMPARATOR
+
 		self::registerBlock(new DaylightSensor());
 		self::registerBlock((new DaylightSensor())->setInverted()); //flattening hack
 
@@ -406,8 +402,6 @@ class BlockFactory{
 		self::registerBlock(new FenceGate(Block::JUNGLE_FENCE_GATE, 0, "Jungle Fence Gate"));
 		self::registerBlock(new FenceGate(Block::DARK_OAK_FENCE_GATE, 0, "Dark Oak Fence Gate"));
 		self::registerBlock(new FenceGate(Block::ACACIA_FENCE_GATE, 0, "Acacia Fence Gate"));
-		//TODO: REPEATING_COMMAND_BLOCK
-		//TODO: CHAIN_COMMAND_BLOCK
 
 		self::registerBlock(new WoodenDoor(Block::SPRUCE_DOOR_BLOCK, 0, "Spruce Door", Item::SPRUCE_DOOR));
 		self::registerBlock(new WoodenDoor(Block::BIRCH_DOOR_BLOCK, 0, "Birch Door", Item::BIRCH_DOOR));
@@ -416,14 +410,11 @@ class BlockFactory{
 		self::registerBlock(new WoodenDoor(Block::DARK_OAK_DOOR_BLOCK, 0, "Dark Oak Door", Item::DARK_OAK_DOOR));
 		self::registerBlock(new GrassPath());
 		self::registerBlock(new ItemFrame());
-		//TODO: CHORUS_FLOWER
 
 		self::registerBlock(new PurpurStairs());
 
 		self::registerBlock(new EndStoneBricks());
-		//TODO: FROSTED_ICE
 		self::registerBlock(new EndRod());
-		//TODO: END_GATEWAY
 
 		self::registerBlock(new Magma());
 		self::registerBlock(new NetherWartBlock());
@@ -448,22 +439,137 @@ class BlockFactory{
 		self::registerBlock(new GlazedTerracotta(Block::RED_GLAZED_TERRACOTTA, 0, "Red Glazed Terracotta"));
 		self::registerBlock(new GlazedTerracotta(Block::BLACK_GLAZED_TERRACOTTA, 0, "Black Glazed Terracotta"));
 
-		//TODO: CHORUS_PLANT
-
 		self::registerBlock(new Podzol());
 		self::registerBlock(new Beetroot());
 		self::registerBlock(new Stonecutter());
 		self::registerBlock(new GlowingObsidian());
 		self::registerBlock(new NetherReactor());
-		//TODO: INFO_UPDATE
-		//TODO: INFO_UPDATE2
-		//TODO: MOVINGBLOCK
-		//TODO: OBSERVER
-		//TODO: STRUCTURE_BLOCK
+		self::registerBlock(new InfoUpdate(Block::INFO_UPDATE, 0, "update!"));
+		self::registerBlock(new InfoUpdate(Block::INFO_UPDATE2, 0, "ate!upd"));
 
-		//TODO: RESERVED6
+		self::registerBlock(new Reserved6(Block::RESERVED6, 0, "reserved6"));
 
-		//self::registerBlock(new Barrier()); INFO: Need new chunk format
+		//TODO: minecraft:acacia_button
+		//TODO: minecraft:acacia_pressure_plate
+		//TODO: minecraft:acacia_standing_sign
+		//TODO: minecraft:acacia_trapdoor
+		//TODO: minecraft:acacia_wall_sign
+		//TODO: minecraft:andesite_stairs
+		//TODO: minecraft:bamboo
+		//TODO: minecraft:bamboo_sapling
+		//TODO: minecraft:barrel
+		//TODO: minecraft:barrier
+		//TODO: minecraft:beacon
+		//TODO: minecraft:bell
+		//TODO: minecraft:birch_button
+		//TODO: minecraft:birch_pressure_plate
+		//TODO: minecraft:birch_standing_sign
+		//TODO: minecraft:birch_trapdoor
+		//TODO: minecraft:birch_wall_sign
+		//TODO: minecraft:blast_furnace
+		//TODO: minecraft:blue_ice
+		//TODO: minecraft:bubble_column
+		//TODO: minecraft:cartography_table
+		//TODO: minecraft:carved_pumpkin
+		//TODO: minecraft:cauldron
+		//TODO: minecraft:chain_command_block
+		//TODO: minecraft:chemical_heat
+		//TODO: minecraft:chemistry_table
+		//TODO: minecraft:chorus_flower
+		//TODO: minecraft:chorus_plant
+		//TODO: minecraft:colored_torch_bp
+		//TODO: minecraft:colored_torch_rg
+		//TODO: minecraft:command_block
+		//TODO: minecraft:conduit
+		//TODO: minecraft:coral
+		//TODO: minecraft:coral_block
+		//TODO: minecraft:coral_fan
+		//TODO: minecraft:coral_fan_dead
+		//TODO: minecraft:coral_fan_hang
+		//TODO: minecraft:coral_fan_hang2
+		//TODO: minecraft:coral_fan_hang3
+		//TODO: minecraft:dark_oak_button
+		//TODO: minecraft:dark_oak_pressure_plate
+		//TODO: minecraft:dark_oak_trapdoor
+		//TODO: minecraft:dark_prismarine_stairs
+		//TODO: minecraft:darkoak_standing_sign
+		//TODO: minecraft:darkoak_wall_sign
+		//TODO: minecraft:diorite_stairs
+		//TODO: minecraft:dispenser
+		//TODO: minecraft:double_stone_slab3
+		//TODO: minecraft:double_stone_slab4
+		//TODO: minecraft:dragon_egg
+		//TODO: minecraft:dried_kelp_block
+		//TODO: minecraft:dropper
+		//TODO: minecraft:element_0
+		//TODO: minecraft:end_brick_stairs
+		//TODO: minecraft:end_gateway
+		//TODO: minecraft:end_portal
+		//TODO: minecraft:fletching_table
+		//TODO: minecraft:frosted_ice
+		//TODO: minecraft:granite_stairs
+		//TODO: minecraft:grindstone
+		//TODO: minecraft:hard_glass
+		//TODO: minecraft:hard_glass_pane
+		//TODO: minecraft:hard_stained_glass
+		//TODO: minecraft:hard_stained_glass_pane
+		//TODO: minecraft:hopper
+		//TODO: minecraft:jukebox
+		//TODO: minecraft:jungle_button
+		//TODO: minecraft:jungle_pressure_plate
+		//TODO: minecraft:jungle_standing_sign
+		//TODO: minecraft:jungle_trapdoor
+		//TODO: minecraft:jungle_wall_sign
+		//TODO: minecraft:kelp
+		//TODO: minecraft:lantern
+		//TODO: minecraft:lava_cauldron
+		//TODO: minecraft:monster_egg
+		//TODO: minecraft:mossy_cobblestone_stairs
+		//TODO: minecraft:mossy_stone_brick_stairs
+		//TODO: minecraft:movingBlock
+		//TODO: minecraft:normal_stone_stairs
+		//TODO: minecraft:observer
+		//TODO: minecraft:piston
+		//TODO: minecraft:pistonArmCollision
+		//TODO: minecraft:polished_andesite_stairs
+		//TODO: minecraft:polished_diorite_stairs
+		//TODO: minecraft:polished_granite_stairs
+		//TODO: minecraft:portal
+		//TODO: minecraft:powered_comparator
+		//TODO: minecraft:prismarine_bricks_stairs
+		//TODO: minecraft:prismarine_stairs
+		//TODO: minecraft:red_nether_brick_stairs
+		//TODO: minecraft:repeating_command_block
+		//TODO: minecraft:scaffolding
+		//TODO: minecraft:sea_pickle
+		//TODO: minecraft:seagrass
+		//TODO: minecraft:shulker_box
+		//TODO: minecraft:slime
+		//TODO: minecraft:smithing_table
+		//TODO: minecraft:smoker
+		//TODO: minecraft:smooth_quartz_stairs
+		//TODO: minecraft:smooth_red_sandstone_stairs
+		//TODO: minecraft:smooth_sandstone_stairs
+		//TODO: minecraft:smooth_stone
+		//TODO: minecraft:spruce_button
+		//TODO: minecraft:spruce_pressure_plate
+		//TODO: minecraft:spruce_standing_sign
+		//TODO: minecraft:spruce_trapdoor
+		//TODO: minecraft:spruce_wall_sign
+		//TODO: minecraft:sticky_piston
+		//TODO: minecraft:stone_slab3
+		//TODO: minecraft:stone_slab4
+		//TODO: minecraft:stripped_acacia_log
+		//TODO: minecraft:stripped_birch_log
+		//TODO: minecraft:stripped_dark_oak_log
+		//TODO: minecraft:stripped_jungle_log
+		//TODO: minecraft:stripped_oak_log
+		//TODO: minecraft:stripped_spruce_log
+		//TODO: minecraft:structure_block
+		//TODO: minecraft:turtle_egg
+		//TODO: minecraft:underwater_torch
+		//TODO: minecraft:undyed_shulker_box
+		//TODO: minecraft:unpowered_comparator
 	}
 
 	public static function isInit() : bool{

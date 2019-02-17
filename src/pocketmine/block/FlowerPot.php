@@ -30,7 +30,6 @@ use pocketmine\math\Facing;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 use pocketmine\tile\FlowerPot as TileFlowerPot;
-use pocketmine\tile\TileFactory;
 
 class FlowerPot extends Flowable{
 
@@ -56,6 +55,10 @@ class FlowerPot extends Flowable{
 		return 0b1111; //vanilla uses various values, we only care about 1 and 0 for PE
 	}
 
+	protected function getTileClass() : ?string{
+		return TileFlowerPot::class;
+	}
+
 	public function getName() : string{
 		return "Flower Pot";
 	}
@@ -69,12 +72,7 @@ class FlowerPot extends Flowable{
 			return false;
 		}
 
-		if(parent::place($item, $blockReplace, $blockClicked, $face, $clickVector, $player)){
-			$this->level->addTile(TileFactory::createFromItem(TileFlowerPot::class, $this->getLevel(), $this->asVector3(), $item));
-			return true;
-		}
-
-		return false;
+		return parent::place($item, $blockReplace, $blockClicked, $face, $clickVector, $player);
 	}
 
 	public function onNearbyBlockChange() : void{
@@ -83,7 +81,7 @@ class FlowerPot extends Flowable{
 		}
 	}
 
-	public function onActivate(Item $item, Player $player = null) : bool{
+	public function onActivate(Item $item, int $face, Vector3 $clickVector, ?Player $player = null) : bool{
 		$pot = $this->getLevel()->getTile($this);
 		if(!($pot instanceof TileFlowerPot)){
 			return false;

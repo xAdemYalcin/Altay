@@ -645,7 +645,7 @@ class Item implements ItemIds, \JsonSerializable{
 	 * @return Block
 	 */
 	public function getBlock() : Block{
-		return BlockFactory::get(self::AIR);
+		return BlockFactory::get(Block::AIR);
 	}
 
 	/**
@@ -744,10 +744,10 @@ class Item implements ItemIds, \JsonSerializable{
 	 * @param int     $face
 	 * @param Vector3 $clickVector
 	 *
-	 * @return bool
+	 * @return ItemUseResult
 	 */
-	public function onActivate(Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector) : bool{
-		return false;
+	public function onActivate(Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector) : ItemUseResult{
+		return ItemUseResult::none();
 	}
 
 	/**
@@ -757,10 +757,10 @@ class Item implements ItemIds, \JsonSerializable{
 	 * @param Player  $player
 	 * @param Vector3 $directionVector
 	 *
-	 * @return bool
+	 * @return ItemUseResult
 	 */
-	public function onClickAir(Player $player, Vector3 $directionVector) : bool{
-		return false;
+	public function onClickAir(Player $player, Vector3 $directionVector) : ItemUseResult{
+		return ItemUseResult::none();
 	}
 
 	/**
@@ -769,10 +769,10 @@ class Item implements ItemIds, \JsonSerializable{
 	 *
 	 * @param Player $player
 	 *
-	 * @return bool
+	 * @return ItemUseResult
 	 */
-	public function onReleaseUsing(Player $player) : bool{
-		return false;
+	public function onReleaseUsing(Player $player) : ItemUseResult{
+		return ItemUseResult::none();
 	}
 
 	/**
@@ -957,7 +957,7 @@ class Item implements ItemIds, \JsonSerializable{
 				$item = ItemFactory::fromString($idTag->getValue() . ":$meta");
 			}catch(\InvalidArgumentException $e){
 				//TODO: improve error handling
-				return ItemFactory::get(Item::AIR, 0, 0);
+				return ItemFactory::air();
 			}
 			$item->setCount($count);
 		}else{

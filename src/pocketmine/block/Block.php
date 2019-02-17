@@ -43,6 +43,7 @@ use pocketmine\metadata\Metadatable;
 use pocketmine\metadata\MetadataValue;
 use pocketmine\Player;
 use pocketmine\plugin\Plugin;
+use pocketmine\tile\TileFactory;
 use function array_merge;
 use function assert;
 use function dechex;
@@ -175,8 +176,27 @@ class Block extends Position implements BlockIds, Metadatable{
 		$this->collisionBoxes = null;
 	}
 
+	/**
+	 * Returns the class of Tile associated with this block.
+	 *
+	 * @return string|null class extending Tile, or null
+	 */
+	protected function getTileClass() : ?string{
+		return null;
+	}
+
 	public function writeStateToWorld() : void{
 		$this->level->getChunkAtPosition($this)->setBlock($this->x & 0xf, $this->y, $this->z & 0xf, $this->getId(), $this->getDamage());
+
+		$tileType = $this->getTileClass();
+		$oldTile = $this->level->getTile($this);
+		if($oldTile !== null and ($tileType === null or !($oldTile instanceof $tileType))){
+			$oldTile->close();
+			$oldTile = null;
+		}
+		if($oldTile === null and $tileType !== null){
+			$this->level->addTile(TileFactory::create($tileType, $this->level, $this->asVector3()));
+		}
 	}
 
 	/**
@@ -317,6 +337,9 @@ class Block extends Position implements BlockIds, Metadatable{
 	 * @return bool
 	 */
 	public function onBreak(Item $item, Player $player = null) : bool{
+		if(($t = $this->level->getTile($this)) !== null){
+			$t->onBlockDestroyed();
+		}
 		return $this->getLevel()->setBlock($this, BlockFactory::get(Block::AIR));
 	}
 
@@ -382,11 +405,13 @@ class Block extends Position implements BlockIds, Metadatable{
 	 * Do actions when activated by Item. Returns if it has done anything
 	 *
 	 * @param Item        $item
+	 * @param int         $face
+	 * @param Vector3     $clickVector
 	 * @param Player|null $player
 	 *
 	 * @return bool
 	 */
-	public function onActivate(Item $item, Player $player = null) : bool{
+	public function onActivate(Item $item, int $face, Vector3 $clickVector, ?Player $player = null) : bool{
 		return false;
 	}
 

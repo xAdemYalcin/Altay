@@ -35,8 +35,8 @@ class FlintSteel extends Tool{
 		parent::__construct(self::FLINT_STEEL, 0, "Flint and Steel");
 	}
 
-	public function onActivate(Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector) : bool{
-		if($blockReplace->getId() === self::AIR){
+	public function onActivate(Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector) : ItemUseResult{
+		if($blockReplace->getId() === Block::AIR){
 			$level = $player->getLevel();
 			assert($level !== null);
 			$level->setBlock($blockReplace, BlockFactory::get(Block::FIRE));
@@ -44,10 +44,10 @@ class FlintSteel extends Tool{
 
 			$this->applyDamage(1);
 
-			return true;
+			return ItemUseResult::success();
 		}
 
-		return false;
+		return ItemUseResult::none();
 	}
 
 	public function getMaxDurability() : int{

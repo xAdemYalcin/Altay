@@ -28,7 +28,6 @@ use pocketmine\item\Item;
 use pocketmine\math\Facing;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
-use pocketmine\tile\TileFactory;
 use pocketmine\tile\ItemFrame as TileItemFrame;
 use function lcg_value;
 
@@ -56,11 +55,15 @@ class ItemFrame extends Flowable{
 		return 0b11;
 	}
 
+	protected function getTileClass() : ?string{
+		return TileItemFrame::class;
+	}
+
 	public function getName() : string{
 		return "Item Frame";
 	}
 
-	public function onActivate(Item $item, Player $player = null) : bool{
+	public function onActivate(Item $item, int $face, Vector3 $clickVector, ?Player $player = null) : bool{
 		$tile = $this->level->getTile($this);
 		if($tile instanceof TileItemFrame){
 			if($tile->hasItem()){
@@ -86,13 +89,7 @@ class ItemFrame extends Flowable{
 
 		$this->facing = $face;
 
-		if(parent::place($item, $blockReplace, $blockClicked, $face, $clickVector, $player)){
-			$this->level->addTile(TileFactory::createFromItem(TileItemFrame::class, $this->getLevel(), $this->asVector3(), $item));
-			return true;
-		}
-
-		return false;
-
+		return parent::place($item, $blockReplace, $blockClicked, $face, $clickVector, $player);
 	}
 
 	public function getDropsForCompatibleTool(Item $item) : array{

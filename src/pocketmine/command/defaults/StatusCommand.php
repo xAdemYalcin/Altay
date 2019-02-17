@@ -35,7 +35,11 @@ use function round;
 class StatusCommand extends VanillaCommand{
 
 	public function __construct(string $name){
-		parent::__construct($name, "%pocketmine.command.status.description", "%pocketmine.command.status.usage");
+		parent::__construct(
+			$name,
+			"%pocketmine.command.status.description",
+			"%pocketmine.command.status.usage"
+		);
 		$this->setPermission("pocketmine.command.status");
 	}
 
@@ -67,7 +71,13 @@ class StatusCommand extends VanillaCommand{
 			}
 		}
 
-		$uptime = ($minutes !== null ? ($hours !== null ? ($days !== null ? "$days days " : "") . "$hours hours " : "") . "$minutes minutes " : "") . "$seconds seconds";
+		$uptime = ($minutes !== null ?
+				($hours !== null ?
+					($days !== null ?
+						"$days days "
+					: "") . "$hours hours "
+					: "") . "$minutes minutes "
+			: "") . "$seconds seconds";
 
 		$sender->sendMessage(TextFormat::GOLD . "Uptime: " . TextFormat::RED . $uptime);
 
@@ -100,7 +110,11 @@ class StatusCommand extends VanillaCommand{
 			$levelName = $level->getFolderName() !== $level->getDisplayName() ? " (" . $level->getDisplayName() . ")" : "";
 			$timeColor = ($level->getTickRate() > 1 or $level->getTickRateTime() > 40) ? TextFormat::RED : TextFormat::YELLOW;
 			$tickRate = $level->getTickRate() > 1 ? " (tick rate " . $level->getTickRate() . ")" : "";
-			$sender->sendMessage(TextFormat::GOLD . "World \"{$level->getFolderName()}\"$levelName: " . TextFormat::RED . number_format(count($level->getChunks())) . TextFormat::GREEN . " chunks, " . TextFormat::RED . number_format(count($level->getEntities())) . TextFormat::GREEN . " entities, " . TextFormat::RED . number_format(count($level->getTiles())) . TextFormat::GREEN . " tiles. " . "Time $timeColor" . round($level->getTickRateTime(), 2) . "ms" . $tickRate);
+			$sender->sendMessage(TextFormat::GOLD . "World \"{$level->getFolderName()}\"$levelName: " .
+				TextFormat::RED . number_format(count($level->getChunks())) . TextFormat::GREEN . " chunks, " .
+				TextFormat::RED . number_format(count($level->getEntities())) . TextFormat::GREEN . " entities. " .
+				"Time $timeColor" . round($level->getTickRateTime(), 2) . "ms" . $tickRate
+			);
 		}
 
 		return true;

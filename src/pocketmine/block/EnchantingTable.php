@@ -31,7 +31,6 @@ use pocketmine\math\Facing;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 use pocketmine\tile\EnchantTable as TileEnchantingTable;
-use pocketmine\tile\TileFactory;
 
 class EnchantingTable extends Transparent{
 
@@ -41,13 +40,8 @@ class EnchantingTable extends Transparent{
 
 	}
 
-	public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null) : bool{
-		if(parent::place($item, $blockReplace, $blockClicked, $face, $clickVector, $player)){
-			$this->level->addTile(TileFactory::createFromItem(TileEnchantingTable::class, $this->getLevel(), $this->asVector3(), $item));
-			return true;
-		}
-
-		return false;
+	protected function getTileClass() : ?string{
+		return TileEnchantingTable::class;
 	}
 
 	public function getHardness() : float{
@@ -74,7 +68,7 @@ class EnchantingTable extends Transparent{
 		return AxisAlignedBB::one()->trim(Facing::UP, 0.25);
 	}
 
-	public function onActivate(Item $item, Player $player = null) : bool{
+	public function onActivate(Item $item, int $face, Vector3 $clickVector, ?Player $player = null) : bool{
 		if($player instanceof Player){
 			//TODO lock
 
