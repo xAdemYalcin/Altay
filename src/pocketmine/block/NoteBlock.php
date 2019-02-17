@@ -51,7 +51,7 @@ class Noteblock extends Solid{
 		return TileNoteBlock::class;
 	}
 
-	public function onActivate(Item $item, int $face, Vector3 $clickVector, Player $player = null) : bool{
+	public function onActivate(Item $item, int $face, Vector3 $clickVector, ?Player $player = null) : bool{
 		$tile = $this->level->getTile($this);
 		if($tile instanceof TileNoteBlock){
 			$tile->changePitch();

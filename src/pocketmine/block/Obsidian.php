@@ -53,12 +53,4 @@ class Obsidian extends Solid{
 	public function getBlastResistance() : float{
 		return 6000;
 	}
-
-	public function onActivate(Item $item, Player $player = null) : bool{
-		if($item->getId() === Item::FLINT_AND_STEEL){
-			// TODO : Check for portal
-		}
-
-		return false;
-	}
 }

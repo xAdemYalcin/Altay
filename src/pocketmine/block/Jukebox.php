@@ -65,7 +65,7 @@ class Jukebox extends Solid{
 		return TileJukebox::class;
 	}
 
-	public function onActivate(Item $item, int $face, Vector3 $clickVector, Player $player = null) : bool{
+	public function onActivate(Item $item, int $face, Vector3 $clickVector, ?Player $player = null) : bool{
 		if($player instanceof Player){
 			$jb = $this->getLevel()->getTile($this);
 			if($jb instanceof TileJukebox){

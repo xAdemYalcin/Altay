@@ -69,7 +69,7 @@ class MonsterSpawner extends Transparent{
 		return mt_rand(15, 43);
 	}
 
-	public function onActivate(Item $item, int $face, Vector3 $clickVector, Player $player = null) : bool{
+	public function onActivate(Item $item, int $face, Vector3 $clickVector, ?Player $player = null) : bool{
 		if($item instanceof SpawnEgg){
 			/** @var MobSpawner $tile */
 			$tile = TileFactory::create(MobSpawner::class, $this->level, $this);

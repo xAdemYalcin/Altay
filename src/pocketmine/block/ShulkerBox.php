@@ -53,7 +53,7 @@ class ShulkerBox extends Transparent{
 		return false;
 	}
 
-	public function onActivate(Item $item, int $face, Vector3 $clickVector, Player $player = null) : bool{
+	public function onActivate(Item $item, int $face, Vector3 $clickVector, ?Player $player = null) : bool{
 		if($player instanceof Player){
 			$tile = $this->getLevel()->getTile($this);
 			if($tile instanceof TileShulkerBox){

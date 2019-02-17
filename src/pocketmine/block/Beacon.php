@@ -58,7 +58,7 @@ class Beacon extends Transparent{
 		return TileBeacon::class;
 	}
 
-	public function onActivate(Item $item, int $face, Vector3 $clickVector, Player $player = null) : bool{
+	public function onActivate(Item $item, int $face, Vector3 $clickVector, ?Player $player = null) : bool{
 		if($player instanceof Player){
 			$tile = $this->level->getTile($this);
 			if($tile instanceof TileBeacon){

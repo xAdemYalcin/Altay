@@ -76,7 +76,7 @@ class Hopper extends Transparent{
 		return "Hopper";
 	}
 
-	public function onActivate(Item $item, int $face, Vector3 $clickVector, Player $player = null) : bool{
+	public function onActivate(Item $item, int $face, Vector3 $clickVector, ?Player $player = null) : bool{
 		if($player instanceof Player){
 			$hopper = $this->getLevel()->getTile($this);
 			if($hopper instanceof TileHopper){
