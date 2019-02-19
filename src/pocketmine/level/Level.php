@@ -82,6 +82,7 @@ use pocketmine\network\mcpe\protocol\LevelEventPacket;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\network\mcpe\protocol\SetDifficultyPacket;
 use pocketmine\network\mcpe\protocol\SetTimePacket;
+use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\network\mcpe\protocol\UpdateBlockPacket;
 use pocketmine\Player;
 use pocketmine\plugin\Plugin;
@@ -133,10 +134,6 @@ class Level implements ChunkManager, Metadatable{
 	public const TIME_SUNRISE = 23000;
 
 	public const TIME_FULL = 24000;
-
-	public const DIMENSION_OVERWORLD = 0;
-	public const DIMENSION_NETHER = 1;
-	public const DIMENSION_END = 2;
 
 	public const DIFFICULTY_PEACEFUL = 0;
 	public const DIFFICULTY_EASY = 1;
@@ -375,12 +372,12 @@ class Level implements ChunkManager, Metadatable{
 		switch(strtolower(trim($str))){
 			case "nether":
 			case "hell":
-				return Level::DIMENSION_NETHER;
+				return DimensionIds::NETHER;
 			case "end":
 			case "ender":
-				return Level::DIMENSION_END;
+				return DimensionIds::THE_END;
 			default:
-				return Level::DIMENSION_OVERWORLD;
+				return DimensionIds::OVERWORLD;
 		}
 	}
 
