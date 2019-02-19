@@ -276,7 +276,7 @@ class Level implements ChunkManager, Metadatable{
 	private $generator;
 
 	/** @var int */
-	protected $dimension = self::DIMENSION_OVERWORLD;
+	protected $dimension = DimensionIds::OVERWORLD;
 
 	/** @var bool */
 	private $closed = false;

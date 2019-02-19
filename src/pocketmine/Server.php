@@ -216,9 +216,6 @@ class Server{
 	/** @var bool */
 	private $doTitleTick = true;
 
-	/** @var int */
-	private $sendUsageTicker = 0;
-
 	/** @var \AttachableThreadedLogger */
 	private $logger;
 
