@@ -41,11 +41,10 @@ use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\Player;;
+use pocketmine\Player;
 use pocketmine\utils\Random;
 use function boolval;
 use function intval;
-use pocketmine\utils\TextFormat;
 use function rand;
 
 class Sheep extends Animal{
