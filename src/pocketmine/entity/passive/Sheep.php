@@ -24,7 +24,7 @@ declare(strict_types=1);
 
 namespace pocketmine\entity\passive;
 
-use pocketmine\block\utils\Color;
+use pocketmine\block\utils\DyeColor;
 use pocketmine\entity\Animal;
 use pocketmine\entity\behavior\EatBlockBehavior;
 use pocketmine\entity\behavior\FloatBehavior;
@@ -41,10 +41,11 @@ use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\Player;
+use pocketmine\Player;;
 use pocketmine\utils\Random;
 use function boolval;
 use function intval;
+use pocketmine\utils\TextFormat;
 use function rand;
 
 class Sheep extends Animal{
@@ -147,17 +148,17 @@ class Sheep extends Animal{
 		$i = $random->nextBoundedInt(100);
 
 		if($i < 5){
-			return Color::BLACK;
+			return DyeColor::$BLACK->getMagicNumber();
 		}elseif($i < 10){
-			return Color::GRAY;
+			return DyeColor::$GRAY->getMagicNumber();
 		}elseif($i < 15){
-			return Color::LIGHT_GRAY;
+			return DyeColor::$LIGHT_GRAY->getMagicNumber();
 		}elseif($i < 18){
-			return Color::BROWN;
+			return DyeColor::$BROWN->getMagicNumber();
 		}elseif($random->nextBoundedInt(500) === 0){
-			return Color::PINK;
+			return DyeColor::$PINK->getMagicNumber();
 		}else{
-			return Color::WHITE;
+			return DyeColor::$WHITE->getMagicNumber();
 		}
 	}
 
