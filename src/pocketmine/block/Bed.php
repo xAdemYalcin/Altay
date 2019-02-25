@@ -34,6 +34,7 @@ use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Bearing;
 use pocketmine\math\Facing;
 use pocketmine\math\Vector3;
+use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\Player;
 use pocketmine\tile\Bed as TileBed;
 use pocketmine\utils\TextFormat;
@@ -160,7 +161,7 @@ class Bed extends Transparent{
 			}
 
 			$dimension = $this->level->getDimension();
-			if($dimension != Level::DIMENSION_OVERWORLD){
+			if($dimension != DimensionIds::OVERWORLD){
 				(new Explosion($this, 5, true))->explode();
 				return true;
 			}
