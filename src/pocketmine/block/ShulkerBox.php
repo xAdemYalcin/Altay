@@ -36,6 +36,10 @@ class ShulkerBox extends Transparent{
 	public function getHardness() : float{
 		return 6;
 	}
+	
+	protected function getTileClass() : ?string{
+		return TileShulkerBox::class;
+	}
 
 	public function getToolType() : int{
 		return BlockToolType::TYPE_PICKAXE;
