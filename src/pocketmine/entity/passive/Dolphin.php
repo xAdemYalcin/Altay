@@ -23,6 +23,9 @@ declare(strict_types=1);
 
 namespace pocketmine\entity\passive;
 
+use pocketmine\entity\behavior\JumpAttackBehavior;
+use pocketmine\entity\behavior\MeleeAttackBehavior;
+use pocketmine\entity\Entity;
 use pocketmine\entity\WaterAnimal;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
@@ -35,26 +38,27 @@ use function mt_rand;
 use function sqrt;
 use const M_PI;
 
-class Cod extends WaterAnimal{
-	public const NETWORK_ID = self::COD;
+class Dolphin extends WaterAnimal{
+	public const NETWORK_ID = self::DOLPHIN;
 
-	public $width = 0.5;
-	public $height = 0.3;
+	public $width = 0.9;
+	public $height = 0.6;
+	//TODO: Add Jumping from water and attacking
 
 	/** @var Vector3 */
 	public $swimDirection = null;
-	public $swimSpeed = 0.1;
+	public $swimSpeed = 1;
 
 	private $switchDirectionTicker = 0;
 
 	public function initEntity() : void{
-		$this->setMaxHealth(3);
+		$this->setMaxHealth(10);
 
 		parent::initEntity();
 	}
 
 	public function getName() : string{
-		return "Tropical Fish";
+		return "Salmon";
 	}
 
 	public function attack(EntityDamageEvent $source) : void{
@@ -69,7 +73,6 @@ class Cod extends WaterAnimal{
 			if($e !== null){
 				$this->swimDirection = (new Vector3($this->x - $e->x, $this->y - $e->y, $this->z - $e->z))->normalize();
 			}
-
 
 		}
 	}
@@ -113,20 +116,17 @@ class Cod extends WaterAnimal{
 
 			$f = sqrt(($this->motion->x ** 2) + ($this->motion->z ** 2));
 			$this->yaw = (-atan2($this->motion->x, $this->motion->z) * 180 / M_PI);
-			$this->pitch = (-atan2($f, $this->motion->y) * 180 / M_PI);
+			$this->pitch = (-atan2($f, $this->motion->y) * 1 / M_PI);
 		}
 
 		return $hasUpdate;
 	}
 
 	public function getDrops() : array{
-		$drops = [
-			ItemFactory::get(Item::RAW_FISH, 0, 1),
+		return [
+			ItemFactory::get(Item::RAW_SALMON, 0, 1),
+			//TODO: Add percentage drop for bone
 		];
-		if(mt_rand(1, 4) ===1){
-			$drops[] = ItemFactory::get(Item::BONE, 1, mt_rand(1, 2));
-		}
-		return $drops;
 	}
 
 	protected function applyGravity() : void{
@@ -134,4 +134,6 @@ class Cod extends WaterAnimal{
 			parent::applyGravity();
 		}
 	}
+
+
 }

@@ -98,8 +98,13 @@ class PolarBear extends Animal
         public
         function getDrops(): array
         {
-            return [
-                ItemFactory::get(Item::RAW_SALMON, 0, mt_rand(0, 2))
-            ];
+	        $drops = [];
+	        if(mt_rand(1, 4) >1){
+		        $drops[] = ItemFactory::get(Item::RAW_FISH, 1, mt_rand(0, 2));
+		        return $drops;
+	        }
+	        else{
+	        	$drops[] = ItemFactory::get(Item::RAW_SALMON, 1, mt_rand(0, 2));
+	        	return $drops;}
         }
     }

@@ -23,6 +23,9 @@ declare(strict_types=1);
 
 namespace pocketmine\entity\passive;
 
+use pocketmine\entity\Effect;
+use pocketmine\entity\EffectInstance;
+use pocketmine\entity\Entity;
 use pocketmine\entity\WaterAnimal;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
@@ -35,12 +38,12 @@ use function mt_rand;
 use function sqrt;
 use const M_PI;
 
-class Cod extends WaterAnimal{
-	public const NETWORK_ID = self::COD;
+class Pufferfish extends WaterAnimal{
+	public const NETWORK_ID = self::PUFFERFISH;
 
-	public $width = 0.5;
-	public $height = 0.3;
-
+	public $width = 0.35;
+	public $height = 0.35;
+	//TODO: Add poison on touch and PUFFERING
 	/** @var Vector3 */
 	public $swimDirection = null;
 	public $swimSpeed = 0.1;
@@ -54,7 +57,7 @@ class Cod extends WaterAnimal{
 	}
 
 	public function getName() : string{
-		return "Tropical Fish";
+		return "Pufferfish";
 	}
 
 	public function attack(EntityDamageEvent $source) : void{
@@ -69,7 +72,6 @@ class Cod extends WaterAnimal{
 			if($e !== null){
 				$this->swimDirection = (new Vector3($this->x - $e->x, $this->y - $e->y, $this->z - $e->z))->normalize();
 			}
-
 
 		}
 	}
@@ -119,9 +121,22 @@ class Cod extends WaterAnimal{
 		return $hasUpdate;
 	}
 
+	public function onCollideWithEntity(Entity $entity) : void{
+		parent::onCollideWithEntity($entity);
+
+		if($entity instanceof Player){
+			if($this->getTargetEntity() === $entity){
+				$entity->addEffect(new EffectInstance(Effect::getEffect(Effect::POISON), 7 * 20, 1));
+			}
+		}
+	}
+
+
+
+
 	public function getDrops() : array{
 		$drops = [
-			ItemFactory::get(Item::RAW_FISH, 0, 1),
+			ItemFactory::get(Item::PUFFERFISH, 0, 1),
 		];
 		if(mt_rand(1, 4) ===1){
 			$drops[] = ItemFactory::get(Item::BONE, 1, mt_rand(1, 2));

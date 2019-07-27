@@ -70,7 +70,7 @@ class TropicalFish extends WaterAnimal{
 				$this->swimDirection = (new Vector3($this->x - $e->x, $this->y - $e->y, $this->z - $e->z))->normalize();
 			}
 
-			$this->broadcastEntityEvent(ActorEventPacket::SQUID_INK_CLOUD);
+
 		}
 	}
 
@@ -120,10 +120,13 @@ class TropicalFish extends WaterAnimal{
 	}
 
 	public function getDrops() : array{
-		return [
+		$drops = [
 			ItemFactory::get(Item::CLOWNFISH, 0, 1),
-			//TODO: Add percentage drop for bone
 		];
+		if(mt_rand(1, 4) ===1){
+			$drops[] = ItemFactory::get(Item::BONE, 1, mt_rand(1, 2));
+		}
+		return $drops;
 	}
 
 	protected function applyGravity() : void{

@@ -35,11 +35,11 @@ use function mt_rand;
 use function sqrt;
 use const M_PI;
 
-class Cod extends WaterAnimal{
-	public const NETWORK_ID = self::COD;
+class Salmon extends WaterAnimal{
+	public const NETWORK_ID = self::SALMON;
 
-	public $width = 0.5;
-	public $height = 0.3;
+	public $width = 0.7;
+	public $height = 0.4;
 
 	/** @var Vector3 */
 	public $swimDirection = null;
@@ -54,7 +54,7 @@ class Cod extends WaterAnimal{
 	}
 
 	public function getName() : string{
-		return "Tropical Fish";
+		return "Salmon";
 	}
 
 	public function attack(EntityDamageEvent $source) : void{
@@ -121,7 +121,7 @@ class Cod extends WaterAnimal{
 
 	public function getDrops() : array{
 		$drops = [
-			ItemFactory::get(Item::RAW_FISH, 0, 1),
+			ItemFactory::get(Item::RAW_SALMON, 0, 1),
 		];
 		if(mt_rand(1, 4) ===1){
 			$drops[] = ItemFactory::get(Item::BONE, 1, mt_rand(1, 2));
