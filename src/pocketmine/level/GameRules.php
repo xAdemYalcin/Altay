@@ -71,7 +71,7 @@ class GameRules{
 		$this->setBool(self::RULE_DO_FIRE_TICK, true);
 		$this->setBool(self::RULE_DO_INSOMNIA, true);
 		$this->setBool(self::RULE_DO_MOB_LOOT, true);
-		$this->setBool(self::RULE_DO_MOB_SPAWNING, false);
+		$this->setBool(self::RULE_DO_MOB_SPAWNING, true);
 		$this->setBool(self::RULE_DO_TILE_DROPS, true);
 		$this->setBool(self::RULE_DO_WEATHER_CYCLE, true);
 		$this->setBool(self::RULE_DROWNING_DAMAGE, true);
