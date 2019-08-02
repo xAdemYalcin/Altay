@@ -29,7 +29,7 @@ use pocketmine\entity\behavior\LookAtPlayerBehavior;
 use pocketmine\entity\behavior\MateBehavior;
 use pocketmine\entity\behavior\PanicBehavior;
 use pocketmine\entity\behavior\RandomLookAroundBehavior;
-use pocketmine\entity\behavior\SittingBehavior;
+use pocketmine\entity\behavior\StayWhileSittingBehavior;
 use pocketmine\entity\behavior\TemptBehavior;
 use pocketmine\entity\Tamable;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
@@ -46,16 +46,23 @@ class Ocelot extends Tamable{
 
 	public $width = 0.6;
 	public $height = 0.7;
+	/** @var StayWhileSittingBehavior */
+	protected $behaviorSitting;
 
 	protected function addBehaviors() : void{
 		$this->behaviorPool->setBehavior(0, new FloatBehavior($this));
-		$this->behaviorPool->setBehavior(1, new MateBehavior($this, 2.0));
-		$this->behaviorPool->setBehavior(2, new FollowOwnerBehavior($this, 1.0));
-		$this->behaviorPool->setBehavior(3, new PanicBehavior($this, 2.0));
-		$this->behaviorPool->setBehavior(4, new LookAtPlayerBehavior($this, 14.0));
-		$this->behaviorPool->setBehavior(5, new RandomLookAroundBehavior($this));
-		$this->behaviorPool->setBehavior(6, new TemptBehavior($this, [Item::RAW_SALMON, Item::RAW_FISH], 1.0));
-		$this->behaviorPool->setBehavior(7, new SittingBehavior($this));
+		$this->behaviorPool->setBehavior(1, new PanicBehavior($this, 2.0));
+		$this->behaviorPool->setBehavior(2, $this->behaviorSitting = new StayWhileSittingBehavior($this));
+		$this->behaviorPool->setBehavior(3, new MateBehavior($this, 2.0));
+		$this->behaviorPool->setBehavior(4, new TemptBehavior($this, [
+			Item::RAW_SALMON,
+			Item::RAW_FISH
+		], 1.0));
+		$this->behaviorPool->setBehavior(5, new FollowOwnerBehavior($this, 1.0));
+		$this->behaviorPool->setBehavior(6, new LookAtPlayerBehavior($this, 14.0));
+		$this->behaviorPool->setBehavior(7, new RandomLookAroundBehavior($this));
+
+
 		// TODO: attack turtle and rabbit
 	}
 
@@ -66,6 +73,7 @@ class Ocelot extends Tamable{
 		$this->setAttackDamage(3);
 		$this->propertyManager->setInt(self::DATA_VARIANT, intval($this->namedtag->getInt("CatType", 0)));
 		$this->propertyManager->setInt(self::DATA_COLOR, intval($this->namedtag->getInt("CollarColor", mt_rand(0, 15))));
+
 		parent::initEntity();
 	}
 
@@ -85,7 +93,7 @@ class Ocelot extends Tamable{
 				}elseif(mt_rand(0, 2) == 0){
 					$this->setOwningEntity($player);
 					$this->setTamed();
-					$this->setSitting();
+					$this->setSittingFromBehavior(true);
 					$this->broadcastEntityEvent(ActorEventPacket::TAME_SUCCESS);
 				}else{
 					$this->broadcastEntityEvent(ActorEventPacket::TAME_FAIL);
@@ -93,7 +101,7 @@ class Ocelot extends Tamable{
 				return true;
 			}else{
 				if($this->isTamed()){
-					$this->setSitting(!$this->isSitting());
+					$this->setSittingFromBehavior(!$this->isSitting());
 				}
 			}
 		}
@@ -115,6 +123,10 @@ class Ocelot extends Tamable{
 		return [
 			ItemFactory::get(Item::STRING, 0, rand(0, 2)),
 		];
+	}
+
+	public function setSittingFromBehavior(bool $value) : void{
+		$this->behaviorSitting->setSitting($value);
 	}
 
 	public function attack(EntityDamageEvent $source) : void{

@@ -71,7 +71,7 @@ class Cat extends Tamable{
 		$this->setMovementSpeed(0.3);
 		$this->setFollowRange(16);
 		$this->setAttackDamage(3);
-		$this->propertyManager->setInt(self::DATA_VARIANT, intval($this->namedtag->getInt("CatType", mt_rand(0, 10))));
+		$this->propertyManager->setInt(self::DATA_VARIANT, intval($this->namedtag->getInt("CatType", mt_rand(1, 10))));
 		$this->propertyManager->setInt(self::DATA_COLOR, intval($this->namedtag->getInt("CollarColor", mt_rand(0, 15))));
 
 		parent::initEntity();
