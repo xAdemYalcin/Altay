@@ -37,74 +37,68 @@ use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\math\Vector3;
 
-class PolarBear extends Animal
-{
-    public const NETWORK_ID = self::POLAR_BEAR;
+class PolarBear extends Animal{
+	public const NETWORK_ID = self::POLAR_BEAR;
 
-    public $width = 1.3;
-    public $height = 1.4;
+	public $width = 1.3;
+	public $height = 1.4;
 
-    protected function addBehaviors(): void
-    {
-        $this->behaviorPool->setBehavior(0, new FloatBehavior($this));
-        $this->behaviorPool->setBehavior(1, new MateBehavior($this, 1.0));
-        $this->behaviorPool->setBehavior(2, new MeleeAttackBehavior($this, 1.0));
-        $this->behaviorPool->setBehavior(3, new FollowParentBehavior($this, 1.1));
-        $this->behaviorPool->setBehavior(4, new RandomStrollBehavior($this, 1.0));
-        $this->behaviorPool->setBehavior(5, new LookAtPlayerBehavior($this, 16.0));
-        $this->behaviorPool->setBehavior(6, new RandomLookAroundBehavior($this));
+	protected function addBehaviors() : void{
+		$this->behaviorPool->setBehavior(0, new FloatBehavior($this));
+		$this->behaviorPool->setBehavior(1, new MateBehavior($this, 1.0));
+		$this->behaviorPool->setBehavior(2, new MeleeAttackBehavior($this, 1.0));
+		$this->behaviorPool->setBehavior(3, new FollowParentBehavior($this, 1.1));
+		$this->behaviorPool->setBehavior(4, new RandomStrollBehavior($this, 1.0));
+		$this->behaviorPool->setBehavior(5, new LookAtPlayerBehavior($this, 16.0));
+		$this->behaviorPool->setBehavior(6, new RandomLookAroundBehavior($this));
 
-        $this->targetBehaviorPool->setBehavior(0, new HurtByTargetBehavior($this));
-    }
-        public
-        function initEntity(): void
-        {
-            $this->setMaxHealth(30);
-            $this->setMovementSpeed(0.30);
-            $this->setAttackDamage(4);
-            $this->setFollowRange(16);
-            parent::initEntity();
-        }
-        //TODO: atack foxes
-        public
-        function getName(): string
-        {
-            return "Polar Bear";
-        }
+		$this->targetBehaviorPool->setBehavior(0, new HurtByTargetBehavior($this));
+	}
 
-        public function setTargetEntity(?Entity $target) : void{
-        parent::setTargetEntity($target);
-        if($target == null){
-            $this->setAngry(false);
-        }
-        }
-        public function isAngry() : bool{
-        return $this->getGenericFlag(self::DATA_FLAG_ANGRY);
-        }
+	public function initEntity() : void{
+		$this->setMaxHealth(30);
+		$this->setMovementSpeed(0.30);
+		$this->setAttackDamage(4);
+		$this->setFollowRange(16);
+		parent::initEntity();
+	}
 
-        public function setAngry(bool $angry = true) : void{
-        $this->setGenericFlag(self::DATA_FLAG_ANGRY, $angry);
-         }
+	//TODO: atack foxes
+	public function getName() : string{
+		return "Polar Bear";
+	}
 
-        private function generateRandomDirection(): Vector3
-        {
-            return new Vector3(mt_rand(-1000, 1000) / 1000, mt_rand(-500, 500) / 1000, mt_rand(-1000, 1000) / 1000);
-        }
+	public function setTargetEntity(?Entity $target) : void{
+		parent::setTargetEntity($target);
+		if($target == null){
+			$this->setAngry(false);
+		}
+	}
 
-        public function getXpDropAmount() : int{
-        return rand(1, 3);
-    }
+	public function isAngry() : bool{
+		return $this->getGenericFlag(self::DATA_FLAG_ANGRY);
+	}
 
-        public
-        function getDrops(): array
-        {
-	        $drops = [];
-	        if(mt_rand(1, 4) >1){
-		        $drops[] = ItemFactory::get(Item::RAW_FISH, 1, mt_rand(0, 2));
-		        return $drops;
-	        }
-	        else{
-	        	$drops[] = ItemFactory::get(Item::RAW_SALMON, 1, mt_rand(0, 2));
-	        	return $drops;}
-        }
-    }
+	public function setAngry(bool $angry = true) : void{
+		$this->setGenericFlag(self::DATA_FLAG_ANGRY, $angry);
+	}
+
+	private function generateRandomDirection() : Vector3{
+		return new Vector3(mt_rand(-1000, 1000) / 1000, mt_rand(-500, 500) / 1000, mt_rand(-1000, 1000) / 1000);
+	}
+
+	public function getXpDropAmount() : int{
+		return rand(1, 3);
+	}
+
+	public function getDrops() : array{
+		$drops = [];
+		if(mt_rand(1, 4) > 1){
+			$drops[] = ItemFactory::get(Item::RAW_FISH, 1, mt_rand(0, 2));
+			return $drops;
+		}else{
+			$drops[] = ItemFactory::get(Item::RAW_SALMON, 1, mt_rand(0, 2));
+			return $drops;
+		}
+	}
+}
