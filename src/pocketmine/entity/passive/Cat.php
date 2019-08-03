@@ -29,6 +29,7 @@ use pocketmine\entity\behavior\LookAtPlayerBehavior;
 use pocketmine\entity\behavior\MateBehavior;
 use pocketmine\entity\behavior\PanicBehavior;
 use pocketmine\entity\behavior\RandomLookAroundBehavior;
+use pocketmine\entity\behavior\RandomStrollBehavior;
 use pocketmine\entity\behavior\StayWhileSittingBehavior;
 use pocketmine\entity\behavior\TemptBehavior;
 use pocketmine\entity\Tamable;
@@ -60,7 +61,8 @@ class Cat extends Tamable{
 		], 1.0));
 		$this->behaviorPool->setBehavior(5, new FollowOwnerBehavior($this, 1, 10, 2));
 		$this->behaviorPool->setBehavior(6, new LookAtPlayerBehavior($this, 14.0));
-		$this->behaviorPool->setBehavior(7, new RandomLookAroundBehavior($this));
+		$this->behaviorPool->setBehavior(7, new RandomStrollBehavior($this, 1));
+		$this->behaviorPool->setBehavior(8, new RandomLookAroundBehavior($this));
 
 
 		// TODO: attack turtle and rabbit
@@ -83,7 +85,7 @@ class Cat extends Tamable{
 
 	public function onInteract(Player $player, Item $item, Vector3 $clickPos) : bool{
 		if(!$this->isImmobile()){
-			if($item->getId() == Item::RAW_SALMON || $item->getId() == Item::RAW_FISH){
+			if($item->getId() == Item::RAW_SALMON || $item->getId() == Item::RAW_FISH || $item->getId() == Item::CLOWNFISH){
 				if($player->isSurvival()){
 					$item->pop();
 				}
