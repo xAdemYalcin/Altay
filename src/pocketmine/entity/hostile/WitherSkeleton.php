@@ -33,6 +33,7 @@ use pocketmine\entity\behavior\RandomStrollBehavior;
 use pocketmine\entity\Effect;
 use pocketmine\entity\EffectInstance;
 use pocketmine\entity\Entity;
+use pocketmine\entity\Living;
 use pocketmine\entity\Monster;
 use pocketmine\inventory\AltayEntityEquipment;
 use pocketmine\item\Item;
@@ -82,12 +83,10 @@ class WitherSkeleton extends Monster{
 	public function onCollideWithEntity(Entity $entity) : void{
 		parent::onCollideWithEntity($entity);
 
-		if($entity instanceof Player){
-			if($this->getTargetEntity() === $entity){
+		if($this->getTargetEntityId() === $entity->getId() and $entity instanceof Living){
 				$entity->addEffect(new EffectInstance(Effect::getEffect(Effect::WITHER), 200, 1));
 			}
 		}
-	}
 
 
 
