@@ -1967,7 +1967,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 				$this->propertyManager->setVector3(self::DATA_RIDER_SEAT_POSITION, $entity->getRiderSeatPosition($seatNumber)->add(0, $this->getMountedYOffset(), 0));
 				$this->propertyManager->setByte(self::DATA_CONTROLLING_RIDER_SEAT_NUMBER, $seatNumber);
 
-				$entity->sendLink($entity->getViewers(), $this, EntityLink::TYPE_RIDER);
+				$entity->sendLink($entity->getViewers(), $this->getId(), EntityLink::TYPE_RIDER);
 
 				$entity->onRiderMount($this);
 
@@ -1993,13 +1993,13 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 
 	/**
 	 * @param Player[] $targets
-	 * @param Entity   $entity
+	 * @param int      $entityId
 	 * @param int      $type
 	 * @param bool     $immediate
 	 */
-	public function sendLink(array $targets, Entity $entity, int $type = EntityLink::TYPE_RIDER, bool $immediate = false) : void{
+	public function sendLink(array $targets, int $entityId, int $type = EntityLink::TYPE_RIDER, bool $immediate = false) : void{
 		$pk = new SetActorLinkPacket();
-		$pk->link = new EntityLink($this->id, $entity->getId(), $type, $immediate);
+		$pk->link = new EntityLink($this->id, $entityId, $type, $immediate);
 
 		$this->server->broadcastPacket($targets, $pk);
 	}
@@ -2029,7 +2029,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 
 			$this->setRidingEntity(null);
 
-			$entity->sendLink($entity->getViewers(), $this, EntityLink::TYPE_REMOVE, $immediate);
+			$entity->sendLink($entity->getViewers(), $this->getId(), EntityLink::TYPE_REMOVE, $immediate);
 
 			$entity->onRiderLeave($this);
 
@@ -2665,9 +2665,13 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 		$pk->metadata = $this->propertyManager->getAll();
 
 		if(!empty($this->passengers)){
-			$pk->links = array_map(function(int $entityId, int $seatNumber){
+			foreach($this->getPassengers() as $passenger){
+				$passenger->spawnTo($player);
+			}
+
+			$pk->links = array_map(function(int $entityId){
 				return new EntityLink($this->getId(), $entityId, EntityLink::TYPE_RIDER);
-			}, $this->passengers, array_keys($this->passengers));
+			}, $this->passengers);
 		}
 
 		$player->sendDataPacket($pk);
