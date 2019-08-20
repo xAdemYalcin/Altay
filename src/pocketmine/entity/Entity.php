@@ -152,7 +152,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	public const DATA_TYPE_INT = 2;
 	public const DATA_TYPE_FLOAT = 3;
 	public const DATA_TYPE_STRING = 4;
-	public const DATA_TYPE_SLOT = 5;
+	public const DATA_TYPE_COMPOUND_TAG = 5;
 	public const DATA_TYPE_POS = 6;
 	public const DATA_TYPE_LONG = 7;
 	public const DATA_TYPE_VECTOR3F = 8;
@@ -2372,6 +2372,9 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	}
 
 	/**
+	 * @deprecated WARNING: Despite what its name implies, this function DOES NOT return all the blocks around the entity.
+	 * Instead, it returns blocks which have reactions for an entity intersecting with them.
+	 *
 	 * @return Block[]
 	 */
 	public function getBlocksAround() : array{
@@ -2707,6 +2710,9 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	}
 
 	/**
+	 * @deprecated WARNING: This function DOES NOT permanently hide the entity from the player. As soon as the entity or
+	 * player moves, the player will once again be able to see the entity.
+	 *
 	 * @param Player $player
 	 * @param bool   $send
 	 */
@@ -2721,6 +2727,10 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 		}
 	}
 
+	/**
+	 * @deprecated WARNING: This function DOES NOT permanently hide the entity from viewers. As soon as the entity or
+	 * player moves, viewers will once again be able to see the entity.
+	 */
 	public function despawnFromAll() : void{
 		foreach($this->hasSpawned as $player){
 			$this->despawnFrom($player);
