@@ -629,7 +629,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	}
 
 	public function canCollideWith(Entity $entity) : bool{
-		return false;
+		return $entity instanceof Living;
 	}
 
 	public function canBeCollidedWith() : bool{
@@ -4295,10 +4295,6 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 	public function isTeleporting() : bool{
 		return $this->isTeleporting;
-	}
-
-	public function canBePushed() : bool{
-		return true;
 	}
 
 	public function getDeviceOS(): ?int{

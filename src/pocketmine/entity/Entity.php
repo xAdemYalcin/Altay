@@ -96,6 +96,7 @@ use pocketmine\level\format\Chunk;
 use pocketmine\level\Level;
 use pocketmine\level\Location;
 use pocketmine\level\Position;
+use pocketmine\level\sound\PlaySound;
 use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Vector2;
 use pocketmine\math\Vector3;
@@ -114,6 +115,7 @@ use pocketmine\network\mcpe\protocol\RemoveActorPacket;
 use pocketmine\network\mcpe\protocol\SetActorDataPacket;
 use pocketmine\network\mcpe\protocol\SetActorLinkPacket;
 use pocketmine\network\mcpe\protocol\SetActorMotionPacket;
+use pocketmine\network\mcpe\protocol\StopSoundPacket;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\network\mcpe\protocol\types\EntityLink;
 use pocketmine\Player;
@@ -1615,34 +1617,24 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	}
 
 	/**
-	 * Pushes the this entity and other entity
+	 * Pushes the other entity
 	 *
 	 * @param Entity $entity
 	 */
-	protected function applyEntityCollision(Entity $entity) : void{
-		if($this->canBePushed() and !$this->isRiding() and !$entity->isRiding()){
-			if(!($entity instanceof Player and $entity->isSpectator()) and !($this instanceof Player and $this->isSpectator())){
+	public function applyEntityCollision(Entity $entity) : void{
+		if(!$this->isRiding() and !$entity->isRiding()){
+			if(!($entity instanceof Player and $entity->isSpectator())){
 				$d0 = $entity->x - $this->x;
 				$d1 = $entity->z - $this->z;
 				$d2 = abs(max($d0, $d1));
 
-				if($d2 >= 0.009){
+				if($d2 > 0){
 					$d2 = sqrt($d2);
-					$d0 = $d0 / $d2;
-					$d1 = $d1 / $d2;
-					$d3 = 1 / $d2;
+					$d0 /= $d2;
+					$d1 /= $d2;
+					$d3 = min(1, 1 / $d2);
 
-					if($d3 > 1) $d3 = 1;
-
-					$d0 = $d0 * $d3;
-					$d1 = $d1 * $d3;
-					$d0 = $d0 * 0.05;
-					$d1 = $d1 * 0.05;
-					$d0 = $d0 * (1 - $this->entityCollisionReduction);
-					$d1 = $d1 * (1 - $this->entityCollisionReduction);
-
-					$this->motion = $this->motion->subtract($d0, 0, $d1);
-					$entity->motion = $entity->motion->add($d0, 0, $d1);
+					$entity->setMotion($entity->getMotion()->add($d0 * $d3 * 0.05, 0, $d1 * $d3 * 0.05));
 				}
 			}
 		}
@@ -2136,7 +2128,9 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	}
 
 	public function onCollideWithEntity(Entity $entity) : void{
-		$entity->applyEntityCollision($this);
+		if($entity->canBePushed()){
+			$this->applyEntityCollision($entity);
+		}
 	}
 
 	public function isUnderwater() : bool{
@@ -2439,10 +2433,8 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	}
 
 	protected function checkEntityCollision() : void{
-		if($this->canBePushed()){
-			foreach($this->level->getCollidingEntities($this->getBoundingBox()->expandedCopy(0.2, 0, 0.2), $this) as $e){
-				$this->onCollideWithEntity($e);
-			}
+		foreach($this->level->getCollidingEntities($this->getBoundingBox()->expandedCopy(0.2, 0, 0.2), $this) as $e){
+			$this->onCollideWithEntity($e);
 		}
 	}
 
@@ -2568,6 +2560,29 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 		$this->motion->x += $x;
 		$this->motion->y += $y;
 		$this->motion->z += $z;
+	}
+
+	/**
+	 * @param string     $sound
+	 * @param float      $volume
+	 * @param float      $pitch
+	 * @param array|null $targets
+	 */
+	public function playSound(string $sound, float $volume = 1.0, float $pitch = 1.0, array $targets = null) : void{
+		$this->level->addSound(new PlaySound($this, $sound, $volume, $pitch), $targets ?? null);
+	}
+
+	/**
+	 * @param string     $sound
+	 * @param bool       $stopAll
+	 * @param array|null $targets
+	 */
+	public function stopSound(string $sound, bool $stopAll = false, array $targets = null) : void{
+		$pk = new StopSoundPacket();
+		$pk->soundName = $sound;
+		$pk->stopAll = $stopAll;
+
+		$this->server->broadcastPacket($targets ?? $this->level->getViewersForPosition($this), $pk);
 	}
 
 	public function isOnGround() : bool{
