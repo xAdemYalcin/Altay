@@ -23,11 +23,14 @@ declare(strict_types=1);
 
 namespace pocketmine\entity\object;
 
+use pocketmine\block\Water;
 use pocketmine\entity\Entity;
 use pocketmine\event\entity\ItemDespawnEvent;
 use pocketmine\event\entity\ItemSpawnEvent;
 use pocketmine\event\inventory\InventoryPickupItemEvent;
 use pocketmine\item\Item;
+use pocketmine\math\AxisAlignedBB;
+use pocketmine\network\mcpe\protocol\ActorEventPacket;
 use pocketmine\network\mcpe\protocol\AddItemActorPacket;
 use pocketmine\network\mcpe\protocol\TakeItemActorPacket;
 use pocketmine\Player;
@@ -52,7 +55,7 @@ class ItemEntity extends Entity{
 	protected $gravity = 0.04;
 	protected $drag = 0.02;
 
-	public $canCollide = false;
+	public $canCollide = true;
 
 	/** @var int */
 	protected $age = 0;
@@ -61,12 +64,12 @@ class ItemEntity extends Entity{
 		parent::initEntity();
 
 		$this->setMaxHealth(5);
+		$this->setImmobile(true);
 		$this->setHealth($this->namedtag->getShort("Health", (int) $this->getHealth()));
 		$this->age = $this->namedtag->getShort("Age", $this->age);
 		$this->pickupDelay = $this->namedtag->getShort("PickupDelay", $this->pickupDelay);
 		$this->owner = $this->namedtag->getString("Owner", $this->owner);
 		$this->thrower = $this->namedtag->getString("Thrower", $this->thrower);
-
 
 		$itemTag = $this->namedtag->getCompoundTag("Item");
 		if($itemTag === null){
@@ -95,6 +98,32 @@ class ItemEntity extends Entity{
 				$this->pickupDelay = 0;
 			}
 
+			if($this->ticksLived % 60 === 0){
+				foreach($this->level->getCollidingEntities($this->getBoundingBox()->expandedCopy(1, 1, 1), $this) as $entity){
+					if($entity instanceof ItemEntity){
+						$item = $this->getItem();
+						if($item->getCount() < $item->getMaxStackSize()){
+							if($entity->getItem()->equals($item, true, true)){
+								$nextAmount = $item->getCount() + $entity->getItem()->getCount();
+								if($nextAmount <= $item->getMaxStackSize()){
+									if($this->ticksLived > $entity->ticksLived){
+										$entity->flagForDespawn();
+
+										$item->setCount($nextAmount);
+										$this->broadcastEntityEvent(ActorEventPacket::ITEM_ENTITY_MERGE, $nextAmount);
+									}else{
+										$this->flagForDespawn();
+
+										$entity->getItem()->setCount($nextAmount);
+										$entity->broadcastEntityEvent(ActorEventPacket::ITEM_ENTITY_MERGE, $nextAmount);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
 			$this->age += $tickDiff;
 			if($this->age > 6000){
 				$ev = new ItemDespawnEvent($this);
@@ -111,6 +140,10 @@ class ItemEntity extends Entity{
 		return $hasUpdate;
 	}
 
+	protected function getDefaultDrag() : float{
+		return 0.02;
+	}
+
 	protected function tryChangeMovement() : void{
 		$this->checkObstruction($this->x, $this->y, $this->z);
 		parent::tryChangeMovement();
@@ -118,6 +151,28 @@ class ItemEntity extends Entity{
 
 	protected function applyDragBeforeGravity() : bool{
 		return true;
+	}
+
+	protected function applyGravity() : void{
+		$bb = $this->getBoundingBox();
+		$waterCount = 0;
+
+		for($j = 0; $j < 5; ++$j){
+			$d1 = $bb->minY + ($bb->maxY - $bb->minY) * $j / 5 + 0.4;
+			$d3 = $bb->minY + ($bb->maxY - $bb->minY) * ($j + 1) / 5 + 1;
+
+			$bb2 = new AxisAlignedBB($bb->minX, $d1, $bb->minZ, $bb->maxX, $d3, $bb->maxZ);
+
+			if($this->level->isLiquidInBoundingBox($bb2, new Water())){
+				$waterCount += 0.2;
+			}
+		}
+
+		if($waterCount > 0){
+			$this->motion->y += 0.002 * ($waterCount * 2 - 1);
+		}else{
+			$this->motion->y -= $this->gravity;
+		}
 	}
 
 	public function saveNBT() : void{
@@ -142,11 +197,7 @@ class ItemEntity extends Entity{
 	}
 
 	public function canCollideWith(Entity $entity) : bool{
-		return false;
-	}
-
-	public function canBeCollidedWith() : bool{
-		return false;
+		return parent::canCollideWith($entity) and $entity instanceof ItemEntity;
 	}
 
 	/**
