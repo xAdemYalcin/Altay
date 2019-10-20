@@ -29,6 +29,8 @@ use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\math\Vector3;
+use pocketmine\nbt\tag\ByteTag;
+use pocketmine\nbt\tag\IntTag;
 use pocketmine\network\mcpe\protocol\ActorEventPacket;
 use function atan2;
 use function mt_rand;
@@ -38,7 +40,33 @@ use const M_PI;
 class TropicalFish extends WaterAnimal{
 	public const NETWORK_ID = self::TROPICAL_FISH;
 
-	public $width = 0.5;
+	public const SHAPE_A = 0;
+	public const SHAPE_B = 1;
+
+	public const PATTERN_1 = 0;
+	public const PATTERN_2 = 1;
+	public const PATTERN_3 = 2;
+	public const PATTERN_4 = 3;
+	public const PATTERN_5 = 4;
+	public const PATTERN_6 = 5;
+
+	public const COLOR_WHITE = 0;
+	public const COLOR_ORANGE = 1;
+	public const COLOR_MAGENTA = 2;
+	public const COLOR_LIGHTBLUE = 3;
+	public const COLOR_YELLOW = 4;
+	public const COLOR_LIGHTGREEN = 5;
+	public const COLOR_PINK = 6;
+	public const COLOR_GRAY = 7;
+	public const COLOR_SILVER = 8;
+	public const COLOR_CYAN = 9;
+	public const COLOR_PURPLE = 10;
+	public const COLOR_BLUE = 11;
+	public const COLOR_BROWN = 12;
+	public const COLOR_GREEN = 13;
+	public const COLOR_RED = 14;
+
+	public $width = 0.4;
 	public $height = 0.4;
 
 	/** @var Vector3 */
@@ -48,8 +76,35 @@ class TropicalFish extends WaterAnimal{
 	private $switchDirectionTicker = 0;
 
 	public function initEntity() : void{
-		$this->setMaxHealth(3);
-	//TODO: Add diffrent styles of fish
+		$this->setMaxHealth(6);
+
+		if($this->namedtag->hasTag("Variant", IntTag::class)){
+			$this->propertyManager->setInt(self::DATA_VARIANT, $this->namedtag->getInt("Variant"));
+		}else{
+			$this->propertyManager->setInt(self::DATA_VARIANT, mt_rand(0, 1));
+		}
+
+		if($this->namedtag->hasTag("MarkVariant", IntTag::class)){
+			$this->propertyManager->setInt(self::DATA_MARK_VARIANT, $this->namedtag->getInt("MarkVariant"));
+		}else{
+			$this->propertyManager->setInt(self::DATA_MARK_VARIANT, mt_rand(0, 5));
+		}
+
+		if($this->namedtag->hasTag("Color", ByteTag::class)){
+			$this->propertyManager->setByte(self::DATA_COLOR, $this->namedtag->getByte("Color"));
+		}else{
+			$this->propertyManager->setByte(self::DATA_COLOR, mt_rand(0, 14));
+		}
+
+		if($this->namedtag->hasTag("Color2", ByteTag::class)){
+			$this->propertyManager->setByte(self::DATA_COLOR_2, $this->namedtag->getByte("Color2"));
+		}else{
+			$this->propertyManager->setByte(self::DATA_COLOR_2, mt_rand(0, 14));
+		}
+
+		$this->setMovementSpeed(0.12);
+		$this->swimSpeed = 0.12;
+
 		parent::initEntity();
 	}
 
@@ -69,8 +124,6 @@ class TropicalFish extends WaterAnimal{
 			if($e !== null){
 				$this->swimDirection = (new Vector3($this->x - $e->x, $this->y - $e->y, $this->z - $e->z))->normalize();
 			}
-
-
 		}
 	}
 
@@ -108,7 +161,6 @@ class TropicalFish extends WaterAnimal{
 				}
 			}else{
 				$this->swimDirection = $this->generateRandomDirection();
-				$this->swimSpeed = mt_rand(50, 100) / 2000;
 			}
 
 			$f = sqrt(($this->motion->x ** 2) + ($this->motion->z ** 2));

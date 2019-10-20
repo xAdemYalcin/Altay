@@ -64,7 +64,6 @@ class Cat extends Tamable{
 		$this->behaviorPool->setBehavior(7, new RandomStrollBehavior($this, 1));
 		$this->behaviorPool->setBehavior(8, new RandomLookAroundBehavior($this));
 
-
 		// TODO: attack turtle and rabbit
 	}
 
