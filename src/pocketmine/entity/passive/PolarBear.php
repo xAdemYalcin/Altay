@@ -63,7 +63,7 @@ class PolarBear extends Animal{
 		parent::initEntity();
 	}
 
-	//TODO: atack foxes
+	//TODO: attack fixes
 	public function getName() : string{
 		return "Polar Bear";
 	}
@@ -81,10 +81,6 @@ class PolarBear extends Animal{
 
 	public function setAngry(bool $angry = true) : void{
 		$this->setGenericFlag(self::DATA_FLAG_ANGRY, $angry);
-	}
-
-	private function generateRandomDirection() : Vector3{
-		return new Vector3(mt_rand(-1000, 1000) / 1000, mt_rand(-500, 500) / 1000, mt_rand(-1000, 1000) / 1000);
 	}
 
 	public function getXpDropAmount() : int{

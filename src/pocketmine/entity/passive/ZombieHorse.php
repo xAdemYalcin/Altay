@@ -43,136 +43,109 @@ use pocketmine\Player;
 
 class ZombieHorse extends AbstractHorse implements InventoryHolder{
 
-    public const NETWORK_ID = self::ZOMBIE_HORSE;
+	public const NETWORK_ID = self::ZOMBIE_HORSE;
 
-    public const HORSE_VARIANT_WHITE = 0;
-    public const HORSE_VARIANT_CREAMY = 1;
-    public const HORSE_VARIANT_CHESTNUT = 2;
-    public const HORSE_VARIANT_BROWN = 3;
-    public const HORSE_VARIANT_BLACK = 4;
-    public const HORSE_VARIANT_GRAY = 5;
-    public const HORSE_VARIANT_DARK_BROWN = 6;
+	public $width = 1.4;
+	public $height = 1.6;
 
-    public const HORSE_MARK_VARIANT_NONE = 0;
-    public const HORSE_MARK_VARIANT_WHITE = 1;
-    public const HORSE_MARK_VARIANT_WHITE_FIELD = 2;
-    public const HORSE_MARK_VARIANT_WHITE_DOTS = 3;
-    public const HORSE_MARK_VARIANT_BLACK_DOTS = 4;
+	/** @var HorseInventory */
+	protected $inventory;
 
-    public $width = 1.4;
-    public $height = 1.6;
+	public function getName() : string{
+		return "Zombie Horse";
+	}
 
-    /** @var HorseInventory */
-    protected $inventory;
+	/**
+	 * @return HorseInventory
+	 */
+	public function getInventory() : HorseInventory{
+		return $this->inventory;
+	}
 
-    public function getName() : string{
-        return "Zombie Horse";
-    }
+	protected function addBehaviors() : void{
+		$this->behaviorPool->setBehavior(1, new FloatBehavior($this));
+		$this->behaviorPool->setBehavior(2, new PanicBehavior($this, 1.25));
+		$this->behaviorPool->setBehavior(3, new MateBehavior($this, 1.0));
+		$this->behaviorPool->setBehavior(5, new FollowParentBehavior($this, 1.1));
+		$this->behaviorPool->setBehavior(6, new RandomStrollBehavior($this, 1.0));
+		$this->behaviorPool->setBehavior(7, new LookAtPlayerBehavior($this, 6.0));
+		$this->behaviorPool->setBehavior(8, new RandomLookAroundBehavior($this));
+	}
 
-    /**
-     * @return HorseInventory
-     */
-    public function getInventory() : HorseInventory{
-        return $this->inventory;
-    }
+	protected function initEntity() : void{
+		$this->setMaxHealth(15);
+		$this->setMovementSpeed($this->getModifiedMovementSpeed());
+		$this->setJumpStrength($this->getModifiedJumpStrength());
+		$this->setFollowRange(35);
 
-    protected function addBehaviors() : void{
-        $this->behaviorPool->setBehavior(1, new FloatBehavior($this));
-        $this->behaviorPool->setBehavior(2, new PanicBehavior($this, 1.25));
-        $this->behaviorPool->setBehavior(3, new MateBehavior($this, 1.0));
-        $this->behaviorPool->setBehavior(5, new FollowParentBehavior($this, 1.1));
-        $this->behaviorPool->setBehavior(6, new RandomStrollBehavior($this, 1.0));
-        $this->behaviorPool->setBehavior(7, new LookAtPlayerBehavior($this, 6.0));
-        $this->behaviorPool->setBehavior(8, new RandomLookAroundBehavior($this));
-    }
+		$this->inventory = new HorseInventory($this);
 
-    protected function initEntity() : void{
-        $this->setMaxHealth(15);
-        $this->setMovementSpeed($this->getModifiedMovementSpeed());
-        $this->setJumpStrength($this->getModifiedJumpStrength());
-        $this->setFollowRange(35);
+		if($this->namedtag->hasTag("SaddleItem", CompoundTag::class)){
+			$this->inventory->setSaddle(Item::nbtDeserialize($this->namedtag->getCompoundTag("SaddleItem")));
+		}
 
-        if($this->namedtag->hasTag("Variant", IntTag::class) and $this->namedtag->hasTag("MarkVariant", IntTag::class)){
-            $this->setVariant($this->namedtag->getInt("Variant"));
-            $this->setMarkVariant($this->namedtag->getInt("MarkVariant"));
-        }else{
-            $this->setVariant($this->random->nextBoundedInt(7));
-            $this->setMarkVariant($this->random->nextBoundedInt(5));
-        }
+		parent::initEntity();
+	}
 
-        $this->inventory = new HorseInventory($this);
+	public function addAttributes() : void{
+		parent::addAttributes();
 
-        if($this->namedtag->hasTag("ArmorItem", CompoundTag::class)){
-            $this->inventory->setArmor(Item::nbtDeserialize($this->namedtag->getCompoundTag("ArmorItem")));
-        }
+		$this->attributeMap->addAttribute(Attribute::getAttribute(Attribute::HORSE_JUMP_STRENGTH));
+	}
 
-        if($this->namedtag->hasTag("SaddleItem", CompoundTag::class)){
-            $this->inventory->setSaddle(Item::nbtDeserialize($this->namedtag->getCompoundTag("SaddleItem")));
-        }
+	public function getRiderSeatPosition(int $seatNumber = 0) : Vector3{
+		return new Vector3(0, 1.1, -0.2);
+	}
 
-        parent::initEntity();
-    }
+	public function setSaddled(bool $value = true) : void{
+		parent::setSaddled($value);
 
-    public function addAttributes() : void{
-        parent::addAttributes();
+		$this->setGenericFlag(self::DATA_FLAG_CAN_POWER_JUMP, $value);
+	}
 
-        $this->attributeMap->addAttribute(Attribute::getAttribute(Attribute::HORSE_JUMP_STRENGTH));
-    }
+	public function onInteract(Player $player, Item $item, Vector3 $clickPos) : bool{
+		if(!$this->isImmobile()){
+			// TODO: feeding
 
-    public function getRiderSeatPosition(int $seatNumber = 0) : Vector3{
-        return new Vector3(0, 1.1, -0.2);
-    }
+			if($player->isSneaking()){
+				if($this->isTamed()){
+					$player->addWindow($this->inventory);
+				}else{
+					$this->rearUp();
+				}
 
-    public function setSaddled(bool $value = true) : void{
-        parent::setSaddled($value);
+				return true;
+			}
+		}
+		return parent::onInteract($player, $item, $clickPos);
+	}
 
-        $this->setGenericFlag(self::DATA_FLAG_CAN_POWER_JUMP, $value);
-    }
+	public function sendSpawnPacket(Player $player) : void{
+		parent::sendSpawnPacket($player);
 
-    public function onInteract(Player $player, Item $item, Vector3 $clickPos) : bool{
-        if(!$this->isImmobile()){
-            // TODO: feeding
+		$this->inventory->sendArmor($player);
+	}
 
-            if($player->isSneaking()){
-                if($this->isTamed()){
-                    $player->addWindow($this->inventory);
-                }else{
-                    $this->rearUp();
-                }
+	public function doHitAnimation() : void{
+		parent::doHitAnimation();
 
-                return true;
-            }
-        }
-        return parent::onInteract($player, $item, $clickPos);
-    }
+		foreach($this->getViewers() as $player){ // WTF
+			$this->inventory->sendArmor($player);
+		}
+	}
 
-    public function sendSpawnPacket(Player $player) : void{
-        parent::sendSpawnPacket($player);
+	public function saveNBT() : void{
+		parent::saveNBT();
 
-        $this->inventory->sendArmor($player);
-    }
+		if($this->inventory !== null){
+			$this->namedtag->setTag($this->inventory->getSaddle()->nbtSerialize(-1, "SaddleItem"));
+			$this->namedtag->setTag($this->inventory->getArmor()->nbtSerialize(-1, "ArmorItem"));
+		}
+	}
 
-    public function doHitAnimation() : void{
-        parent::doHitAnimation();
-
-        foreach($this->getViewers() as $player){ // WTF
-            $this->inventory->sendArmor($player);
-        }
-    }
-
-    public function saveNBT() : void{
-        parent::saveNBT();
-
-        if($this->inventory !== null){
-            $this->namedtag->setTag($this->inventory->getSaddle()->nbtSerialize(-1, "SaddleItem"));
-            $this->namedtag->setTag($this->inventory->getArmor()->nbtSerialize(-1, "ArmorItem"));
-        }
-    }
-    public
-    function getDrops(): array
-    {
-        return [
-            ItemFactory::get(Item::ROTTEN_FLESH, 0, mt_rand(0, 2))
-        ];
-    }
+	public function getDrops() : array{
+		return [
+			ItemFactory::get(Item::ROTTEN_FLESH, 0, mt_rand(0, 2))
+		];
+	}
 }

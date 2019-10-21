@@ -82,7 +82,15 @@ class Horse extends AbstractHorse implements InventoryHolder{
 		$this->behaviorPool->setBehavior(1, new FloatBehavior($this));
 		$this->behaviorPool->setBehavior(2, new PanicBehavior($this, 1.25));
 		$this->behaviorPool->setBehavior(3, new MateBehavior($this, 1.0));
-		$this->behaviorPool->setBehavior(4, new TemptBehavior($this, [Item::WHEAT, Item::APPLE, Item::WHEAT_BLOCK, Item::GOLDEN_APPLE, Item::ENCHANTED_GOLDEN_APPLE, Item::GOLDEN_CARROT, Item::SUGAR], 1.2));
+		$this->behaviorPool->setBehavior(4, new TemptBehavior($this, [
+			Item::WHEAT,
+			Item::APPLE,
+			Item::WHEAT_BLOCK,
+			Item::GOLDEN_APPLE,
+			Item::ENCHANTED_GOLDEN_APPLE,
+			Item::GOLDEN_CARROT,
+			Item::SUGAR
+		], 1.2));
 		$this->behaviorPool->setBehavior(5, new FollowParentBehavior($this, 1.1));
 		$this->behaviorPool->setBehavior(6, new RandomStrollBehavior($this, 1.0));
 		$this->behaviorPool->setBehavior(7, new LookAtPlayerBehavior($this, 6.0));

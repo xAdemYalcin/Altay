@@ -33,6 +33,7 @@ use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\ActorEventPacket;
+use pocketmine\Player;
 use function atan2;
 use function mt_rand;
 use function sqrt;
@@ -72,14 +73,12 @@ class Pufferfish extends WaterAnimal{
 			if($e !== null){
 				$this->swimDirection = (new Vector3($this->x - $e->x, $this->y - $e->y, $this->z - $e->z))->normalize();
 			}
-
 		}
 	}
 
 	private function generateRandomDirection() : Vector3{
 		return new Vector3(mt_rand(-1000, 1000) / 1000, mt_rand(-500, 500) / 1000, mt_rand(-1000, 1000) / 1000);
 	}
-
 
 	public function entityBaseTick(int $tickDiff = 1) : bool{
 		if($this->closed){
@@ -110,7 +109,7 @@ class Pufferfish extends WaterAnimal{
 				}
 			}else{
 				$this->swimDirection = $this->generateRandomDirection();
-				$this->swimSpeed = mt_rand(50, 100) / 2000;
+				$this->swimSpeed = 0.05;
 			}
 
 			$f = sqrt(($this->motion->x ** 2) + ($this->motion->z ** 2));
@@ -132,13 +131,11 @@ class Pufferfish extends WaterAnimal{
 	}
 
 
-
-
 	public function getDrops() : array{
 		$drops = [
 			ItemFactory::get(Item::PUFFERFISH, 0, 1),
 		];
-		if(mt_rand(1, 4) ===1){
+		if(mt_rand(1, 4) === 1){
 			$drops[] = ItemFactory::get(Item::BONE, 1, mt_rand(1, 2));
 		}
 		return $drops;

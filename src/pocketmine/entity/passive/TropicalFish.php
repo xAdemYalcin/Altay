@@ -103,7 +103,6 @@ class TropicalFish extends WaterAnimal{
 		}
 
 		$this->setMovementSpeed(0.12);
-		$this->swimSpeed = 0.12;
 
 		parent::initEntity();
 	}
@@ -161,6 +160,7 @@ class TropicalFish extends WaterAnimal{
 				}
 			}else{
 				$this->swimDirection = $this->generateRandomDirection();
+				$this->swimSpeed = 0.05;
 			}
 
 			$f = sqrt(($this->motion->x ** 2) + ($this->motion->z ** 2));

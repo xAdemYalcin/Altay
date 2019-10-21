@@ -46,20 +46,6 @@ class SkeletonHorse extends AbstractHorse implements InventoryHolder{
 
 	public const NETWORK_ID = self::SKELETON_HORSE;
 
-	public const HORSE_VARIANT_WHITE = 0;
-	public const HORSE_VARIANT_CREAMY = 1;
-	public const HORSE_VARIANT_CHESTNUT = 2;
-	public const HORSE_VARIANT_BROWN = 3;
-	public const HORSE_VARIANT_BLACK = 4;
-	public const HORSE_VARIANT_GRAY = 5;
-	public const HORSE_VARIANT_DARK_BROWN = 6;
-
-	public const HORSE_MARK_VARIANT_NONE = 0;
-	public const HORSE_MARK_VARIANT_WHITE = 1;
-	public const HORSE_MARK_VARIANT_WHITE_FIELD = 2;
-	public const HORSE_MARK_VARIANT_WHITE_DOTS = 3;
-	public const HORSE_MARK_VARIANT_BLACK_DOTS = 4;
-
 	public $width = 1.4;
 	public $height = 1.6;
 
@@ -89,18 +75,11 @@ class SkeletonHorse extends AbstractHorse implements InventoryHolder{
 	}
 
 	protected function initEntity() : void{
-        $this->setMaxHealth(15);
+		$this->setMaxHealth(15);
 		$this->setMovementSpeed($this->getModifiedMovementSpeed());
 		$this->setJumpStrength($this->getModifiedJumpStrength());
 		$this->setFollowRange(35);
 
-		if($this->namedtag->hasTag("Variant", IntTag::class) and $this->namedtag->hasTag("MarkVariant", IntTag::class)){
-			$this->setVariant($this->namedtag->getInt("Variant"));
-			$this->setMarkVariant($this->namedtag->getInt("MarkVariant"));
-		}else{
-			$this->setVariant($this->random->nextBoundedInt(7));
-			$this->setMarkVariant($this->random->nextBoundedInt(5));
-		}
 		$this->inventory = new HorseInventory($this);
 
 		if($this->namedtag->hasTag("ArmorItem", CompoundTag::class)){
@@ -169,12 +148,11 @@ class SkeletonHorse extends AbstractHorse implements InventoryHolder{
 			$this->namedtag->setTag($this->inventory->getArmor()->nbtSerialize(-1, "ArmorItem"));
 		}
 	}
-    public
-    function getDrops(): array
-    {
-        return [
-            ItemFactory::get(Item::BONE, 0, mt_rand(0, 2))
-        ];
-    }
-    //TODO: add changing normal horse to skeleton by lightning
+
+	public function getDrops() : array{
+		return [
+			ItemFactory::get(Item::BONE, 0, mt_rand(0, 2))
+		];
+	}
+	//TODO: add changing normal horse to skeleton by lightning
 }

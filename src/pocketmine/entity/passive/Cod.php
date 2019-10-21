@@ -69,8 +69,6 @@ class Cod extends WaterAnimal{
 			if($e !== null){
 				$this->swimDirection = (new Vector3($this->x - $e->x, $this->y - $e->y, $this->z - $e->z))->normalize();
 			}
-
-
 		}
 	}
 
@@ -94,7 +92,6 @@ class Cod extends WaterAnimal{
 		$hasUpdate = parent::entityBaseTick($tickDiff);
 
 		if($this->isAlive()){
-
 			if($this->y > 62 and $this->swimDirection !== null){
 				$this->swimDirection->y = -0.5;
 			}
@@ -108,7 +105,7 @@ class Cod extends WaterAnimal{
 				}
 			}else{
 				$this->swimDirection = $this->generateRandomDirection();
-				$this->swimSpeed = mt_rand(50, 100) / 2000;
+				$this->swimSpeed = 0.05;
 			}
 
 			$f = sqrt(($this->motion->x ** 2) + ($this->motion->z ** 2));
@@ -123,7 +120,7 @@ class Cod extends WaterAnimal{
 		$drops = [
 			ItemFactory::get(Item::RAW_FISH, 0, 1),
 		];
-		if(mt_rand(1, 4) ===1){
+		if(mt_rand(1, 4) === 1){
 			$drops[] = ItemFactory::get(Item::BONE, 1, mt_rand(1, 2));
 		}
 		return $drops;

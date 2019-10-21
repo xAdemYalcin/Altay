@@ -45,8 +45,8 @@ class ZombiePigman extends Monster implements Ageable{
 	public $width = 0.6;
 	public $height = 1.95;
 
-    /** @var AltayEntityEquipment */
-    protected $equipment;
+	/** @var AltayEntityEquipment */
+	protected $equipment;
 
 	protected function initEntity() : void{
 		$this->setMovementSpeed($this->isBaby() ? 0.35 : 0.23);
@@ -55,9 +55,9 @@ class ZombiePigman extends Monster implements Ageable{
 
 		parent::initEntity();
 
-        $this->equipment = new AltayEntityEquipment($this);
+		$this->equipment = new AltayEntityEquipment($this);
 
-        $this->equipment->setItemInHand(ItemFactory::get(Item::GOLDEN_SWORD));
+		$this->equipment->setItemInHand(ItemFactory::get(Item::GOLDEN_SWORD));
 	}
 
 	public function getName() : string{
@@ -103,9 +103,9 @@ class ZombiePigman extends Monster implements Ageable{
 	}
 
 
-    public function sendSpawnPacket(Player $player) : void{
-        parent::sendSpawnPacket($player);
+	public function sendSpawnPacket(Player $player) : void{
+		parent::sendSpawnPacket($player);
 
-        $this->equipment->sendContents([$player]);
-    }
+		$this->equipment->sendContents([$player]);
+	}
 }

@@ -74,21 +74,19 @@ class WitherSkeleton extends Monster{
 		if(mt_rand(0, 2) < 1){
 			$drops[] = ItemFactory::get(Item::COAL, 0, 1);
 		}
-		if(mt_rand(1, 40) ===1){
+		if(mt_rand(1, 40) === 1){
 			$drops[] = ItemFactory::get(Item::MOB_HEAD, 1, 1);
 		}
 		return $drops;
-}
+	}
 
 	public function onCollideWithEntity(Entity $entity) : void{
 		parent::onCollideWithEntity($entity);
 
 		if($this->getTargetEntityId() === $entity->getId() and $entity instanceof Living){
-				$entity->addEffect(new EffectInstance(Effect::getEffect(Effect::WITHER), 200, 1));
-			}
+			$entity->addEffect(new EffectInstance(Effect::getEffect(Effect::WITHER), 200, 1));
 		}
-
-
+	}
 
 
 	public function getXpDropAmount() : int{

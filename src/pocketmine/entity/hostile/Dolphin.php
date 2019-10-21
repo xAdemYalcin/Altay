@@ -53,6 +53,7 @@ class Dolphin extends WaterAnimal{
 
 	public function initEntity() : void{
 		$this->setMaxHealth(10);
+		$this->swimSpeed = 0.12;
 
 		parent::initEntity();
 	}
@@ -111,7 +112,6 @@ class Dolphin extends WaterAnimal{
 				}
 			}else{
 				$this->swimDirection = $this->generateRandomDirection();
-				$this->swimSpeed = mt_rand(50, 100) / 2000;
 			}
 
 			$f = sqrt(($this->motion->x ** 2) + ($this->motion->z ** 2));

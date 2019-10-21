@@ -66,7 +66,6 @@ class Rabbit extends Tamable{
 		return "Rabbit";
 	}
 
-
 	public function getXpDropAmount() : int{
 		return rand(1, 3);
 	}
