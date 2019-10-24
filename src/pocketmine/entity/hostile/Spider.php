@@ -33,6 +33,8 @@ use pocketmine\entity\behavior\MeleeAttackBehavior;
 use pocketmine\entity\behavior\RandomLookAroundBehavior;
 use pocketmine\entity\behavior\RandomStrollBehavior;
 use pocketmine\entity\Monster;
+use pocketmine\entity\pathfinding\navigate\PathNavigate;
+use pocketmine\entity\pathfinding\navigate\PathNavigateClimber;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\Player;
@@ -54,6 +56,10 @@ class Spider extends Monster implements Ageable{
 		$this->setCanClimbWalls(true);
 
 		parent::initEntity();
+	}
+
+	protected function createNavigator() : PathNavigate{
+		return new PathNavigateClimber($this);
 	}
 
 	public function getName() : string{

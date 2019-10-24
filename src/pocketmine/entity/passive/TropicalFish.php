@@ -23,19 +23,16 @@ declare(strict_types=1);
 
 namespace pocketmine\entity\passive;
 
+use pocketmine\entity\behavior\AvoidMobTypeBehavior;
+use pocketmine\entity\behavior\RandomSwimBehavior;
+use pocketmine\entity\behavior\SwimWanderBehavior;
 use pocketmine\entity\WaterAnimal;
-use pocketmine\event\entity\EntityDamageByEntityEvent;
-use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
-use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\IntTag;
-use pocketmine\network\mcpe\protocol\ActorEventPacket;
-use function atan2;
+use pocketmine\Player;
 use function mt_rand;
-use function sqrt;
-use const M_PI;
 
 class TropicalFish extends WaterAnimal{
 	public const NETWORK_ID = self::TROPICAL_FISH;
@@ -69,12 +66,6 @@ class TropicalFish extends WaterAnimal{
 	public $width = 0.4;
 	public $height = 0.4;
 
-	/** @var Vector3 */
-	public $swimDirection = null;
-	public $swimSpeed = 0.1;
-
-	private $switchDirectionTicker = 0;
-
 	public function initEntity() : void{
 		$this->setMaxHealth(6);
 
@@ -105,70 +96,18 @@ class TropicalFish extends WaterAnimal{
 		$this->setMovementSpeed(0.12);
 
 		parent::initEntity();
+
+		$this->navigator->setAvoidsWater(false);
+	}
+
+	protected function addBehaviors() : void{
+		$this->behaviorPool->setBehavior(1, new AvoidMobTypeBehavior($this, Player::class, null, 6, 1.5, 2.0));
+		$this->behaviorPool->setBehavior(3, new RandomSwimBehavior($this, 1.0, 16, 4, 0));
+		$this->behaviorPool->setBehavior(4, new SwimWanderBehavior($this, 1.0));
 	}
 
 	public function getName() : string{
 		return "Tropical Fish";
-	}
-
-	public function attack(EntityDamageEvent $source) : void{
-		parent::attack($source);
-		if($source->isCancelled()){
-			return;
-		}
-
-		if($source instanceof EntityDamageByEntityEvent){
-			$this->swimSpeed = mt_rand(150, 350) / 2000;
-			$e = $source->getDamager();
-			if($e !== null){
-				$this->swimDirection = (new Vector3($this->x - $e->x, $this->y - $e->y, $this->z - $e->z))->normalize();
-			}
-		}
-	}
-
-	private function generateRandomDirection() : Vector3{
-		return new Vector3(mt_rand(-1000, 1000) / 1000, mt_rand(-500, 500) / 1000, mt_rand(-1000, 1000) / 1000);
-	}
-
-
-	public function entityBaseTick(int $tickDiff = 1) : bool{
-		if($this->closed){
-			return false;
-		}
-
-		if(++$this->switchDirectionTicker === 100 or $this->isCollided){
-			$this->switchDirectionTicker = 0;
-			if(mt_rand(0, 100) < 50){
-				$this->swimDirection = null;
-			}
-		}
-
-		$hasUpdate = parent::entityBaseTick($tickDiff);
-
-		if($this->isAlive()){
-
-			if($this->y > 62 and $this->swimDirection !== null){
-				$this->swimDirection->y = -0.5;
-			}
-
-			$inWater = $this->isUnderwater();
-			if(!$inWater){
-				$this->swimDirection = null;
-			}elseif($this->swimDirection !== null){
-				if($this->motion->lengthSquared() <= $this->swimDirection->lengthSquared()){
-					$this->motion = $this->swimDirection->multiply($this->swimSpeed);
-				}
-			}else{
-				$this->swimDirection = $this->generateRandomDirection();
-				$this->swimSpeed = 0.05;
-			}
-
-			$f = sqrt(($this->motion->x ** 2) + ($this->motion->z ** 2));
-			$this->yaw = (-atan2($this->motion->x, $this->motion->z) * 180 / M_PI);
-			$this->pitch = (-atan2($f, $this->motion->y) * 180 / M_PI);
-		}
-
-		return $hasUpdate;
 	}
 
 	public function getDrops() : array{
