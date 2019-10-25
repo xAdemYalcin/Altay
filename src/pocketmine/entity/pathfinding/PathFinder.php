@@ -32,6 +32,7 @@ use pocketmine\math\Vector3;
 class PathFinder{
 	/** @var Path */
 	protected $path;
+	/** @var PathPoint[] */
 	protected $pathOptions = [];
 	/** @var NodeProcessor */
 	protected $nodeProcessor;
@@ -63,8 +64,8 @@ class PathFinder{
 		return $pathEntity;
 	}
 
-	private function addToPath(Entity $entity, PathPoint $startPoint, PathPoint $endPoint, float $maxDistance){
-		$startPoint->totalPathDistance = 0.0;
+	protected function addToPath(Entity $entity, PathPoint $startPoint, PathPoint $endPoint, float $maxDistance){
+		$startPoint->totalPathDistance = 0;
 		$startPoint->distanceToNext = $startPoint->distanceSquared($endPoint);
 		$startPoint->distanceToTarget = $startPoint->distanceToNext;
 
@@ -72,9 +73,9 @@ class PathFinder{
 		$this->path->addPoint($startPoint);
 
 		$currentPoint = $startPoint;
-		var_dump("geldi");
-
+		$attempt = 0;
 		while(!$this->path->isEmpty()){
+			$attempt++;
 			$point = $this->path->dequeue();
 			if($point === null){
 				return null;
@@ -82,6 +83,8 @@ class PathFinder{
 
 			if($point->equals($endPoint)){
 				return $this->createPathEntity($endPoint);
+			}elseif($attempt - $this->path->getCount() >= $maxDistance / 2){
+				return $this->createPathEntity($currentPoint);
 			}
 
 			if($point->distanceSquared($endPoint) < $currentPoint->distanceSquared($endPoint)){
@@ -91,7 +94,6 @@ class PathFinder{
 			$point->visited = true;
 
 			$i = $this->nodeProcessor->findPathOptions($this->pathOptions, $entity, $point, $endPoint, $maxDistance);
-			var_dump($i);
 			for($j = 0; $j < $i; ++$j){
 				$point2 = $this->pathOptions[$j];
 				$f = $point->totalPathDistance + $point->distanceSquared($point2);
@@ -99,7 +101,7 @@ class PathFinder{
 				if($f < ($maxDistance * 2) and (!$point2->isAssigned() or $f < $point2->totalPathDistance)){
 					$point2->previous = $point;
 					$point2->totalPathDistance = $f;
-					$point2->distanceToNext = $point2->distanceToSquared($endPoint);
+					$point2->distanceToNext = $point2->distanceSquared($endPoint);
 
 					if($point2->isAssigned()){
 						$this->path->changeDistance($point2, $point2->totalPathDistance + $point2->distanceToNext);
@@ -126,6 +128,6 @@ class PathFinder{
 		}
 		unset($points[0]);
 
-		return new PathEntity($points);
+		return new PathEntity(array_values($points));
 	}
 }

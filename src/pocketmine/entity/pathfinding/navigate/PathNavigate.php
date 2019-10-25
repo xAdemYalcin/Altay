@@ -104,7 +104,7 @@ abstract class PathNavigate{
 			$this->currentPath = null;
 			return false;
 		}else{
-			if(!$pathEntity->isSamePath($this->currentPath)){
+			if($this->currentPath === null or !$pathEntity->isSamePath($this->currentPath)){
 				$this->currentPath = $pathEntity;
 			}
 

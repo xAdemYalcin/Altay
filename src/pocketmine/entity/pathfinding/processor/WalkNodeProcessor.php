@@ -127,7 +127,7 @@ class WalkNodeProcessor extends NodeProcessor{
 				$j = 0;
 
 				for($k = 0; $y > 0; $point = $this->openPoint($x, $y, $z)){
-					$k = $this->getState($entity, $pos->add(0, -1, 0));
+					$k = $this->getState($entity, new Vector3($x, $y - 1, $z));
 
 					if($this->avoidsWater and $k === -1){
 						return null;
@@ -168,12 +168,11 @@ class WalkNodeProcessor extends NodeProcessor{
 		for($x = $bb->minX; $x < $bb->maxX; ++$x){
 			for($y = $bb->minY; $y < $bb->maxY; ++$y){
 				for($z = $bb->minZ; $z < $bb->maxZ; ++$z){
-					$mutablePos->setComponents($x, $y, $z);
-					$block = $entity->level->getBlock($mutablePos);
+					$block = $entity->level->getBlock($mutablePos->setComponents($x, $y, $z));
 
 					if($block->getId() !== Block::AIR){
 						if($block->getId() !== Block::TRAPDOOR and $block->getId() !== Block::IRON_TRAPDOOR){
-							if($block->getId() != Block::STILL_WATER and $block->getId() != Block::WATER){
+							if($block->getId() !== Block::STILL_WATER and $block->getId() !== Block::WATER){
 								if(!$enterDoors and $block instanceof Door){
 									return 0;
 								}
@@ -188,7 +187,7 @@ class WalkNodeProcessor extends NodeProcessor{
 							$flag = true;
 						}
 
-						if($entity->level->getBlock($mutablePos) instanceof Rail){
+						if($block instanceof Rail){
 							if(!($entity->level->getBlock($entity) instanceof Rail) and !($entity->level->getBlock($entity->getSide(Vector3::SIDE_DOWN)) instanceof Rail)){
 								return -3;
 							}
