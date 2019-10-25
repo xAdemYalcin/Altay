@@ -38,7 +38,6 @@ class PanicBehavior extends RandomStrollBehavior{
 			$this->targetPos = RandomPositionGenerator::findRandomTargetBlock($this->mob, 5, 4);
 
 			if($this->targetPos !== null){
-				$this->followRange = $this->mob->distanceSquared($this->targetPos) + 2;
 				return true;
 			}
 		}

@@ -143,17 +143,8 @@ abstract class PathNavigate{
 
 			if(!$this->noPath()){
 				$pos = $this->currentPath->getPosition();
-				if($pos != null){
-					$bb = (new AxisAlignedBB($pos->x, $pos->y, $pos->z, $pos->x, $pos->y, $pos->z))->expand(0.5, 0.5, 0.5);
-					$list = $this->level->getCollidingEntities($bb->addCoord(0.0, -1.0, 0.0), $this->theEntity);
-					$bb = $bb->offset(0.0, 1.0, 0.0);
-
-					$yOffset = -1.0;
-					foreach($list as $entity){
-						$yOffset = $entity->getBoundingBox()->calculateYOffset($bb, $yOffset);
-					}
-
-					$this->theEntity->getMoveHelper()->moveTo($pos->x, $pos->y + $yOffset, $pos->z, $this->speed);
+				if($pos !== null){
+					$this->theEntity->getMoveHelper()->moveTo($pos->x, $pos->y + 0, $pos->z, $this->speed);
 				}
 			}
 		}

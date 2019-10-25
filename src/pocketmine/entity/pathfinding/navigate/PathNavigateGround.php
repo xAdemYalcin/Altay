@@ -70,7 +70,7 @@ class PathNavigateGround extends PathNavigate{
 				}
 			}
 
-			return $i;
+			return (int) $i;
 		}else{
 			return (int) $this->theEntity->getBoundingBox()->minY;
 		}

@@ -29,6 +29,7 @@ use pocketmine\block\Door;
 use pocketmine\block\Fence;
 use pocketmine\block\FenceGate;
 use pocketmine\block\Rail;
+use pocketmine\block\StoneBricks;
 use pocketmine\entity\Entity;
 use pocketmine\entity\pathfinding\PathPoint;
 use pocketmine\level\Level;
@@ -192,7 +193,7 @@ class WalkNodeProcessor extends NodeProcessor{
 								return -3;
 							}
 						}elseif(!$block->isTransparent() and (!$breakDoors or !($block instanceof Door))){
-							if($block instanceof Fence or $block instanceof FenceGate or $block->isSolid()){
+							if($block instanceof Fence or $block instanceof FenceGate or $block instanceof StoneBricks){
 								return -3;
 							}
 
