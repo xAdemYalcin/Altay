@@ -614,9 +614,6 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	public $canCollide = true;
 
 	/** @var bool */
-	protected $isStatic = false;
-
-	/** @var bool */
 	private $savedWithChunk = true;
 
 	/** @var bool */
@@ -900,20 +897,6 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	public function setBaby(bool $value = true) : void{
 		$this->setGenericFlag(self::DATA_FLAG_BABY, $value);
 		$this->setScale($value ? 0.5 : 1.0);
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function isStatic() : bool{
-		return $this->isStatic;
-	}
-
-	/**
-	 * @param bool $static
-	 */
-	public function setStatic(bool $static) : void{
-		$this->isStatic = $static;
 	}
 
 	/**
@@ -1506,14 +1489,14 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 	}
 
 	protected function doOnFireTick(int $tickDiff = 1) : bool{
+		if(($this->fireTicks % 20 === 0) or $tickDiff > 20){
+			$this->dealFireDamage();
+		}
+
 		if($this->isFireProof() and $this->fireTicks > 1){
 			$this->fireTicks = 1;
 		}else{
 			$this->fireTicks -= $tickDiff;
-		}
-
-		if(($this->fireTicks % 20 === 0) or $tickDiff > 20){
-			$this->dealFireDamage();
 		}
 
 		if(!$this->isOnFire()){
@@ -1653,7 +1636,9 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 			$this->motion->y *= $friction;
 		}
 
-		$this->applyGravity();
+		if(!$this->onGround or $this->forceMovementUpdate){
+			$this->applyGravity();
+		}
 
 		if(!$this->applyDragBeforeGravity()){
 			$this->motion->y *= $friction;
@@ -1839,9 +1824,7 @@ abstract class Entity extends Location implements Metadatable, EntityIds{
 
 		$this->timings->stopTiming();
 
-		//if($this->isStatic())
 		return ($hasUpdate or $this->hasMovementUpdate());
-		//return !($this instanceof Player);
 	}
 
 	protected function onMovementUpdate() : void{

@@ -21,9 +21,7 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 
-#Run PHPUnit tests
-#7.5.12 introduces changes that set the build on fire because we don't ship libxml - TODO FIX
-curl https://phar.phpunit.de/phpunit-7.5.11.phar --silent --location -o phpunit.phar
+curl https://phar.phpunit.de/phpunit-7.phar --silent --location -o phpunit.phar
 "$PHP_BINARY" phpunit.phar --bootstrap vendor/autoload.php --fail-on-warning tests/phpunit || exit 1
 
 #Run-the-server tests
@@ -48,7 +46,7 @@ fi
 mkdir "$DATA_DIR"
 mkdir "$PLUGINS_DIR"
 mv DevTools.phar "$PLUGINS_DIR"
-#cp -r tests/plugins/TesterPlugin "$PLUGINS_DIR"
+cp -r tests/plugins/TesterPlugin "$PLUGINS_DIR"
 echo -e "stop\n" | "$PHP_BINARY" PocketMine-MP.phar --no-wizard --disable-ansi --disable-readline --debug.level=2 --data="$DATA_DIR" --plugins="$PLUGINS_DIR" --anonymous-statistics.enabled=0 --settings.async-workers="$PM_WORKERS" --settings.enable-dev-builds=1
 
 output=$(grep '\[TesterPlugin\]' "$DATA_DIR/server.log")

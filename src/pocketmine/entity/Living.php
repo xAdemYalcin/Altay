@@ -634,16 +634,11 @@ abstract class Living extends Entity implements Damageable{
 		if($source instanceof EntityDamageByEntityEvent){
 			$damage = 0;
 			foreach($this->armorInventory->getContents() as $k => $item){
-				if($item instanceof Armor and ($thornsLevel = $item->getEnchantmentLevel(Enchantment::THORNS)) > 0){
-					if(mt_rand(0, 99) < $thornsLevel * 15){
-						$this->damageItem($item, 3);
-						$damage += ($thornsLevel > 10 ? $thornsLevel - 10 : 1 + mt_rand(0, 3));
-					}else{
-						$this->damageItem($item, 1); //thorns causes an extra +1 durability loss even if it didn't activate
-					}
-
-					$this->armorInventory->setItem($k, $item);
+				foreach($item->getEnchantments() as $enchantmentInstance){
+					$enchantmentInstance->getType()->onHurtEntity($this, $source->getEntity(), $item, $enchantmentInstance->getLevel());
 				}
+
+				$this->armorInventory->setItem($k, $item);
 			}
 
 			if($damage > 0){
@@ -724,10 +719,7 @@ abstract class Living extends Entity implements Damageable{
 			}
 
 			if($e !== null){
-				if((
-					$source->getCause() === EntityDamageEvent::CAUSE_PROJECTILE or
-					$source->getCause() === EntityDamageEvent::CAUSE_ENTITY_ATTACK
-				) and $e->isOnFire()){
+				if($source->getCause() === EntityDamageEvent::CAUSE_PROJECTILE and $e->isOnFire()){
 					$this->setOnFire(2 * $this->level->getDifficulty());
 				}
 
@@ -1069,7 +1061,6 @@ abstract class Living extends Entity implements Damageable{
 	 * @param Vector3 $target
 	 */
 	public function lookAt(Vector3 $target) : void{
-		$oldYaw = $this->yaw;
 		$horizontal = sqrt(($target->x - $this->x) ** 2 + ($target->z - $this->z) ** 2);
 		$vertical = $target->y - $this->y;
 		$this->pitch = -atan2($vertical, $horizontal) / M_PI * 180; //negative is up, positive is down

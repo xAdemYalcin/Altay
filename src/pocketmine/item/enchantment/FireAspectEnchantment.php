@@ -27,6 +27,14 @@ use pocketmine\entity\Entity;
 
 class FireAspectEnchantment extends MeleeWeaponEnchantment{
 
+	public function getMinEnchantAbility(int $level) : int{
+		return 10 + ($level - 1) * 20;
+	}
+
+	public function getMaxEnchantAbility(int $level) : int{
+		return $this->getMinEnchantAbility($level) + 50;
+	}
+
 	public function isApplicableTo(Entity $victim) : bool{
 		return true;
 	}

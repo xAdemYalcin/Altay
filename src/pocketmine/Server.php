@@ -98,6 +98,7 @@ use pocketmine\snooze\SleeperNotifier;
 use pocketmine\tile\Tile;
 use pocketmine\timings\Timings;
 use pocketmine\timings\TimingsHandler;
+use pocketmine\utils\Color;
 use pocketmine\utils\Config;
 use pocketmine\utils\MainLogger;
 use pocketmine\utils\Terminal;
@@ -613,7 +614,7 @@ class Server{
 	 * @return int
 	 */
 	public function getDifficulty() : int{
-		return $this->getConfigInt("difficulty", 1);
+		return $this->getConfigInt("difficulty", Level::DIFFICULTY_NORMAL);
 	}
 
 	/**
@@ -1154,11 +1155,17 @@ class Server{
 
 			return false;
 		}
-		/**
-		 * @var LevelProvider $provider
-		 * @see LevelProvider::__construct()
-		 */
-		$provider = new $providerClass($path);
+
+		try{
+			/**
+			 * @var LevelProvider $provider
+			 * @see LevelProvider::__construct()
+			 */
+			$provider = new $providerClass($path);
+		}catch(LevelException $e){
+			$this->logger->error($this->getLanguage()->translateString("pocketmine.level.loadError", [$name, $e->getMessage()]));
+			return false;
+		}
 		try{
 			GeneratorManager::getGenerator($provider->getGenerator(), true);
 		}catch(\InvalidArgumentException $e){
@@ -1602,7 +1609,7 @@ class Server{
 				"force-gamemode" => false,
 				"hardcore" => false,
 				"pvp" => true,
-				"difficulty" => 1,
+				"difficulty" => Level::DIFFICULTY_NORMAL,
 				"generator-settings" => "",
 				"level-name" => "world",
 				"level-seed" => "",
@@ -1631,12 +1638,6 @@ class Server{
 				$this->forceShutdown();
 				return;
 			}
-
-			if(((int) ini_get('zend.assertions')) !== -1){
-				$this->logger->warning("Debugging assertions are enabled, this may impact on performance. To disable them, set `zend.assertions = -1` in php.ini.");
-			}
-
-			ini_set('assert.exception', '1');
 
 			if($this->logger instanceof MainLogger){
 				$this->logger->setLogDebug(\pocketmine\DEBUG > 1);
@@ -1773,6 +1774,7 @@ class Server{
 			Item::initCreativeItems();
 			Biome::init();
 			MapManager::loadIdCounts();
+			Color::initDyeColors();
 
 			$this->commandMap = new SimpleCommandMap($this);
 
@@ -2311,6 +2313,7 @@ class Server{
 
 		$this->logger->info($this->getLanguage()->translateString("pocketmine.server.defaultGameMode", [self::getGamemodeString($this->getGamemode())]));
 
+		$this->logger->info($this->getLanguage()->translateString("pocketmine.server.donate", [TextFormat::AQUA . "https://patreon.com/pocketminemp" . TextFormat::RESET]));
 		$this->logger->info($this->getLanguage()->translateString("pocketmine.server.startFinished", [round(microtime(true) - \pocketmine\START_TIME, 3)]));
 
 		$this->tickProcessor();

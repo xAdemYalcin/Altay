@@ -98,6 +98,7 @@ use pocketmine\lang\TextContainer;
 use pocketmine\lang\TranslationContainer;
 use pocketmine\level\ChunkLoader;
 use pocketmine\level\format\Chunk;
+use pocketmine\level\GameRules;
 use pocketmine\level\Level;
 use pocketmine\level\Location;
 use pocketmine\level\Position;
@@ -270,6 +271,9 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 	/** @var bool */
 	public $loggedIn = false;
+
+	/** @var bool */
+	private $resourcePacksDone = false;
 
 	/** @var bool */
 	public $spawned = false;
@@ -1857,7 +1861,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				$this->inventory->getItemInHand()->onUpdate($this); // update map items
 			}
 			if($this->getOffHandInventory() !== null){
-				$this->offHandInventory->getItem(0)->onUpdate($this);
+				$this->offHandInventory->getItemInOffHand()->onUpdate($this);
 			}
 
 			$this->processMovement($tickDiff);
@@ -2174,6 +2178,9 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	}
 
 	public function handleResourcePackClientResponse(ResourcePackClientResponsePacket $packet) : bool{
+		if($this->resourcePacksDone){
+			return false;
+		}
 		switch($packet->status){
 			case ResourcePackClientResponsePacket::STATUS_REFUSED:
 				//TODO: add lang strings for this
@@ -2221,6 +2228,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 				$this->dataPacket($pk);
 				break;
 			case ResourcePackClientResponsePacket::STATUS_COMPLETED:
+				$this->resourcePacksDone = true;
 				$this->completeLoginSequence();
 				break;
 			default:
@@ -2266,6 +2274,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$pk->yaw = $this->yaw;
 		$pk->seed = -1;
 		$pk->dimension = $this->level->getDimension();
+		$pk->gameRules = $this->level->getGameRules()->getRules();
 		$pk->worldGamemode = Player::getClientFriendlyGamemode($this->server->getGamemode());
 		$pk->difficulty = $this->level->getDifficulty();
 		$pk->spawnX = $spawnPosition->getFloorX();
@@ -2410,20 +2419,6 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$this->doCloseInventory();
 
 		switch($packet->event){
-			case ActorEventPacket::PLAYER_ADD_XP_LEVELS:
-				if($packet->data === 0){
-					return false;
-				}
-
-				$nextXpLevel = $this->getXpLevel() + $packet->data;
-				$attribute = $this->getAttributeMap()->getAttribute(Attribute::EXPERIENCE_LEVEL);
-				if($nextXpLevel < $attribute->getMinValue() or $nextXpLevel > $attribute->getMaxValue()){
-					return false;
-				}else{
-					$this->addXpLevels($packet->data);
-				}
-
-				break;
 			case ActorEventPacket::EATING_ITEM:
 				if($packet->data === 0){
 					return false;
@@ -3305,6 +3300,9 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 	}
 
 	public function handleResourcePackChunkRequest(ResourcePackChunkRequestPacket $packet) : bool{
+		if($this->resourcePacksDone){
+			return false;
+		}
 		$manager = $this->server->getResourcePackManager();
 		$pack = $manager->getPackById($packet->packId);
 		if(!($pack instanceof ResourcePack)){
@@ -3899,7 +3897,7 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 		$this->doCloseInventory();
 
 		$ev = new PlayerDeathEvent($this, $this->getDrops());
-		$ev->setKeepInventory($this->server->keepInventory);
+		$ev->setKeepInventory($this->server->keepInventory or $this->level->getGameRules()->getBool(GameRules::RULE_KEEP_INVENTORY));
 		$ev->setKeepExperience($this->server->keepExperience);
 		$ev->call();
 
@@ -3983,6 +3981,12 @@ class Player extends Human implements CommandSender, ChunkLoader, IPlayer{
 
 	protected function applyPostDamageEffects(EntityDamageEvent $source) : void{
 		parent::applyPostDamageEffects($source);
+
+		foreach(($item = $this->getInventory()->getItemInHand())->getEnchantments() as $enchantmentInstance){
+			$enchantmentInstance->getType()->onHurtEntity($this, $source->getEntity(), $item, $enchantmentInstance->getLevel());
+		}
+
+		$this->getInventory()->setItemInHand($item);
 
 		$this->exhaust(0.3, PlayerExhaustEvent::CAUSE_DAMAGE);
 	}
