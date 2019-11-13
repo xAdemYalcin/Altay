@@ -144,7 +144,7 @@ abstract class PathNavigate{
 			if(!$this->noPath()){
 				$pos = $this->currentPath->getPosition();
 				if($pos !== null){
-					$this->theEntity->getMoveHelper()->moveTo($pos->x, $pos->y + 0, $pos->z, $this->speed);
+					$this->theEntity->getMoveHelper()->moveTo($pos->x + 0.5, $pos->y, $pos->z + 0.5, $this->speed);
 				}
 			}
 		}
