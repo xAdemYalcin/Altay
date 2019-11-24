@@ -21,21 +21,24 @@
 
 declare(strict_types=1);
 
-namespace pocketmine\network\mcpe\protocol\types;
+namespace pocketmine\network\mcpe\protocol;
 
-final class ResourcePackType{
+#include <rules/DataPacket.h>
 
-	private function __construct(){
-		//NOOP
+use pocketmine\network\mcpe\NetworkSession;
+
+class PlayerAuthInputPacket extends DataPacket{
+	public const NETWORK_ID = ProtocolInfo::PLAYER_AUTH_INPUT_PACKET;
+
+	protected function decodePayload() : void{
+		//TODO
 	}
 
-	public const INVALID = 0;
-	public const ADDON = 1;
-	public const CACHED = 2;
-	public const COPY_PROTECTED = 3;
-	public const BEHAVIORS = 4;
-	public const PERSONA_PIECE = 5;
-	public const RESOURCES = 6;
-	public const SKINS = 7;
-	public const WORLD_TEMPLATE = 8;
+	protected function encodePayload() : void{
+		//TODO
+	}
+
+	public function handle(NetworkSession $handler) : bool{
+		return $handler->handlePlayerAuthInput($this);
+	}
 }

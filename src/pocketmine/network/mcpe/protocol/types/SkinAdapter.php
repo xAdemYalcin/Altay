@@ -23,19 +23,26 @@ declare(strict_types=1);
 
 namespace pocketmine\network\mcpe\protocol\types;
 
-final class ResourcePackType{
+use pocketmine\entity\Skin;
 
-	private function __construct(){
-		//NOOP
-	}
+/**
+ * Used to convert new skin data to the skin entity or old skin entity to skin data.
+ */
+interface SkinAdapter{
 
-	public const INVALID = 0;
-	public const ADDON = 1;
-	public const CACHED = 2;
-	public const COPY_PROTECTED = 3;
-	public const BEHAVIORS = 4;
-	public const PERSONA_PIECE = 5;
-	public const RESOURCES = 6;
-	public const SKINS = 7;
-	public const WORLD_TEMPLATE = 8;
+	/**
+	 * Allows you to convert a skin entity to skin data.
+	 *
+	 * @param Skin $skin
+	 * @return SkinData
+	 */
+	public function toSkinData(Skin $skin) : SkinData;
+
+	/**
+	 * Allows you to convert skin data to a skin entity.
+	 *
+	 * @param SkinData $data
+	 * @return Skin
+	 */
+	public function fromSkinData(SkinData $data) : Skin;
 }
