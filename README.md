@@ -1,7 +1,7 @@
-<h1>Altay<img src="http://fs1.directupload.net/images/180401/urn5z9ic.png" height="100" width="100" align="left"></img></h1>
+<h1>AltayPractice<img src="http://fs1.directupload.net/images/180401/urn5z9ic.png" height="100" width="100" align="left"></img></h1>
 <br />
 
-A fork of [Altay](https://github.com/TuranicTeam/Altay) by [Turanic Team](https://github.com/TuranicTeam)
+A fork of [Altay](https://github.com/TuranicTeam/Altay) by [Turanic Team](https://github.com/TuranicTeam) for practice myself.
 
 ----------------------
 
